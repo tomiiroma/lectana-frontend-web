@@ -2,6 +2,7 @@ import CardInfo from "../../components/Cards/CardInfo"
 import "./HerramientasDocentesSection.css"
 import { FaUsers } from "react-icons/fa";
 import { MdAssignment } from "react-icons/md";
+import { IoIosStats } from "react-icons/io";
 
 function HerramientasDocentesSection(){
     return(
@@ -12,7 +13,7 @@ function HerramientasDocentesSection(){
         
             <div className="cards-Herramientas">
                 <CardInfo
-                icon={<FaUsers color="blue"/>}
+                icon={<FaUsers size={64} color="blue"/>}
                 titulo={"Gestión de Aulas"}
                 descripcion={"Creación de aulas virtuales, códigos de acceso y gestión de múltiples cursos de forma sencilla."}
                 width={"250px"}
@@ -20,7 +21,7 @@ function HerramientasDocentesSection(){
                 />
 
                    <CardInfo
-                icon={<MdAssignment color="green"/>}
+                icon={<MdAssignment size={64} color="green"/>}
                 titulo={"Asignación de Lecturas"}
                 descripcion={"Filtros por edad, progreso y contenido curado para cada nivel."}
                 width={"250px"}
@@ -28,7 +29,7 @@ function HerramientasDocentesSection(){
                 />
 
                 <CardInfo
-                icon={<MdAssignment color="green"/>}
+                icon={<IoIosStats size={64} color="orange"/>}
                 titulo={"Seguimiento del Progreso"}
                 descripcion={"Reportes detallados, retroalimentación personalizada y actividades interactivas para evaluar."}
                 width={"250px"}

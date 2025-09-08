@@ -1,9 +1,10 @@
 import "./Buttons.css"
 
-function PrimaryButton({content}) {
+function PrimaryButton({content, className = "", ...props}) {
   return (
-    <button className="PrimaryButton">{content}</button>
-  )
+  <button className={`PrimaryButton ${className}`} {...props}>
+      {content}
+    </button>  )
 }
 
 export default PrimaryButton
