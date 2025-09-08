@@ -1,12 +1,17 @@
 import "./CardInfo.css"
 
-function CardInfo({icon, titulo, descripcion}){
+function CardInfo({icon, titulo, descripcion, width, height}){
+
+      const style = {
+    width: width,
+    height: height ,
+  };
     return(
         <>
-    <div className="card-info">
-      <div className="card-icon">{icon}</div>
-      <h3 className="card-title">{titulo}</h3>
-      <p className="card-description">{descripcion}</p>
+    <div className="card-categoria" style={style}>
+      {icon}
+      <h3 className="cardCategoria-title">{titulo}</h3>
+      <p className="cardCategoria-description">{descripcion}</p>
     </div>
 
         </>

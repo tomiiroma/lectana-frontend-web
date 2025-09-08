@@ -2,6 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import ExplorarCategorias from "./sections/ExplorarCategoriasSection/ExplorarCategoriasSection";
 import HeroSection from "./sections/HeroSection.jsx/HeroSection";
+import HerramientasDocentesSection from "./sections/HerramientasDocentesSection/HerramientasDocentesSection";
 import NuestrosLibrosSection from "./sections/NuestrosLibrosSection/NuestraBibliotecaSection";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <HeroSection/>
       <NuestrosLibrosSection/>
       <ExplorarCategorias/>
+      <HerramientasDocentesSection/>
     </>
   );
 }
