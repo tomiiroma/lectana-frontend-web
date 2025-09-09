@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../../auth/AuthContext";
 
-export default function AdminLogin() {
+export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
@@ -64,5 +64,4 @@ export default function AdminLogin() {
     </div>
   );
 }
-
 

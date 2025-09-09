@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 const linkStyle = ({ isActive }) => ({
   display: "flex",
@@ -13,6 +14,14 @@ const linkStyle = ({ isActive }) => ({
 });
 
 export default function AdminSidebar() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/admin/login", { replace: true });
+  }
+
   return (
     <aside style={{ width: 240, padding: 12, borderRight: "1px solid #e5e7eb", background: "#f8fafc", height: "100vh", position: "sticky", top: 0 }}>
       <div style={{ padding: "8px 12px", marginBottom: 8, fontWeight: 700 }}>Lectana Admin</div>
@@ -24,7 +33,9 @@ export default function AdminSidebar() {
         <NavLink to="/admin/actividades" style={linkStyle}>Actividades</NavLink>
         <NavLink to="/admin/perfil" style={linkStyle}>Perfil</NavLink>
       </nav>
-
+      <div style={{ marginTop: "auto", padding: 12 }}>
+        <button onClick={handleLogout} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #e5e7eb", background: "#fff", cursor: "pointer" }}>Cerrar sesión</button>
+      </div>
     </aside>
   );
 }
