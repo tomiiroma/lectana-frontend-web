@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
 
   async function login({ email, password }) {
     try {
-      const res = await api.post("/api/auth/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
       const payload = res?.data ?? {};
       const ok = typeof payload.ok === "boolean" ? payload.ok : true;
       if (!ok) throw new Error(payload?.error || "Credenciales inválidas");
