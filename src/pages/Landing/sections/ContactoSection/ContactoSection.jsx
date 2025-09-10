@@ -1,4 +1,4 @@
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import "./ContactoSection.css"
 import { MdMailOutline, MdOutlinePhone, MdOutlineLocationOn } from "react-icons/md";
 import { FaArrowRight } from "react-icons/fa";

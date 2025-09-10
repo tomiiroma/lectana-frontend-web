@@ -1,6 +1,6 @@
-import PrimaryButton from "../../components/Buttons/PrimaryButton"
-import SecondaryButton from "../../components/Buttons/SecondaryButton"
-import CardLibro from "../../components/Cards/CardLibro"
+import PrimaryButton from "../../../../components/Buttons/PrimaryButton"
+import SecondaryButton from "../../../../components/Buttons/SecondaryButton"
+import CardLibro from "../../../../components/Cards/CardLibro"
 import "./HeroSection.css"
 
 function HeroSection() {

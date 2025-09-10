@@ -1,6 +1,6 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
-import { AuthProvider } from "./auth/AuthContext";
-import RequireAuth from "./auth/RequireAuth";
+import { AuthProvider } from "./auth/AuthContext.jsx";
+import RequireAuth from "./auth/RequireAuth.jsx";
 import Home from "./pages/Home.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import AdminLogin from "./pages/admin/auth/Login.jsx";

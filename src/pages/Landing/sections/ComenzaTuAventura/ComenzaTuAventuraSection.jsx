@@ -1,4 +1,4 @@
-import SecondaryButton from "../../components/Buttons/SecondaryButton"
+import SecondaryButton from "../../../../components/Buttons/SecondaryButton"
 import "./ComenzaTuAventuraSection.css"
 
 function ComenzaTuAventuraSection(){

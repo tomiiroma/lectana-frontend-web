@@ -1,4 +1,4 @@
-import CardInfo from "../../components/Cards/CardInfo"
+import CardInfo from "../../../../components/Cards/CardInfo"
 import "./ExplorarCategoriasSection.css"
 import { FaBook,FaCompass,FaBuildingColumns,FaHeart   } from "react-icons/fa6";
 import { BsStars } from "react-icons/bs";

@@ -1,4 +1,4 @@
-import CardInfo from "../../components/Cards/CardInfo"
+import CardInfo from "../../../../components/Cards/CardInfo"
 import "./PorqueLectanaSection.css"
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegCircleCheck } from "react-icons/fa6";

@@ -1,4 +1,4 @@
-import CardInfo from "../../components/Cards/CardInfo"
+import CardInfo from "../../../../components/Cards/CardInfo"
 import "./HerramientasDocentesSection.css"
 import { FaUsers } from "react-icons/fa";
 import { MdAssignment } from "react-icons/md";

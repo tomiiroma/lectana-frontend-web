@@ -1,6 +1,6 @@
 import "./NuestraBibliotecaSection.css"
-import CardLibro from "../../components/Cards/CardLibro"
-import PrimaryButton from "../../components/Buttons/PrimaryButton"
+import CardLibro from "../../../../components/Cards/CardLibro"
+import PrimaryButton from "../../../../components/Buttons/PrimaryButton"
 
 function NuestraBibliotecaSection(){
     return(
