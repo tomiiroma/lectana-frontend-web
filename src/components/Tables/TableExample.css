@@ -1,0 +1,21 @@
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.tabla-usuarios th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.tabla-usuarios tr:nth-child(even) {
+  background-color: #f3f4f6;
+}

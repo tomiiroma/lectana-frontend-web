@@ -1,0 +1,16 @@
+.CardDashboard-container{
+    max-width: 675px;
+    width: 100%;
+    border: 1px solid #e5e7eb;      
+  background-color: #ffffff;      
+  color: #111827;                 
+  border-radius: 0.75rem;         
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+  padding: 10px;
+}
+.cardDashboard-head{
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
