@@ -1,0 +1,340 @@
+/* Estilos específicos para la página de Aulas */
+
+.aulas-actions {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+}
+
+.aulas-btn {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.aulas-btn:hover {
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.aulas-btn-secondary:hover {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+/* Estadísticas específicas de aulas */
+.stat-card-aulas-purple {
+  border-left: 4px solid #8b5cf6;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+}
+
+.stat-card-aulas-blue {
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+}
+
+.stat-card-aulas-green {
+  border-left: 4px solid #10b981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+}
+
+.stat-card-aulas-orange {
+  border-left: 4px solid #f59e0b;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+}
+
+/* Grid de aulas */
+.aulas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Tarjetas de aula */
+.aula-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.aula-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981);
+}
+
+.aula-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+}
+
+.aula-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.aula-grade {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.aula-status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-inactive {
+  background: rgba(107, 114, 128, 0.1);
+  color: #4b5563;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.aula-title {
+  color: #111827;
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.aula-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.aula-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.aula-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.stat-icon-small {
+  color: #8b5cf6;
+  font-size: 14px;
+}
+
+.aula-progress {
+  margin-bottom: 16px;
+}
+
+.progress-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.progress-bar {
+  background: #f3f4f6;
+  height: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #8b5cf6;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.aula-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Tarjeta de crear aula */
+.aula-create {
+  border: 2px dashed #8b5cf6;
+  background: rgba(139, 92, 246, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  cursor: pointer;
+}
+
+.aula-create:hover {
+  background: rgba(139, 92, 246, 0.05);
+  border-color: #7c3aed;
+}
+
+.create-content {
+  text-align: center;
+  color: #8b5cf6;
+}
+
+.create-icon {
+  font-size: 3em;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.create-content h3 {
+  color: #8b5cf6;
+  margin-bottom: 8px;
+}
+
+.create-content p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.btn-create {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-create:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Tabla específica de aulas */
+.aulas-table th {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.aulas-table tr:hover {
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.aula-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aula-icon {
+  font-size: 1.5em;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 10px;
+}
+
+.aula-name {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.aula-code {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.mini-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-progress-bar {
+  background: #f3f4f6;
+  height: 6px;
+  width: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.mini-progress span {
+  font-size: 12px;
+  color: #8b5cf6;
+  font-weight: 600;
+  min-width: 30px;
+}
+
+/* Responsive para aulas */
+@media (max-width: 768px) {
+  .aulas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .aula-card {
+    padding: 20px;
+  }
+  
+  .aula-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .aula-stats {
+    gap: 6px;
+  }
+}
+
+/* Animaciones */
+@keyframes pulse-purple {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.25);
+  }
+}
+
+.aula-create:hover {
+  animation: pulse-purple 2s infinite;
+}

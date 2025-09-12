@@ -1,21 +1,39 @@
 .dashboardPrincipal-title{
-    color: #111827;
-    font-size: 1.875em;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.25em;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     margin-left: 30px;
+    margin-bottom: 24px;
+    text-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
 }
+
 .dashboardCardCounter-container{
     margin: 20px;
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;          
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
 }
 
 .dashboardCards-container{
     margin: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;          
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
 }
