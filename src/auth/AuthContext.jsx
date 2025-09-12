@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
     const raw = localStorage.getItem("user");
     return raw ? JSON.parse(raw) : null;
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) localStorage.setItem("token", token);
@@ -20,7 +21,7 @@ export function AuthProvider({ children }) {
     else localStorage.removeItem("user");
   }, [user]);
 
-  async function login({ email, password }) {
+  async function login(email, password) {
     try {
       const res = await api.post("/auth/login", { email, password });
       const payload = res?.data ?? {};
@@ -40,13 +41,21 @@ export function AuthProvider({ children }) {
 
       setToken(jwt);
       setUser(usuario);
-      return { jwt, usuario };
+      return { success: true, jwt, usuario };
     } catch (err) {
       const serverMsg = err?.response?.data?.error;
       const status = err?.response?.status;
-      if (serverMsg) throw new Error(serverMsg);
-      if (status === 401) throw new Error("Credenciales inválidas");
-      throw new Error(err?.message || "Error de login");
+      let message = "Error de login";
+      
+      if (serverMsg) {
+        message = serverMsg;
+      } else if (status === 401) {
+        message = "Credenciales inválidas";
+      } else if (err?.message) {
+        message = err.message;
+      }
+      
+      return { success: false, message };
     }
   }
 
@@ -57,8 +66,8 @@ export function AuthProvider({ children }) {
 
   const value = useMemo(() => {
     const role = typeof user?.rol === "string" ? user.rol.toLowerCase() : null;
-    return { token, user, isAdmin: role === "administrador", login, logout };
-  }, [token, user]);
+    return { token, user, loading, isAdmin: role === "administrador", login, logout };
+  }, [token, user, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -5,7 +5,7 @@ import PrimaryButton from "../../../../components/Buttons/PrimaryButton"
 function NuestraBibliotecaSection(){
     return(
         <>
-        <section className="container-NuestraBibliotecaSection">
+        <section id="biblioteca" className="container-NuestraBibliotecaSection">
         <h1 className="NuestraBibliotecaSection-title">Nuestra Biblioteca</h1>
         <span className="NuestraBibliotecaSection-text">Explora una muestra de los cientos de cuentos disponibles en la app. Cada libro está cuidadosamente seleccionado y adaptado por edad.</span>
 

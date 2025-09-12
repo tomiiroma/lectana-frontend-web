@@ -7,7 +7,7 @@ import { IoIosStats } from "react-icons/io";
 function HerramientasDocentesSection(){
     return(
         <>
-        <section className="container-herramientasDocentes">
+        <section id="docentes" className="container-herramientasDocentes">
             <h1 className="herramientasDocentes-title">Herramientas para Docentes</h1>
             <p className="herramientasDocentes-text">La app incluye funciones especiales para docentes: gestiona aulas virtuales, asigna lecturas y realiza seguimiento del progreso.</p>
         

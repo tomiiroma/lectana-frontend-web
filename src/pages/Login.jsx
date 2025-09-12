@@ -1,17 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./Login.css";
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaArrowLeft } from "react-icons/fa";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const location = useLocation();
+  const { login, user, token } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // Redirigir si ya está autenticado
+  useEffect(() => {
+    if (token && user) {
+      const from = location.state?.from?.pathname || "/admin";
+      navigate(from, { replace: true });
+    }
+  }, [token, user, navigate, location]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,21 +28,18 @@ export default function Login() {
     setLoading(true);
     
     try {
-      const { usuario } = await login({ email, password });
-      const rol = typeof usuario?.rol === "string" ? usuario.rol.toLowerCase() : usuario?.rol;
+      const result = await login(email, password);
       
-      // Redirigir según el rol
-      if (rol === "administrador") {
-        navigate("/admin", { replace: true });
-      } else if (rol === "docente") {
-        navigate("/dashboard/docente", { replace: true });
-      } else if (rol === "estudiante") {
-        navigate("/dashboard/estudiante", { replace: true });
+      if (result.success) {
+        // Redirigir a la página desde donde vino o al admin
+        const from = location.state?.from?.pathname || "/admin";
+        navigate(from, { replace: true });
       } else {
-        navigate("/dashboard", { replace: true });
+        setError(result.message || "Error de autenticación");
       }
     } catch (err) {
-      setError(err?.message || "Error al iniciar sesión");
+      console.error("Error de login:", err);
+      setError("Error de conexión. Por favor, intenta nuevamente.");
     } finally {
       setLoading(false);
     }

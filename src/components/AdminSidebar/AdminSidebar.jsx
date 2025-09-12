@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+// import { useAuth } from "../../auth/AuthContext"; // Desactivado - sin backend
 import "./AdminSidebar.css";
 import { RiLayoutMasonryLine } from "react-icons/ri";
 import { FaBook, FaUser,FaBuilding,FaClipboardList,FaRegUser  } from "react-icons/fa";
@@ -8,11 +8,11 @@ import { FiLogOut } from "react-icons/fi";
 
 
 export default function AdminSidebar() {
-  const { logout } = useAuth();
+  // const { logout } = useAuth(); // Desactivado - sin backend
   const navigate = useNavigate();
 
   function handleLogout() {
-    logout();
+    // Función simplificada sin autenticación real
     navigate("/", { replace: true });
   }
 

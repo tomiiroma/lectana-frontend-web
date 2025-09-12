@@ -1,16 +1,25 @@
 .card {
   width: 100%;
   max-width: 20rem; /* ~320px */
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  background-color: white;
-  border: 1px solid #E5E7EB; /* gris claro */
-  box-shadow: 0 25px 50px rgba(0,0,0,0.1); /* shadow-2xl */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 25px 50px rgba(0, 86, 210, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 35px 60px rgba(0,0,0,0.15); /* shadow-3xl */
+  transform: translateY(-8px);
+  box-shadow: 
+    0 35px 70px rgba(0, 86, 210, 0.2),
+    0 15px 40px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.98);
 }
 
 .card-image {

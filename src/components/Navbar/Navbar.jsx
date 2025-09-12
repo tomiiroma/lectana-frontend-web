@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import "./Navbar.css";
-import { FaUser, FaSignInAlt, FaSignOutAlt, FaBars, FaTimes, FaUserCircle, FaCog } from "react-icons/fa";
+import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser } from "react-icons/fa";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
@@ -39,6 +38,16 @@ function Navbar() {
     return role;
   };
 
+  const handleSmoothScroll = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <header className={`header ${isScrolled ? "header-scrolled" : ""}`}>
       <div className="header-container">
@@ -49,19 +58,43 @@ function Navbar() {
         </Link>
 
         {/* Navigation Menu */}
-        <nav className={`navbar ${isMobileMenuOpen ? "navbar-open" : ""}`}>
+        <nav className="navbar">
           <ul className="navbar-list">
             <li className="navbar-item">
-              <a className="navbar-link" href="#biblioteca">Biblioteca</a>
+              <button 
+                className="navbar-link" 
+                onClick={() => handleSmoothScroll('biblioteca')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                Biblioteca
+              </button>
             </li>
             <li className="navbar-item">
-              <a className="navbar-link" href="#categorias">Categorías</a>
+              <button 
+                className="navbar-link" 
+                onClick={() => handleSmoothScroll('categorias')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                Categorías
+              </button>
             </li>
             <li className="navbar-item">
-              <a className="navbar-link" href="#docentes">Docentes</a>
+              <button 
+                className="navbar-link" 
+                onClick={() => handleSmoothScroll('docentes')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                Docentes
+              </button>
             </li>
             <li className="navbar-item">
-              <a className="navbar-link" href="#contacto">Contacto</a>
+              <button 
+                className="navbar-link" 
+                onClick={() => handleSmoothScroll('contacto')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                Contacto
+              </button>
             </li>
           </ul>
         </nav>
@@ -122,70 +155,10 @@ function Navbar() {
                 <FaSignInAlt />
                 <span>Iniciar Sesión</span>
               </Link>
-              <Link to="/registro" className="register-button">
-                <FaUser />
-                <span>Registrarse</span>
-              </Link>
             </div>
           )}
-
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="mobile-menu-toggle"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
         </div>
       </div>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="mobile-menu-content" onClick={(e) => e.stopPropagation()}>
-            <nav className="mobile-nav">
-              <a href="#biblioteca" className="mobile-nav-link">Biblioteca</a>
-              <a href="#categorias" className="mobile-nav-link">Categorías</a>
-              <a href="#docentes" className="mobile-nav-link">Docentes</a>
-              <a href="#contacto" className="mobile-nav-link">Contacto</a>
-            </nav>
-            
-            {token && user ? (
-              <div className="mobile-user-section">
-                <div className="mobile-user-info">
-                  <FaUserCircle />
-                  <div>
-                    <span className="mobile-user-name">{getUserDisplayName()}</span>
-                    <span className="mobile-user-role">{getUserRole()}</span>
-                  </div>
-                </div>
-                <div className="mobile-user-actions">
-                  {user.rol?.toLowerCase() === "administrador" && (
-                    <Link to="/admin" className="mobile-action-button">
-                      Panel Admin
-                    </Link>
-                  )}
-                  <Link to="/perfil" className="mobile-action-button">
-                    Mi Perfil
-                  </Link>
-                  <button onClick={handleLogout} className="mobile-action-button logout">
-                    Cerrar Sesión
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="mobile-auth-section">
-                <Link to="/login" className="mobile-login-button">
-                  Iniciar Sesión
-                </Link>
-                <Link to="/registro" className="mobile-register-button">
-                  Registrarse
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </header>
   );
 }

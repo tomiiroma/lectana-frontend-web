@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 function ContactoSection() {
     return (
         <>
-            <section className="contactoSection-container">
+            <section id="contacto" className="contactoSection-container">
                 <div className="infoContacto-container">
                     <h1 className="infoContacto-title">Conecta con nosotros</h1>
                     <p className="infoContacto-text">¿Tienes preguntas sobre Lectana? ¿Eres docente y quieres saber más sobre nuestras herramientas educativas? ¡Nos encantaría escucharte!</p>

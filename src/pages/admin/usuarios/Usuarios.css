@@ -177,30 +177,7 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* Responsive para usuarios */
-@media (max-width: 768px) {
-  .usuarios-actions {
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .search-filter-group {
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .search-box input {
-    width: 100%;
-  }
-  
-  .quick-filters {
-    justify-content: center;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-}
+
 
 /* Animaciones para usuarios */
 .user-avatar {
