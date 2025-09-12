@@ -2,8 +2,8 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext.jsx";
 import RequireAuth from "./auth/RequireAuth.jsx";
 import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
-import AdminLogin from "./pages/admin/auth/Login.jsx";
 import AdminDashboard from "./pages/admin/dashboard/Dashboard.jsx";
 import Cuentos from "./pages/admin/cuentos/Cuentos.jsx";
 import Usuarios from "./pages/admin/usuarios/Usuarios.jsx";
@@ -22,10 +22,10 @@ export const router = createBrowserRouter([
     element: withProviders(<Home />),
   },
 
-  // Ruta de login fuera del layout admin para no mostrar sidebar
+  // Ruta de login general
   {
-    path: "/admin/login",
-    element: withProviders(<AdminLogin />),
+    path: "/login",
+    element: withProviders(<Login />),
   },
 
   {

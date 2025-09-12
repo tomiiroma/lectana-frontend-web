@@ -1,0 +1,44 @@
+/* Reset básico para eliminar bordes blancos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Eliminar bordes blancos en todas las vistas */
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+/* Asegurar que todos los contenedores principales ocupen el espacio completo */
+.admin-layout,
+.admin-container,
+.admin-content {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Eliminar espacios en blanco en móviles */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  * {
+    max-width: 100%;
+  }
+}

@@ -13,7 +13,7 @@ export default function AdminSidebar() {
 
   function handleLogout() {
     logout();
-    navigate("/admin/login", { replace: true });
+    navigate("/", { replace: true });
   }
 
   return (
