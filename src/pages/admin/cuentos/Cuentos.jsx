@@ -1,4 +1,6 @@
+import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
 import "../AdminPages.css";
+import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
 
@@ -7,25 +9,9 @@ export default function Cuentos() {
     <>
       <h1 className="admin-page-title admin-cuentos-title">📚 Gestión de Cuentos</h1>
       
-      {/* Barra de acciones */}
-      <div className="admin-actions-bar">
-        <button className="btn-primary">
-          <FaPlus /> Nuevo Cuento
-        </button>
-        <div className="search-filter-group">
-          <div className="search-box">
-            <FaSearch className="search-icon" />
-            <input type="text" placeholder="Buscar cuentos..." />
-          </div>
-          <button className="btn-secondary">
-            <FaFilter /> Filtros
-          </button>
-          <button className="btn-secondary">
-            <FaDownload /> Exportar
-          </button>
-        </div>
-      </div>
 
+      <AdminActionsBar btnTitle={"Nuevo Cuento"} placeholderTitle={"Buscar cuentos..."} btnClassName="btnAdd" btnStyle={gradients.orangeGradient}/>
+    
       <div className="admin-page-container admin-cuentos-container">
         {/* Estadísticas rápidas */}
         <div className="stats-grid">

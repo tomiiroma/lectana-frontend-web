@@ -1,3 +1,5 @@
+import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Actividades.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaClipboardList, FaQuestionCircle, FaCheckCircle, FaClock, FaUsers, FaChartBar } from "react-icons/fa";
@@ -7,21 +9,7 @@ export default function Actividades() {
     <>
       <h1 className="admin-page-title admin-actividades-title">🎯 Gestión de Actividades</h1>
       
-      {/* Barra de acciones */}
-      <div className="admin-actions-bar actividades-actions">
-        <button className="btn-primary actividades-btn">
-          <FaPlus /> Nueva Actividad
-        </button>
-        <div className="search-filter-group">
-          <div className="search-box">
-            <FaSearch className="search-icon" />
-            <input type="text" placeholder="Buscar actividades..." />
-          </div>
-          <button className="btn-secondary actividades-btn-secondary">
-            <FaFilter /> Filtrar por Tipo
-          </button>
-        </div>
-      </div>
+          <AdminActionsBar btnTitle={"Nueva Actividad"} placeholderTitle={"Buscar Actividad..."} btnClassName="btnAdd" btnStyle={gradients.redGradient}/>
 
       <div className="admin-page-container admin-actividades-container">
         {/* Estadísticas de actividades */}

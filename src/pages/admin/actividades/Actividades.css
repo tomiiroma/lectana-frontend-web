@@ -1,22 +1,4 @@
-/* Estilos específicos para la página de Actividades */
 
-.actividades-actions {
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1);
-}
-
-.actividades-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-.actividades-btn:hover {
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-}
-
-.actividades-btn-secondary:hover {
-  border-color: #ef4444;
-  color: #ef4444;
-}
 
 /* Estadísticas específicas de actividades */
 .stat-card-actividades-red {

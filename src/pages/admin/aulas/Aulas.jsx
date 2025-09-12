@@ -1,27 +1,17 @@
+import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Aulas.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaUsers, FaChalkboardTeacher, FaGraduationCap, FaClock } from "react-icons/fa";
+
 
 export default function Aulas() {
   return (
     <>
       <h1 className="admin-page-title admin-aulas-title">🏫 Gestión de Aulas</h1>
       
-      {/* Barra de acciones */}
-      <div className="admin-actions-bar aulas-actions">
-        <button className="btn-primary aulas-btn">
-          <FaPlus /> Nueva Aula
-        </button>
-        <div className="search-filter-group">
-          <div className="search-box">
-            <FaSearch className="search-icon" />
-            <input type="text" placeholder="Buscar aulas..." />
-          </div>
-          <button className="btn-secondary aulas-btn-secondary">
-            <FaFilter /> Filtrar por Grado
-          </button>
-        </div>
-      </div>
+        <AdminActionsBar btnTitle={"Nueva Aula"} placeholderTitle={"Filtrar por Codigo"} btnClassName="btnAdd" btnStyle={gradients.purpleGradient}/>
+
 
       <div className="admin-page-container admin-aulas-container">
         {/* Estadísticas de aulas */}

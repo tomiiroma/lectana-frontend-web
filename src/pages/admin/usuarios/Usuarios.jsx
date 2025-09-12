@@ -1,3 +1,5 @@
+import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
@@ -7,24 +9,8 @@ export default function Usuarios() {
     <>
       <h1 className="admin-page-title admin-usuarios-title">👥 Gestión de Usuarios</h1>
       
-      {/* Barra de acciones */}
-      <div className="admin-actions-bar usuarios-actions">
-        <button className="btn-primary usuarios-btn">
-          <FaPlus /> Nuevo Usuario
-        </button>
-        <div className="search-filter-group">
-          <div className="search-box">
-            <FaSearch className="search-icon" />
-            <input type="text" placeholder="Buscar usuarios..." />
-          </div>
-          <button className="btn-secondary usuarios-btn-secondary">
-            <FaFilter /> Filtrar por Rol
-          </button>
-          <button className="btn-secondary usuarios-btn-secondary">
-            <FaDownload /> Exportar Lista
-          </button>
-        </div>
-      </div>
+          <AdminActionsBar btnTitle={"Nuevo Usuario"} placeholderTitle={"Buscar Usuarios..."} btnClassName="btnAdd" btnStyle={gradients.greenGradient}/>
+
 
       <div className="admin-page-container admin-usuarios-container">
         {/* Estadísticas de usuarios */}
