@@ -219,31 +219,6 @@ export default function Usuarios() {
     <>
       <h1 className="admin-page-title admin-usuarios-title">👥 Gestión de Usuarios</h1>
       
-      {/* Panel de prueba */}
-      <div style={{ 
-        background: '#f0f9ff', 
-        border: '2px solid #0ea5e9', 
-        borderRadius: '8px', 
-        padding: '16px', 
-        margin: '16px 0'
-      }}>
-        <h3 style={{ margin: '0 0 12px 0', color: '#0369a1' }}>🧪 Prueba de Conexión - Docentes</h3>
-        
-        {loading && <p>⏳ Cargando...</p>}
-        {error && <p style={{ color: 'red' }}>❌ Error: {error}</p>}
-        {docentesData && <p style={{ color: 'green' }}>✅ Datos recibidos! Total: {docentesData.total}</p>}
-        
-        <button onClick={probarConexionDocentes} style={{
-          padding: '8px 16px',
-          background: '#0ea5e9',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}>
-          🔄 Probar
-        </button>
-      </div>
       
           <AdminActionsBar btnTitle={"Nuevo Usuario"} placeholderTitle={"Buscar Usuarios..."} btnClassName="btnAdd" btnStyle={gradients.greenGradient}/>
 
