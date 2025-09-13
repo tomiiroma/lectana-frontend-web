@@ -3,6 +3,7 @@ import "../AdminPages.css";
 import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
+import CardStats from "../../../components/Cards/CardData/CardStats";
 
 export default function Cuentos() {
   return (
@@ -15,22 +16,9 @@ export default function Cuentos() {
       <div className="admin-page-container admin-cuentos-container">
         {/* Estadísticas rápidas */}
         <div className="stats-grid">
-          <div className="stat-card stat-card-orange">
-            <div className="stat-number">156</div>
-            <div className="stat-label">Total Cuentos</div>
-          </div>
-          <div className="stat-card stat-card-green">
-            <div className="stat-number">89</div>
-            <div className="stat-label">Publicados</div>
-          </div>
-          <div className="stat-card stat-card-blue">
-            <div className="stat-number">23</div>
-            <div className="stat-label">Borradores</div>
-          </div>
-          <div className="stat-card stat-card-purple">
-            <div className="stat-number">4.8</div>
-            <div className="stat-label">Rating Promedio</div>
-          </div>
+          <CardStats number={"156"} label={"Total Cuentos"}/>
+          <CardStats number={"89"} label={"Publicados"}/>
+          <CardStats number={"4.8"} label={"Rating Promedio"}/>
         </div>
 
         {/* Tabla de cuentos */}
