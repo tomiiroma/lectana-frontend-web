@@ -1,6 +1,9 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import AulasCard from "../../../components/Cards/AulasCard/AulasCard";
 import CardStats from "../../../components/Cards/CardData/CardStats";
+import CreateCard from "../../../components/Cards/CreateCard/CreateCard";
 import { gradients } from "../../../styles/Gradients";
+import { statusStyles } from "../../../styles/statusStyle";
 import "../AdminPages.css";
 import "./Actividades.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaClipboardList, FaQuestionCircle, FaCheckCircle, FaClock, FaUsers, FaChartBar } from "react-icons/fa";
@@ -38,151 +41,15 @@ export default function Actividades() {
 
         {/* Grid de actividades */}
         <div className="actividades-grid">
-          <div className="actividad-card">
-            <div className="actividad-header">
-              <div className="actividad-type type-comprension">Comprensión</div>
-              <div className="actividad-difficulty difficulty-medium">Intermedio</div>
-            </div>
-            <div className="actividad-content">
-              <h3 className="actividad-title">El Dragón y la Princesa</h3>
-              <p className="actividad-description">Actividad de comprensión lectora basada en el cuento clásico con preguntas interactivas.</p>
-              
-              <div className="actividad-stats">
-                <div className="actividad-stat">
-                  <FaUsers className="stat-icon-small" />
-                  <span>156 participantes</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaQuestionCircle className="stat-icon-small" />
-                  <span>12 preguntas</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaClock className="stat-icon-small" />
-                  <span>15 min aprox.</span>
-                </div>
-              </div>
 
-              <div className="actividad-progress">
-                <div className="progress-label">Tasa de Éxito</div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{width: '85%'}}></div>
-                </div>
-                <span className="progress-text">85%</span>
-              </div>
-            </div>
-            <div className="actividad-actions">
-              <button className="btn-action btn-view" title="Ver Resultados">
-                <FaEye />
-              </button>
-              <button className="btn-action btn-edit" title="Editar">
-                <FaEdit />
-              </button>
-              <button className="btn-action btn-delete" title="Eliminar">
-                <FaTrash />
-              </button>
-            </div>
-          </div>
+          <AulasCard mainColor={statusStyles.info} primaryBtn={"Creatividad"} secondaryBtnColor={statusStyles.active} secondaryBtn={"Activo"} title={"El Dragón y la Princesa"} description={"Actividad de comprensión lectora basada en el cuento clásico con preguntas interactivas."} firstItem={"12 preguntas"} secondItem={"15 minutos"} progress={85} IconFirstItem={FaQuestionCircle} IconSecondItem={FaClock}/>
+          <AulasCard mainColor={statusStyles.info} primaryBtn={"Creatividad"} secondaryBtnColor={statusStyles.active} secondaryBtn={"Activo"} title={"El Dragón y la Princesa"} description={"Actividad de comprensión lectora basada en el cuento clásico con preguntas interactivas."} firstItem={"12 preguntas"} secondItem={"15 minutos"} progress={85} IconFirstItem={FaQuestionCircle} IconSecondItem={FaClock}/>
+          <AulasCard mainColor={statusStyles.info} primaryBtn={"Creatividad"} secondaryBtnColor={statusStyles.active} secondaryBtn={"Activo"} title={"El Dragón y la Princesa"} description={"Actividad de comprensión lectora basada en el cuento clásico con preguntas interactivas."} firstItem={"12 preguntas"} secondItem={"15 minutos"} progress={85} IconFirstItem={FaQuestionCircle} IconSecondItem={FaClock}/>
 
-          <div className="actividad-card">
-            <div className="actividad-header">
-              <div className="actividad-type type-vocabulario">Vocabulario</div>
-              <div className="actividad-difficulty difficulty-easy">Fácil</div>
-            </div>
-            <div className="actividad-content">
-              <h3 className="actividad-title">Palabras Mágicas</h3>
-              <p className="actividad-description">Juego interactivo para ampliar vocabulario con sinónimos y antónimos.</p>
-              
-              <div className="actividad-stats">
-                <div className="actividad-stat">
-                  <FaUsers className="stat-icon-small" />
-                  <span>203 participantes</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaQuestionCircle className="stat-icon-small" />
-                  <span>20 palabras</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaClock className="stat-icon-small" />
-                  <span>10 min aprox.</span>
-                </div>
-              </div>
 
-              <div className="actividad-progress">
-                <div className="progress-label">Tasa de Éxito</div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{width: '92%'}}></div>
-                </div>
-                <span className="progress-text">92%</span>
-              </div>
-            </div>
-            <div className="actividad-actions">
-              <button className="btn-action btn-view" title="Ver Resultados">
-                <FaEye />
-              </button>
-              <button className="btn-action btn-edit" title="Editar">
-                <FaEdit />
-              </button>
-              <button className="btn-action btn-delete" title="Eliminar">
-                <FaTrash />
-              </button>
-            </div>
-          </div>
 
-          <div className="actividad-card">
-            <div className="actividad-header">
-              <div className="actividad-type type-creatividad">Creatividad</div>
-              <div className="actividad-difficulty difficulty-hard">Avanzado</div>
-            </div>
-            <div className="actividad-content">
-              <h3 className="actividad-title">Crea tu Final</h3>
-              <p className="actividad-description">Actividad creativa donde los estudiantes escriben finales alternativos para cuentos.</p>
-              
-              <div className="actividad-stats">
-                <div className="actividad-stat">
-                  <FaUsers className="stat-icon-small" />
-                  <span>89 participantes</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaQuestionCircle className="stat-icon-small" />
-                  <span>Texto libre</span>
-                </div>
-                <div className="actividad-stat">
-                  <FaClock className="stat-icon-small" />
-                  <span>30 min aprox.</span>
-                </div>
-              </div>
-
-              <div className="actividad-progress">
-                <div className="progress-label">Tasa de Éxito</div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{width: '78%'}}></div>
-                </div>
-                <span className="progress-text">78%</span>
-              </div>
-            </div>
-            <div className="actividad-actions">
-              <button className="btn-action btn-view" title="Ver Resultados">
-                <FaEye />
-              </button>
-              <button className="btn-action btn-edit" title="Editar">
-                <FaEdit />
-              </button>
-              <button className="btn-action btn-delete" title="Eliminar">
-                <FaTrash />
-              </button>
-            </div>
-          </div>
-
-          <div className="actividad-card actividad-create">
-            <div className="create-content">
-              <div className="create-icon">
-                <FaPlus />
-              </div>
-              <h3>Crear Nueva Actividad</h3>
-              <p>Diseña una nueva actividad educativa personalizada</p>
-              <button className="btn-create">Crear Actividad</button>
-            </div>
-          </div>
+        <CreateCard title={"Crear Nueva Actividad"} text={"Diseña una nueva actividad educativa personalizada"} btnText={"Crear Actividad"} theme="red"/>
+     
         </div>
 
         {/* Tabla de rendimiento */}
