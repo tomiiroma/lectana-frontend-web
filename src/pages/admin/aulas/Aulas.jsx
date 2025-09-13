@@ -1,4 +1,5 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import CardStats from "../../../components/Cards/CardData/CardStats";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Aulas.css";
@@ -16,34 +17,14 @@ export default function Aulas() {
       <div className="admin-page-container admin-aulas-container">
         {/* Estadísticas de aulas */}
         <div className="stats-grid">
-          <div className="stat-card stat-card-aulas-purple">
-            <div className="stat-icon">
-              <FaGraduationCap />
-            </div>
-            <div className="stat-number">47</div>
-            <div className="stat-label">Aulas Activas</div>
-          </div>
-          <div className="stat-card stat-card-aulas-blue">
-            <div className="stat-icon">
-              <FaUsers />
-            </div>
-            <div className="stat-number">1,284</div>
-            <div className="stat-label">Estudiantes</div>
-          </div>
-          <div className="stat-card stat-card-aulas-green">
-            <div className="stat-icon">
-              <FaChalkboardTeacher />
-            </div>
-            <div className="stat-number">52</div>
-            <div className="stat-label">Docentes</div>
-          </div>
-          <div className="stat-card stat-card-aulas-orange">
-            <div className="stat-icon">
-              <FaClock />
-            </div>
-            <div className="stat-number">95%</div>
-            <div className="stat-label">Ocupación</div>
-          </div>
+
+              <CardStats icon={<FaGraduationCap color="#8b5cf6"/>} number={"47"}label={"Aulas Activas"}/>
+          <CardStats icon={<FaUsers color="#8b5cf6"/>} number={"1,284"}label={"Estudiantes"}/>
+          <CardStats icon={<FaChalkboardTeacher color="#8b5cf6"/>} number={"52"}label={"Docentes"}/>
+          <CardStats icon={<FaGraduationCap color="#8b5cf6"/>} number={"89"}label={"Usuarios Activos"}/>
+
+
+ 
         </div>
 
         {/* Vista de tarjetas de aulas */}

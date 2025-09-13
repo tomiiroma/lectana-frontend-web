@@ -6,7 +6,7 @@ import React from 'react'
 function CardStats({icon, number, label}) {
   return (
     <>
-        <div className="stat-card stat-card-orange">
+        <div className="stat-card">
                  <div className="stat-icon">
                           {icon}
                         </div>

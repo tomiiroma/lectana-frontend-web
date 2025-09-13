@@ -1,4 +1,5 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import CardStats from "../../../components/Cards/CardData/CardStats";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Actividades.css";
@@ -14,34 +15,15 @@ export default function Actividades() {
       <div className="admin-page-container admin-actividades-container">
         {/* Estadísticas de actividades */}
         <div className="stats-grid">
-          <div className="stat-card stat-card-actividades-red">
-            <div className="stat-icon">
-              <FaClipboardList />
-            </div>
-            <div className="stat-number">89</div>
-            <div className="stat-label">Total Actividades</div>
-          </div>
-          <div className="stat-card stat-card-actividades-green">
-            <div className="stat-icon">
-              <FaCheckCircle />
-            </div>
-            <div className="stat-number">67</div>
-            <div className="stat-label">Completadas</div>
-          </div>
-          <div className="stat-card stat-card-actividades-blue">
-            <div className="stat-icon">
-              <FaClock />
-            </div>
-            <div className="stat-number">15</div>
-            <div className="stat-label">En Progreso</div>
-          </div>
-          <div className="stat-card stat-card-actividades-purple">
-            <div className="stat-icon">
-              <FaChartBar />
-            </div>
-            <div className="stat-number">8.4</div>
-            <div className="stat-label">Puntuación Media</div>
-          </div>
+
+              <CardStats icon={<FaClipboardList color="#ef4444"/>} number={"89"}label={"Total Actividades"}/>
+          <CardStats icon={<FaCheckCircle color="#ef4444"/>} number={"67"}label={"Estudiantes"}/>
+          <CardStats icon={<FaClock color="#ef4444"/>} number={"15"}label={"En Progreso"}/>
+          <CardStats icon={<FaChartBar color="#ef4444"/>} number={"8.4"}label={"Puntuación Media"}/>
+
+
+
+      
         </div>
 
         {/* Filtros por tipo */}

@@ -1,8 +1,10 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
+import CardStats from "../../../components/Cards/CardData/CardStats";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
+import { MdLibraryAddCheck } from "react-icons/md";
 
 export default function Usuarios() {
   return (
@@ -15,31 +17,12 @@ export default function Usuarios() {
       <div className="admin-page-container admin-usuarios-container">
         {/* Estadísticas de usuarios */}
         <div className="stats-grid">
-          <div className="stat-card stat-card-usuarios-green">
-            <div className="stat-icon">
-              <FaUserGraduate />
-            </div>
-            <div className="stat-number">2,847</div>
-            <div className="stat-label">Estudiantes</div>
-          </div>
-          <div className="stat-card stat-card-usuarios-blue">
-            <div className="stat-icon">
-              <FaChalkboardTeacher />
-            </div>
-            <div className="stat-number">156</div>
-            <div className="stat-label">Docentes</div>
-          </div>
-          <div className="stat-card stat-card-usuarios-purple">
-            <div className="stat-icon">
-              <FaUserShield />
-            </div>
-            <div className="stat-number">8</div>
-            <div className="stat-label">Administradores</div>
-          </div>
-          <div className="stat-card stat-card-usuarios-orange">
-            <div className="stat-number">89%</div>
-            <div className="stat-label">Usuarios Activos</div>
-          </div>
+          <CardStats icon={<FaUserGraduate/>} number={"2,847"}label={"Estudiantes"}/>
+          <CardStats icon={<FaChalkboardTeacher/>} number={"156"}label={"Docentes"}/>
+          <CardStats icon={<FaUserShield/>} number={"8"}label={"Administradores"}/>
+          <CardStats icon={<MdLibraryAddCheck/>} number={"89"}label={"Usuarios Activos"}/>
+
+
         </div>
 
         {/* Filtros rápidos */}
