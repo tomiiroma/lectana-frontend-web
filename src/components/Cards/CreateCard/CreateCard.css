@@ -25,7 +25,7 @@
 }
 
 .actividad-create .create-content h3 {
-  color: #ef4444;
+  color: var(--danger-color) !important;
   margin-bottom: 8px;
 }
 

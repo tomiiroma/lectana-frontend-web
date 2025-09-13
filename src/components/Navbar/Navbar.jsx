@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+// import { useAuth } from "../../auth/AuthContext"; // Desactivado para revisar diseño
+import { useTheme } from "../../contexts/ThemeContext";
 import "./Navbar.css";
-import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser } from "react-icons/fa";
+import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser, FaMoon, FaSun } from "react-icons/fa";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user, token, logout } = useAuth();
+  // Simular usuario no autenticado para mostrar botón de login
+  const user = null;
+  const token = null;
+  const logout = () => {};
+  const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -151,6 +156,13 @@ function Navbar() {
           ) : (
             // Usuario no logueado
             <div className="auth-buttons">
+              <button 
+                onClick={toggleTheme}
+                className="theme-toggle-button"
+                title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+              >
+                {isDark ? <FaSun /> : <FaMoon />}
+              </button>
               <Link to="/login" className="login-button">
                 <FaSignInAlt />
                 <span>Iniciar Sesión</span>

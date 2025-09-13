@@ -1,5 +1,5 @@
 .comenzaTuAventura-container{
-     background: linear-gradient(to right, #0056D2, #00C57D);
+     background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
   color: white;
   text-align: center;
   padding-top: 5rem;   

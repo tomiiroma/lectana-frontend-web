@@ -75,7 +75,7 @@
 }
 
 .perfil-info h2 {
-  color: #111827;
+  color: var(--text-primary) !important;
   font-size: 1.5em;
   font-weight: 700;
   margin-bottom: 4px;
@@ -260,13 +260,13 @@
 }
 
 .security-info h4 {
-  color: #111827;
+  color: var(--text-primary) !important;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
 .security-info p {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-size: 13px;
 }
 
@@ -317,13 +317,13 @@
 }
 
 .preference-info h4 {
-  color: #111827;
+  color: var(--text-primary) !important;
   font-weight: 600;
   margin-bottom: 2px;
 }
 
 .preference-info p {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-size: 13px;
 }
 
@@ -449,4 +449,70 @@ input:checked + .toggle-slider:before {
   .personal-stats {
     grid-template-columns: 1fr;
   }
+}
+
+/* CORRECCIONES GLOBALES PARA VISIBILIDAD EN TEMAS */
+.perfil-layout * {
+  color: inherit;
+}
+
+.perfil-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.perfil-card h2,
+.perfil-card h3,
+.perfil-card h4,
+.card-title {
+  color: var(--text-primary) !important;
+}
+
+.perfil-card p,
+.stat-label,
+.security-info p,
+.preference-info p,
+.activity-desc,
+.timeline-time {
+  color: var(--text-secondary) !important;
+}
+
+.stat-value,
+.activity-title,
+.timeline-title,
+.security-info h4,
+.preference-info h4 {
+  color: var(--text-primary) !important;
+}
+
+.perfil-id,
+.perfil-role {
+  color: var(--text-accent) !important;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.btn:hover,
+.btn-primary:hover {
+  background: var(--primary-color) !important;
+  color: white !important;
+  border-color: var(--primary-color) !important;
+}
+
+.form-group input,
+.form-group select {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.form-group label {
+  color: var(--text-secondary) !important;
 }

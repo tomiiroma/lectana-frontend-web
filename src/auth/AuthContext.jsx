@@ -11,6 +11,28 @@ export function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(false);
 
+  // Verificar token al inicializar
+  useEffect(() => {
+    const checkToken = async () => {
+      if (token && !user) {
+        try {
+          // Intentar obtener información del usuario con el token existente
+          const res = await api.get("/auth/verify");
+          if (res.data?.usuario) {
+            setUser(res.data.usuario);
+          }
+        } catch (error) {
+          // Si el token es inválido, limpiar
+          console.log("Token inválido, limpiando autenticación");
+          setToken(null);
+          setUser(null);
+        }
+      }
+    };
+
+    checkToken();
+  }, [token, user]);
+
   useEffect(() => {
     if (token) localStorage.setItem("token", token);
     else localStorage.removeItem("token");

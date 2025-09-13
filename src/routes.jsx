@@ -1,6 +1,7 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext.jsx";
-import RequireAuth from "./auth/RequireAuth.jsx";
+import { ThemeProvider } from "./contexts/ThemeContext.jsx";
+import RequireAuth from "./auth/RequireAuth.jsx"; // REACTIVADO - Protección de rutas admin
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
@@ -12,7 +13,13 @@ import Actividades from "./pages/admin/actividades/Actividades.jsx";
 import Perfil from "./pages/admin/perfil/Perfil.jsx";
 
 function withProviders(element) {
-  return <AuthProvider>{element}</AuthProvider>;
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        {element}
+      </AuthProvider>
+    </ThemeProvider>
+  );
 }
 
 export const router = createBrowserRouter([
@@ -30,55 +37,35 @@ export const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element: withProviders(<AdminLayout />),
+    element: withProviders(
+      <RequireAuth>
+        <AdminLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         index: true,
-        element: (
-          <RequireAuth>
-            <AdminDashboard />
-          </RequireAuth>
-        ),
+        element: <AdminDashboard />,
       },
       {
         path: "cuentos",
-        element: (
-          <RequireAuth>
-            <Cuentos />
-          </RequireAuth>
-        ),
+        element: <Cuentos />,
       },
       {
         path: "usuarios",
-        element: (
-          <RequireAuth>
-            <Usuarios />
-          </RequireAuth>
-        ),
+        element: <Usuarios />,
       },
       {
         path: "aulas",
-        element: (
-          <RequireAuth>
-            <Aulas />
-          </RequireAuth>
-        ),
+        element: <Aulas />,
       },
       {
         path: "actividades",
-        element: (
-          <RequireAuth>
-            <Actividades />
-          </RequireAuth>
-        ),
+        element: <Actividades />,
       },
       {
         path: "perfil",
-        element: (
-          <RequireAuth>
-            <Perfil />
-          </RequireAuth>
-        ),
+        element: <Perfil />,
       },
     ],
   },

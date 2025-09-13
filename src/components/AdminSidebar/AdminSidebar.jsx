@@ -1,19 +1,21 @@
 import { NavLink, useNavigate } from "react-router-dom";
-// import { useAuth } from "../../auth/AuthContext"; // Desactivado - sin backend
+import { useAuth } from "../../auth/AuthContext"; // REACTIVADO - Con autenticación
+import { useTheme } from "../../contexts/ThemeContext";
 import "./AdminSidebar.css";
 import { RiLayoutMasonryLine } from "react-icons/ri";
-import { FaBook, FaUser,FaBuilding,FaClipboardList,FaRegUser  } from "react-icons/fa";
+import { FaBook, FaUser,FaBuilding,FaClipboardList,FaRegUser, FaMoon, FaSun  } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
 
 
 export default function AdminSidebar() {
-  // const { logout } = useAuth(); // Desactivado - sin backend
+  const { logout, user } = useAuth(); // REACTIVADO - Con autenticación
   const navigate = useNavigate();
+  const { theme, toggleTheme, isDark } = useTheme();
 
   function handleLogout() {
-    // Función simplificada sin autenticación real
-    navigate("/", { replace: true });
+    logout();
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -21,14 +23,14 @@ export default function AdminSidebar() {
       style={{
           width: 240,
     padding: 12,
-    borderRight: "3px solid #3b82f6",
-    background: "linear-gradient(180deg, #1e293b 0%, #334155 100%)",
+    borderRight: "3px solid var(--sidebar-border)",
+    background: "var(--sidebar-bg)",
     height: "100vh",
     position: "sticky",
     top: 0,
     display: "flex",
     flexDirection: "column",
-    boxShadow: "4px 0 20px rgba(59, 130, 246, 0.15)"
+    boxShadow: "var(--shadow-medium)"
       }}
     >
       <div>
@@ -46,8 +48,8 @@ export default function AdminSidebar() {
             fontWeight: 700,
             fontSize: "1.5em",
             fontFamily: "Inter, Inter Fallback",
-            color: "#60a5fa",
-            textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            color: "var(--sidebar-title)",
+            textShadow: "var(--shadow-light)",
           }}
         >
           Lectana Admin
@@ -58,7 +60,7 @@ export default function AdminSidebar() {
         padding: 0, 
         border: "none",
         height: "2px",
-        background: "linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4)",
+        background: "linear-gradient(90deg, var(--secondary-color), var(--primary-color), var(--accent-color))",
         borderRadius: "2px",
         margin: "16px 0"
       }} />
@@ -66,7 +68,7 @@ export default function AdminSidebar() {
         <NavLink to="/admin" end className={({ isActive }) =>
             isActive ? "navlink navlink-active" : "navlink"
           }>
-          <RiLayoutMasonryLine color="#60a5fa" size={18} /> Dashboard
+          <RiLayoutMasonryLine style={{color: "var(--text-accent)"}} size={18} /> Dashboard
         </NavLink>
         <NavLink
           to="/admin/cuentos"
@@ -74,7 +76,7 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
-          <FaBook color="#f59e0b" size={18} />
+          <FaBook style={{color: "var(--warning-color)"}} size={18} />
           Cuentos
         </NavLink>
         <NavLink
@@ -83,7 +85,7 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
-          <FaUser color="#10b981" size={18}/>
+          <FaUser style={{color: "var(--success-color)"}} size={18}/>
           Usuarios
         </NavLink>
         <NavLink
@@ -92,7 +94,7 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
-          <FaBuilding color="#8b5cf6" size={18}/>
+          <FaBuilding style={{color: "var(--primary-color)"}} size={18}/>
           Aulas
         </NavLink>
         <NavLink
@@ -101,7 +103,7 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
-          <FaClipboardList color="#ef4444" size={18}/>
+          <FaClipboardList style={{color: "var(--danger-color)"}} size={18}/>
           Actividades
         </NavLink>
         <NavLink
@@ -109,7 +111,7 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
-          <FaRegUser color="#06b6d4" size={18}/>
+          <FaRegUser style={{color: "var(--info-color)"}} size={18}/>
           Perfil
         </NavLink>
       </nav>
@@ -117,7 +119,41 @@ export default function AdminSidebar() {
       </div>
 
       <div style={{ marginTop: "auto", padding: 12 }}>
-       <button onClick={handleLogout} className="logout-link"> <FiLogOut size={18} /> Cerrar Sesión</button>
+        {user && (
+          <div style={{ 
+            marginBottom: 12, 
+            padding: 10, 
+            borderRadius: 8, 
+            background: "var(--sidebar-user-bg)",
+            border: "1px solid var(--sidebar-user-border)",
+            fontSize: "13px",
+            color: "var(--text-secondary)"
+          }}>
+            <div style={{ 
+              fontWeight: 600, 
+              marginBottom: 4, 
+              color: "var(--text-primary)",
+              fontSize: "14px"
+            }}>
+              {user.nombre || user.email}
+            </div>
+            <div style={{ 
+              color: "var(--text-tertiary)",
+              fontSize: "12px"
+            }}>
+              {user.rol || "Administrador"}
+            </div>
+          </div>
+        )}
+        <button 
+          onClick={toggleTheme}
+          className="theme-toggle-btn"
+          title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        >
+          {isDark ? <FaSun size={18} color="#fbbf24" /> : <FaMoon size={18} color="#60a5fa" />}
+          {isDark ? "Modo Claro" : "Modo Oscuro"}
+        </button>
+        <button onClick={handleLogout} className="logout-link"> <FiLogOut size={18} /> Cerrar Sesión</button>
         </div>
     </aside>
   );

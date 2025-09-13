@@ -7,7 +7,7 @@ export default function AdminLayout() {
       <AdminSidebar />
       <main style={{ 
         padding: 24,
-        background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f4ff 100%)",
+        background: "var(--bg-primary)",
         minHeight: "100vh"
       }}>
         <Outlet />

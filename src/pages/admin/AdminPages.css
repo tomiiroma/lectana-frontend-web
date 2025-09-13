@@ -1,7 +1,7 @@
 /* Estilos globales para páginas admin - Colorido y minimalista */
 
 .admin-page-title {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color), var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -9,22 +9,22 @@
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 800;
     margin: 20px 30px 30px 30px;
-    text-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
+    text-shadow: 0 4px 8px var(--shadow-light);
 }
 
 .admin-page-container {
     margin: 20px;
     padding: 24px;
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--bg-tertiary);
     border-radius: 20px;
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.12);
+    border: 1px solid var(--border-secondary);
+    box-shadow: var(--shadow-medium);
     min-height: 400px;
 }
 
 .admin-page-content {
-    color: #1f2937;
+    color: var(--text-primary);
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 1.1em;
     line-height: 1.6;
@@ -32,7 +32,7 @@
 
 .admin-section-divider {
     height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4, #10b981, #f59e0b);
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color), var(--accent-color), var(--success-color), var(--warning-color));
     border: none;
     border-radius: 2px;
     margin: 24px 0;
@@ -41,35 +41,35 @@
 
 /* Títulos específicos por sección con colores únicos */
 .admin-cuentos-title {
-    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    background: linear-gradient(135deg, var(--warning-color), var(--danger-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .admin-usuarios-title {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, var(--success-color), var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .admin-aulas-title {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .admin-actividades-title {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, var(--danger-color), var(--primary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .admin-perfil-title {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    background: linear-gradient(135deg, var(--info-color), var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -77,26 +77,289 @@
 
 /* Contenedores específicos con colores temáticos */
 .admin-cuentos-container {
-    border-left: 4px solid #f59e0b;
-    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+    border-left: 4px solid var(--warning-color);
+    box-shadow: var(--shadow-medium);
 }
 
 .admin-usuarios-container {
-    border-left: 4px solid #10b981;
-    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15);
+    border-left: 4px solid var(--success-color);
+    box-shadow: var(--shadow-medium);
 }
 
 .admin-aulas-container {
-    border-left: 4px solid #8b5cf6;
-    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    border-left: 4px solid var(--primary-color);
+    box-shadow: var(--shadow-medium);
 }
 
 .admin-actividades-container {
-    border-left: 4px solid #ef4444;
-    box-shadow: 0 8px 32px rgba(239, 68, 68, 0.15);
+    border-left: 4px solid var(--danger-color);
+    box-shadow: var(--shadow-medium);
 }
 
 .admin-perfil-container {
-    border-left: 4px solid #06b6d4;
-    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+    border-left: 4px solid var(--info-color);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Estilos globales de tabla para todas las páginas admin */
+.table-container,
+.admin-table,
+.usuarios-table,
+.cuentos-table,
+.aulas-table,
+.actividades-table {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-primary) !important;
+}
+
+.admin-table tbody tr,
+.usuarios-table tbody tr,
+.cuentos-table tbody tr,
+.aulas-table tbody tr,
+.actividades-table tbody tr {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.admin-table td,
+.usuarios-table td,
+.cuentos-table td,
+.aulas-table td,
+.actividades-table td {
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-primary) !important;
+}
+
+/* Asegurar que los encabezados se vean bien en ambos temas */
+.admin-table th,
+.usuarios-table th,
+.cuentos-table th,
+.aulas-table th,
+.actividades-table th {
+    color: white !important;
+}
+
+/* Estilos globales para botones de filtro */
+.quick-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter-chip {
+    padding: 8px 16px !important;
+    border: 2px solid var(--border-primary) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-chip:hover {
+    border-color: var(--secondary-color) !important;
+    color: var(--secondary-color) !important;
+    transform: translateY(-1px);
+}
+
+.filter-chip.active {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)) !important;
+    border-color: var(--secondary-color) !important;
+    color: white !important;
+    box-shadow: var(--shadow-medium);
+}
+
+/* Estilos para cards de estadísticas */
+.stat-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.stat-number {
+    color: var(--text-primary) !important;
+}
+
+.stat-label {
+    color: var(--text-secondary) !important;
+}
+
+/* Las tarjetas ahora usan solo variables de tema - sin reglas específicas */
+
+/* REGLAS DE RESPALDO GLOBALES PARA TODOS LOS ELEMENTOS ADMIN */
+/* Estas reglas aseguran visibilidad en cualquier situación */
+
+/* Corrección SOLO para títulos y headers en administración */
+.admin-page h1,
+.admin-page h2,
+.admin-page h3,
+.admin-page h4,
+.admin-page h5,
+.admin-page h6,
+.admin-layout h1,
+.admin-layout h2,
+.admin-layout h3,
+.admin-layout h4,
+.admin-layout h5,
+.admin-layout h6,
+.dashboardPrincipal-title,
+.admin-page [class*="-title"],
+.admin-page [class*="title-"],
+.admin-page .page-title {
+    color: var(--text-primary) !important;
+}
+
+/* Corrección SOLO para textos en área de administración */
+.admin-page p,
+.admin-page span,
+.admin-page div,
+.admin-page label,
+.admin-layout [class*="card"] p,
+.admin-layout [class*="card"] span,
+.admin-layout [class*="card"] div,
+.admin-layout [class*="card"] label,
+.admin-page .card-content *,
+.admin-page .perfil-card *,
+.admin-page .dashboard-card *,
+.admin-page .aula-card * {
+    color: var(--text-primary) !important;
+}
+
+/* Corrección SOLO para elementos de formulario en administración */
+.admin-page input,
+.admin-page select,
+.admin-page textarea,
+.admin-layout input,
+.admin-layout select,
+.admin-layout textarea,
+.admin-page [class*="form"] input,
+.admin-page [class*="form"] select,
+.admin-page [class*="form"] textarea {
+    color: var(--text-primary) !important;
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
+}
+
+/* Corrección para contenedores de dashboard SOLO en admin */
+.admin-page .dashboardCardCounter-container,
+.admin-page .dashboardCards-container,
+.admin-layout [class*="dashboard"] {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Corrección SOLO para botones dentro del área de administración */
+.admin-page button,
+.admin-layout button,
+.admin-container button,
+.btn-action,
+.card-button,
+.admin-page [class*="btn"],
+.admin-layout [class*="btn"],
+.admin-container [class*="btn"] {
+    color: var(--text-primary) !important;
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-primary) !important;
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+    min-width: 40px !important;
+}
+
+.admin-page button:hover,
+.admin-layout button:hover,
+.admin-container button:hover,
+.btn-action:hover,
+.card-button:hover,
+.admin-page [class*="btn"]:hover,
+.admin-layout [class*="btn"]:hover,
+.admin-container [class*="btn"]:hover {
+    background: var(--border-primary) !important;
+    color: var(--text-accent) !important;
+}
+
+/* Corrección específica SOLO para elementos de administración */
+.admin-page *,
+.admin-layout *,
+.admin-container * {
+    color: var(--text-primary);
+}
+
+/* Excepciones para elementos que deben mantener colores específicos */
+.admin-page-title,
+.admin-cuentos-title,
+.admin-usuarios-title,
+.admin-aulas-title,
+.admin-actividades-title,
+.admin-perfil-title {
+    /* Mantienen sus gradientes */
+    color: transparent !important;
+}
+
+/* EXCLUIR botones de la landing page de las reglas de admin */
+.PrimaryButton,
+.SecondaryButton,
+.landing-page button,
+.home-page button {
+    /* Estos botones mantienen sus estilos originales */
+    padding: inherit !important;
+    font-size: inherit !important;
+    min-width: inherit !important;
+    background: inherit !important;
+    color: inherit !important;
+    border: inherit !important;
+}
+
+/* REGLAS ULTRA-ESPECÍFICAS PARA TARJETAS DE AULAS Y ACTIVIDADES */
+/* Máxima prioridad para forzar visibilidad en modo oscuro */
+
+.aula-card *,
+.actividad-card *,
+.aulas-grid .aula-card *,
+.actividades-grid .actividad-card * {
+    color: var(--text-primary) !important;
+}
+
+/* Títulos de tarjetas específicos */
+.aula-card .aula-title,
+.aula-card h3,
+.actividad-card .actividad-title,
+.actividad-card h3,
+.aulas-grid h3,
+.actividades-grid h3 {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* Descripciones y texto secundario */
+.aula-card .aula-description,
+.aula-card p,
+.actividad-card .actividad-description,
+.actividad-card p {
+    color: var(--text-secondary) !important;
+}
+
+/* Override para cualquier estilo inline problemático */
+.aula-card [style*="color"],
+.actividad-card [style*="color"] {
+    color: var(--text-primary) !important;
+}
+
+/* Forzar fondos correctos */
+.aula-card,
+.actividad-card {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Botones dentro de las tarjetas */
+.aula-card button,
+.aula-card .btn-action,
+.actividad-card button,
+.actividad-card .btn-action {
+    color: var(--text-primary) !important;
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
 }

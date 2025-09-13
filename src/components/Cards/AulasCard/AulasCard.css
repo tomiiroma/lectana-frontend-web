@@ -5,31 +5,20 @@
   margin-bottom: 32px;
 }
 
-/* Tarjetas de aula */
+/* Tarjetas de aula - DISEÑO SIMPLE */
 .aula-card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.aula-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981);
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid var(--border-primary);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .aula-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .aula-header {
@@ -37,13 +26,15 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .aula-grade {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: var(--primary-color);
   color: white;
   padding: 6px 12px;
-  border-radius: 12px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -58,86 +49,227 @@
 }
 
 .status-active {
-  background: rgba(16, 185, 129, 0.1);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: var(--success-color);
+  color: white;
 }
 
 .status-inactive {
-  background: rgba(107, 114, 128, 0.1);
-  color: #4b5563;
-  border: 1px solid rgba(107, 114, 128, 0.3);
+  background: var(--text-secondary);
+  color: white;
 }
 
+/* TÍTULOS - DISEÑO SIMPLE */
 .aula-title {
-  color: #111827;
-  font-size: 1.3em;
-  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.2em;
+  font-weight: 600;
   margin-bottom: 8px;
+  line-height: 1.3;
 }
 
+/* DESCRIPCIONES - DISEÑO SIMPLE */
 .aula-description {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
 }
 
+/* REGLAS ADICIONALES PARA ASEGURAR VISIBILIDAD */
+.aula-card {
+  color: var(--text-primary);
+}
+
+.aula-card * {
+  color: inherit;
+}
+
+.aula-title,
+.aula-card .aula-title,
+.aula-card h3 {
+  color: var(--text-primary) !important;
+}
+
+.aula-description,
+.aula-card .aula-description,
+.aula-card p {
+  color: var(--text-secondary) !important;
+}
+
+/* STATS - DISEÑO SIMPLE */
 .aula-stats {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .aula-stat {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 13px;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .stat-icon-small {
-  color: #8b5cf6;
+  color: var(--primary-color);
   font-size: 14px;
 }
 
+/* PROGRESO - DISEÑO SIMPLE */
 .aula-progress {
   margin-bottom: 16px;
 }
 
 .progress-label {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 6px;
   font-weight: 500;
 }
 
 .progress-bar {
-  background: #f3f4f6;
-  height: 8px;
-  border-radius: 6px;
+  background: var(--bg-tertiary);
+  height: 6px;
+  border-radius: 3px;
   overflow: hidden;
-  position: relative;
+  border: 1px solid var(--border-primary);
 }
 
 .progress-fill {
-  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  background: var(--primary-color);
   height: 100%;
-  border-radius: 6px;
   transition: width 0.3s ease;
 }
 
 .progress-text {
   font-size: 12px;
-  color: #8b5cf6;
+  color: var(--primary-color);
   font-weight: 600;
-  margin-left: 8px;
+  margin-top: 4px;
 }
 
+/* ACCIONES - DISEÑO MEJORADO */
 .aula-actions {
   display: flex;
-  gap: 8px;
-  justify-content: flex-end;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.btn-action {
+  padding: 10px 16px;
+  border: 2px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view {
+  color: var(--info-color);
+  border-color: var(--info-color);
+}
+
+.btn-view:hover {
+  background: var(--info-color);
+  color: white;
+}
+
+.btn-edit {
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.btn-edit:hover {
+  background: var(--warning-color);
+  color: white;
+}
+
+.btn-delete {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.btn-delete:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* REGLAS ULTRA-ESPECÍFICAS PARA FORZAR VISIBILIDAD EN MODO OSCURO */
+/* Estas reglas tienen máxima prioridad y garantizan que todo sea visible */
+
+.aula-card,
+.aula-card div,
+.aula-card span,
+.aula-card p,
+.aula-card h1,
+.aula-card h2,
+.aula-card h3,
+.aula-card h4,
+.aula-card h5,
+.aula-card h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Texto secundario específico */
+.aula-card .aula-description,
+.aula-card .progress-label,
+.aula-card .aula-stat,
+.aula-card [class*="description"],
+.aula-card [class*="label"],
+.aula-card [class*="stat"] {
+  color: var(--text-secondary) !important;
+}
+
+/* Asegurar que los elementos no hereden colores problemáticos */
+.aula-card * {
+  color: inherit !important;
+}
+
+/* Override específico para cualquier color hardcodeado que pueda aparecer */
+.aula-card [style*="color"] {
+  color: var(--text-primary) !important;
+}
+
+/* Reglas específicas para elementos con clases comunes que pueden tener problemas */
+.aula-card .text-gray-600,
+.aula-card .text-gray-500,
+.aula-card .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.aula-card .text-gray-900,
+.aula-card .text-gray-800,
+.aula-card .text-black {
+  color: var(--text-primary) !important;
+}
+
+/* Fondo de tarjetas siempre visible */
+.aula-card {
+  background: var(--bg-card) !important;
+}
+
+/* Asegurar contraste en botones */
+.aula-card .btn-action,
+.aula-card button {
+  color: var(--text-primary) !important;
+  background: var(--bg-secondary) !important;
 }

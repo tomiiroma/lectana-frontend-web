@@ -8,18 +8,18 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 24px;
   text-align: center;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-secondary);
   transition: all 0.3s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-large);
 }
 
 .stat-card-orange {
@@ -45,33 +45,34 @@
 .stat-number {
   font-size: 2.5em;
   font-weight: 800;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .stat-label {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-weight: 500;
   font-size: 14px;
 }
 
 /* Tabla */
 .table-container {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-secondary);
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
+  background: var(--bg-secondary);
 }
 
 .admin-table th {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: white;
+  background: var(--secondary-color) !important;
+  color: white !important;
   padding: 16px 12px;
   text-align: left;
   font-weight: 600;
@@ -80,12 +81,14 @@
 
 .admin-table td {
   padding: 16px 12px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--border-primary);
   font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
 }
 
 .admin-table tr:hover {
-  background-color: rgba(245, 158, 11, 0.05);
+  background-color: var(--bg-tertiary) !important;
 }
 
 .story-info {
@@ -97,20 +100,20 @@
 .story-cover {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  background: var(--warning-color);
   border-radius: 8px;
   flex-shrink: 0;
 }
 
 .story-title {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary) !important;
   margin-bottom: 2px;
 }
 
 .story-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary) !important;
 }
 
 /* Etiquetas de categoría */
@@ -219,7 +222,7 @@
 }
 
 .pagination-info {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-size: 14px;
 }
 

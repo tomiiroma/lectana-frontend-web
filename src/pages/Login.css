@@ -393,3 +393,77 @@
   }
 }
 
+/* MODO OSCURO PARA LOGIN - SOLO EL CONTENEDOR INTERNO */
+/* El fondo animado se mantiene igual, solo cambia la tarjeta */
+
+[data-theme="dark"] .login-container {
+  /* Cambiar solo el contenedor a modo oscuro */
+  background: rgba(30, 41, 59, 0.95) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  box-shadow: 
+    0 32px 64px rgba(0, 0, 0, 0.4),
+    0 16px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(71, 85, 105, 0.3) !important;
+}
+
+[data-theme="dark"] .login-form-header h2 {
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .login-form-header p {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .input-container input {
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #f8fafc !important;
+  border-color: rgba(71, 85, 105, 0.5) !important;
+}
+
+[data-theme="dark"] .input-container input:focus {
+  border-color: #60a5fa !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .input-container input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .remember-me {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .forgot-password {
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] .back-button {
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+}
+
+[data-theme="dark"] .back-button:hover {
+  background: rgba(30, 41, 59, 0.9) !important;
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] .login-button,
+[data-theme="dark"] button[type="submit"] {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+[data-theme="dark"] .login-button:hover,
+[data-theme="dark"] button[type="submit"]:hover {
+  background: #60a5fa !important;
+}
+
+/* El fondo animado (.login-page) NO se modifica - se mantiene igual */
+
+
+

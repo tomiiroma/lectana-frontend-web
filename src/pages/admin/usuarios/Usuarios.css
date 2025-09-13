@@ -37,35 +37,37 @@
 
 .filter-chip {
   padding: 8px 16px;
-  border: 2px solid #e5e7eb;
-  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--border-primary);
+  background: var(--bg-secondary);
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: var(--text-primary);
 }
 
 .filter-chip:hover {
-  border-color: #10b981;
-  color: #10b981;
+  border-color: var(--success-color);
+  color: var(--success-color);
   transform: translateY(-1px);
 }
 
 .filter-chip.active {
-  background: linear-gradient(135deg, #10b981, #059669);
-  border-color: #10b981;
+  background: linear-gradient(135deg, var(--success-color), var(--accent-color));
+  border-color: var(--success-color);
   color: white;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: var(--shadow-medium);
 }
 
 /* Tabla específica de usuarios */
 .usuarios-table th {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: var(--success-color) !important;
+  color: white !important;
 }
 
 .usuarios-table tr:hover {
-  background-color: rgba(16, 185, 129, 0.05);
+  background-color: var(--bg-tertiary) !important;
 }
 
 /* Información del usuario */
@@ -106,13 +108,13 @@
 
 .user-name {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 2px;
 }
 
 .user-id {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-family: monospace;
 }
 

@@ -1,3 +1,120 @@
+/* Sistema de Temas - Variables CSS */
+:root {
+  /* Modo Claro */
+  --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #e7e5e4 75%, #f8fafc 100%);
+  --bg-secondary: rgba(255, 255, 255, 0.95);
+  --bg-tertiary: rgba(255, 255, 255, 0.1);
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.92);
+  
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-tertiary: #6B7280;
+  --text-accent: #0056D2;
+  
+  /* Brand Colors */
+  --primary-color: #8b5cf6;
+  --secondary-color: #0056D2;
+  --accent-color: #00C57D;
+  --primary-hover: #1D4ED8;
+  
+  /* Button Backgrounds */
+  --btn-primary-bg: linear-gradient(135deg, #0056D2 0%, #00C57D 100%);
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: linear-gradient(135deg, #1D4ED8 0%, #10b981 100%);
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-border: #d1d5db;
+  --btn-secondary-hover: #f9fafb;
+  
+  --border-primary: rgba(0, 86, 210, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.3);
+  --border-tertiary: rgba(0, 0, 0, 0.1);
+  
+  --shadow-light: 0 25px 50px rgba(0, 86, 210, 0.15);
+  --shadow-medium: 0 35px 70px rgba(0, 86, 210, 0.2);
+  --shadow-heavy: 0 40px 80px rgba(0, 0, 0, 0.2);
+  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+  /* Sidebar Colors */
+  --sidebar-bg: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  --sidebar-border: #3b82f6;
+  --sidebar-user-bg: rgba(241, 245, 249, 0.8);
+  --sidebar-user-border: rgba(203, 213, 225, 0.3);
+  --sidebar-text: #475569;
+  --sidebar-text-hover: #1e293b;
+  --sidebar-hover-bg: rgba(59, 130, 246, 0.1);
+  --sidebar-title: #1e40af;
+
+  /* Danger/Error Colors */
+  --danger-color: rgba(239, 68, 68, 0.8);
+  --danger-hover: rgba(220, 38, 38, 0.8);
+
+  /* Status Colors */
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --info-color: #06b6d4;
+  
+  --pattern-overlay: radial-gradient(circle at 25% 25%, rgba(0, 86, 210, 0.02) 0%, transparent 50%);
+}
+
+/* Modo Oscuro */
+:root[data-theme="dark"] {
+  --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #1e293b 100%);
+  --bg-secondary: rgba(15, 23, 42, 0.95);
+  --bg-tertiary: rgba(15, 23, 42, 0.3);
+  --bg-card: rgba(30, 41, 59, 0.95);
+  --bg-glass: rgba(15, 23, 42, 0.92);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-accent: #60a5fa;
+  
+  /* Brand Colors */
+  --primary-color: #a78bfa;
+  --secondary-color: #3b82f6;
+  --accent-color: #34d399;
+  --primary-hover: #60a5fa;
+  
+  /* Button Backgrounds */
+  --btn-primary-bg: linear-gradient(135deg, #6366f1 0%, #34d399 100%);
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: linear-gradient(135deg, #8b5cf6 0%, #22d3ee 100%);
+  --btn-secondary-bg: #1e293b;
+  --btn-secondary-border: #475569;
+  --btn-secondary-hover: #334155;
+  
+  --border-primary: rgba(96, 165, 250, 0.2);
+  --border-secondary: rgba(30, 41, 59, 0.5);
+  --border-tertiary: rgba(255, 255, 255, 0.1);
+  
+  --shadow-light: 0 25px 50px rgba(0, 0, 0, 0.4);
+  --shadow-medium: 0 35px 70px rgba(0, 0, 0, 0.5);
+  --shadow-heavy: 0 40px 80px rgba(0, 0, 0, 0.6);
+  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  /* Sidebar Colors */
+  --sidebar-bg: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+  --sidebar-border: #3b82f6;
+  --sidebar-text: #cbd5e1;
+  --sidebar-text-hover: #f8fafc;
+  --sidebar-hover-bg: rgba(99, 102, 241, 0.3);
+  --sidebar-title: #60a5fa;
+  --sidebar-user-bg: rgba(30, 41, 59, 0.8);
+  --sidebar-user-border: rgba(71, 85, 105, 0.3);
+
+  /* Danger/Error Colors */
+  --danger-color: rgba(248, 113, 113, 0.8);
+  --danger-hover: rgba(239, 68, 68, 0.8);
+
+  /* Status Colors */
+  --success-color: #34d399;
+  --warning-color: #fbbf24;
+  --info-color: #22d3ee;
+  
+  --pattern-overlay: radial-gradient(circle at 25% 25%, rgba(96, 165, 250, 0.05) 0%, transparent 50%);
+}
+
 /* Reset básico para eliminar bordes blancos */
 * {
   margin: 0;
@@ -11,6 +128,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -18,14 +136,15 @@ html, body {
   width: 100%;
 }
 
-/* Fondo profesional con gradiente moderno */
+/* Fondo con variables de tema */
 body {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #e7e5e4 75%, #f8fafc 100%);
+  background: var(--bg-primary);
   background-attachment: fixed;
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   position: relative;
+  color: var(--text-primary);
 }
 
 /* Animación sutil del gradiente */
@@ -34,7 +153,7 @@ body {
   50% { background-position: 100% 50%; }
 }
 
-/* Patrón geométrico sutil de fondo */
+/* Patrón geométrico sutil de fondo con variables de tema */
 body::before {
   content: '';
   position: fixed;
@@ -43,11 +162,12 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(circle at 25% 25%, rgba(0, 86, 210, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0, 65, 163, 0.02) 0%, transparent 50%),
-    linear-gradient(45deg, transparent 30%, rgba(0, 86, 210, 0.01) 50%, transparent 70%);
+    var(--pattern-overlay),
+    radial-gradient(circle at 75% 75%, var(--border-primary) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 30%, var(--border-primary) 50%, transparent 70%);
   z-index: -1;
   pointer-events: none;
+  transition: background-image 0.3s ease;
 }
 
 /* Asegurar que todos los contenedores principales ocupen el espacio completo */
@@ -56,6 +176,40 @@ body::before {
 .admin-content {
   min-height: 100vh;
   width: 100%;
+}
+
+/* Sistema de temas simplificado - solo variables CSS */
+
+/* REGLA FINAL DE SEGURIDAD GLOBAL - Asegura visibilidad en cualquier situación */
+* {
+  color: inherit;
+}
+
+/* Asegurar que los elementos principales siempre tengan color visible */
+body, 
+.admin-page,
+.admin-container,
+#root {
+  color: var(--text-primary);
+}
+
+/* PROTECCIÓN PARA BOTONES DE LANDING - NO TOCAR */
+.PrimaryButton,
+.SecondaryButton {
+  /* Estos botones nunca deben ser afectados por reglas de admin */
+  padding: inherit !important;
+  font-size: inherit !important;
+  min-width: inherit !important;
+}
+
+/* Override para elementos que pueden tener colores hardcodeados problemáticos */
+[style*="color: #6b7280"],
+[style*="color: #374151"],
+[style*="color: #06b6d4"],
+[style*="color: rgb(107, 114, 128)"],
+[style*="color: rgb(55, 65, 81)"],
+[style*="color: rgb(6, 182, 212)"] {
+  color: var(--text-primary) !important;
 }
 
 

@@ -112,14 +112,14 @@
 }
 
 .aula-title {
-  color: #111827;
+  color: var(--text-primary) !important;
   font-size: 1.3em;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .aula-description {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
@@ -212,7 +212,7 @@
 }
 
 .create-content h3 {
-  color: #8b5cf6;
+  color: var(--primary-color) !important;
   margin-bottom: 8px;
 }
 
@@ -240,11 +240,12 @@
 
 /* Tabla específica de aulas */
 .aulas-table th {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: var(--primary-color) !important;
+  color: white !important;
 }
 
 .aulas-table tr:hover {
-  background-color: rgba(139, 92, 246, 0.05);
+  background-color: var(--bg-tertiary) !important;
 }
 
 .aula-info {
@@ -266,13 +267,13 @@
 
 .aula-name {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary) !important;
   margin-bottom: 2px;
 }
 
 .aula-code {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-family: monospace;
 }
 

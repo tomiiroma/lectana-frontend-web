@@ -1,5 +1,27 @@
 
 
+/* REGLAS DE CORRECCIÓN PARA VISIBILIDAD EN MODO OSCURO */
+/* Asegura que todos los elementos sean visibles */
+
+.stat-card-actividades-red,
+.stat-card-actividades-green,
+.stat-card-actividades-blue,
+.stat-card-actividades-purple,
+.actividad-card,
+.activity-filter {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+}
+
+.actividad-card h3,
+.actividad-card p,
+.actividad-card span,
+.actividad-card div,
+.activity-filter {
+  color: var(--text-primary) !important;
+}
+
 /* Estadísticas específicas de actividades */
 .stat-card-actividades-red {
   border-left: 4px solid #ef4444;
@@ -32,8 +54,9 @@
 
 .activity-filter {
   padding: 8px 16px;
-  border: 2px solid #e5e7eb;
-  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
@@ -64,10 +87,11 @@
 
 /* Tarjetas de actividad */
 .actividad-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-card);
+  color: var(--text-primary);
   border-radius: 20px;
   padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-primary);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   position: relative;
@@ -149,14 +173,14 @@
 }
 
 .actividad-title {
-  color: #111827;
+  color: var(--text-primary) !important;
   font-size: 1.3em;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .actividad-description {
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
@@ -215,7 +239,7 @@
 }
 
 .actividad-create .create-content h3 {
-  color: #ef4444;
+  color: var(--danger-color) !important;
   margin-bottom: 8px;
 }
 
@@ -225,11 +249,12 @@
 
 /* Tabla específica de actividades */
 .actividades-table th {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: var(--danger-color) !important;
+  color: white !important;
 }
 
 .actividades-table tr:hover {
-  background-color: rgba(239, 68, 68, 0.05);
+  background-color: var(--bg-tertiary) !important;
 }
 
 .actividad-info {
@@ -251,13 +276,13 @@
 
 .actividad-name {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary) !important;
   margin-bottom: 2px;
 }
 
 .actividad-code {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary) !important;
   font-family: monospace;
 }
 
@@ -318,4 +343,75 @@
 
 .actividad-create:hover {
   animation: pulse-red 2s infinite;
+}
+
+/* REGLAS ULTRA-ESPECÍFICAS PARA FORZAR VISIBILIDAD EN TARJETAS DE ACTIVIDADES */
+/* Estas reglas tienen máxima prioridad y garantizan que todo sea visible */
+
+.actividad-card,
+.actividad-card div,
+.actividad-card span,
+.actividad-card p,
+.actividad-card h1,
+.actividad-card h2,
+.actividad-card h3,
+.actividad-card h4,
+.actividad-card h5,
+.actividad-card h6,
+.actividad-card label {
+  color: var(--text-primary) !important;
+}
+
+/* Texto secundario específico para actividades */
+.actividad-card .activity-description,
+.actividad-card .activity-stats,
+.actividad-card .activity-meta,
+.actividad-card [class*="description"],
+.actividad-card [class*="meta"],
+.actividad-card [class*="stat"],
+.actividad-card small {
+  color: var(--text-secondary) !important;
+}
+
+/* Asegurar que los elementos no hereden colores problemáticos */
+.actividad-card * {
+  color: inherit !important;
+}
+
+/* Override específico para cualquier color hardcodeado que pueda aparecer */
+.actividad-card [style*="color"] {
+  color: var(--text-primary) !important;
+}
+
+/* Reglas específicas para elementos con clases comunes que pueden tener problemas */
+.actividad-card .text-gray-600,
+.actividad-card .text-gray-500,
+.actividad-card .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.actividad-card .text-gray-900,
+.actividad-card .text-gray-800,
+.actividad-card .text-black {
+  color: var(--text-primary) !important;
+}
+
+/* Fondo de tarjetas siempre visible */
+.actividad-card {
+  background: var(--bg-card) !important;
+}
+
+/* Asegurar contraste en botones de actividades */
+.actividad-card button,
+.actividad-card .btn,
+.actividad-card [class*="button"] {
+  color: var(--text-primary) !important;
+  background: var(--bg-secondary) !important;
+}
+
+/* Títulos específicos de actividades */
+.actividad-card .activity-title,
+.actividad-card h3 {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
 }
