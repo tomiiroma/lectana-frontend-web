@@ -315,6 +315,9 @@ export default function Usuarios() {
       }
 
       return usuariosActivosData.items.map((usuario, index) => {
+        // Debug: mostrar qué datos están llegando
+        console.log(`Usuario ${index}:`, usuario);
+        
         const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
                            usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
         
@@ -380,6 +383,9 @@ export default function Usuarios() {
       }
 
       return usuariosInactivosData.items.map((usuario, index) => {
+        // Debug: mostrar qué datos están llegando
+        console.log(`Usuario inactivo ${index}:`, usuario);
+        
         const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
                            usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
         
