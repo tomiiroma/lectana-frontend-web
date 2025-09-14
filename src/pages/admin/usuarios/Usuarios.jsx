@@ -7,11 +7,13 @@ import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserG
 import { MdLibraryAddCheck } from "react-icons/md";
 import { obtenerDocentes } from "../../../api/docentes";
 import { obtenerAlumnos } from "../../../api/alumnos";
+import { obtenerAdministradores } from "../../../api/administradores";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
   const [docentesData, setDocentesData] = useState(null);
   const [alumnosData, setAlumnosData] = useState(null);
+  const [administradoresData, setAdministradoresData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
@@ -64,10 +66,35 @@ export default function Usuarios() {
     }
   };
 
+  // Función para obtener administradores
+  const obtenerAdministradoresData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log("🔄 Obteniendo administradores...");
+      
+      const data = await obtenerAdministradores({
+        page: 1,
+        limit: 10
+      });
+      
+      console.log("✅ Datos de administradores recibidos:", data);
+      setAdministradoresData(data);
+      
+    } catch (err) {
+      console.error("❌ Error obteniendo administradores:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Ejecutar la prueba al cargar el componente
   useEffect(() => {
     probarConexionDocentes();
     obtenerAlumnosData();
+    obtenerAdministradoresData();
   }, []);
 
   // Función para generar iniciales del nombre
@@ -96,8 +123,8 @@ export default function Usuarios() {
           <td>{docente.usuario.email}</td>
           <td><span className="role-badge role-teacher">Docente</span></td>
           <td>
-            <span className={`status-badge ${docente.verificado ? 'status-active' : 'status-inactive'}`}>
-              {docente.verificado ? 'Verificado' : 'No Verificado'}
+            <span className={`status-badge ${docente.usuario.activo ? 'status-active' : 'status-inactive'}`}>
+              {docente.usuario.activo ? 'Activo' : 'Inactivo'}
             </span>
           </td>
           <td>{docente.institucion_nombre}</td>
@@ -136,8 +163,53 @@ export default function Usuarios() {
           </td>
           <td>{alumno.usuario.email}</td>
           <td><span className="role-badge role-student">Estudiante</span></td>
-          <td><span className="status-badge status-active">Activo</span></td>
+          <td>
+            <span className={`status-badge ${alumno.usuario.activo ? 'status-active' : 'status-inactive'}`}>
+              {alumno.usuario.activo ? 'Activo' : 'Inactivo'}
+            </span>
+          </td>
           <td>Aula #{alumno.aula_id_aula}</td>
+          <td>
+            <div className="action-buttons">
+              <button className="btn-action btn-view" title="Ver Perfil">
+                <FaEye />
+              </button>
+              <button className="btn-action btn-edit" title="Editar">
+                <FaEdit />
+              </button>
+              <button className="btn-action btn-delete" title="Desactivar">
+                <FaTrash />
+              </button>
+            </div>
+          </td>
+        </tr>
+      ));
+    }
+
+    if (filtroActivo === "Administradores" && administradoresData?.items) {
+      return administradoresData.items.map((administrador) => (
+        <tr key={administrador.id_administrador}>
+          <td>
+            <div className="user-info">
+              <div className="user-avatar user-avatar-purple">
+                {generarIniciales(administrador.usuario.nombre, administrador.usuario.apellido)}
+              </div>
+              <div>
+                <div className="user-name">
+                  {administrador.usuario.nombre} {administrador.usuario.apellido}
+                </div>
+                <div className="user-id">ID: #{administrador.id_administrador}</div>
+              </div>
+            </div>
+          </td>
+          <td>{administrador.usuario.email}</td>
+          <td><span className="role-badge role-admin">Administrador</span></td>
+          <td>
+            <span className={`status-badge ${administrador.usuario.activo ? 'status-active' : 'status-inactive'}`}>
+              {administrador.usuario.activo ? 'Activo' : 'Inactivo'}
+            </span>
+          </td>
+          <td>DNI: {administrador.dni}</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -339,6 +411,7 @@ export default function Usuarios() {
                 <th>
                   {filtroActivo === "Docentes" ? "Institución" : 
                    filtroActivo === "Estudiantes" ? "Aula" : 
+                   filtroActivo === "Administradores" ? "DNI" :
                    "Última Actividad"}
                 </th>
                 <th>Acciones</th>
