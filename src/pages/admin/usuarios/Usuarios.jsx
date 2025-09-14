@@ -7,13 +7,14 @@ import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserG
 import { MdLibraryAddCheck } from "react-icons/md";
 import { obtenerDocentes } from "../../../api/docentes";
 import { obtenerAlumnos } from "../../../api/alumnos";
-import { obtenerAdministradores } from "../../../api/administradores";
+import { obtenerAdministradores, obtenerEstadisticasUsuarios } from "../../../api/administradores";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
   const [docentesData, setDocentesData] = useState(null);
   const [alumnosData, setAlumnosData] = useState(null);
   const [administradoresData, setAdministradoresData] = useState(null);
+  const [estadisticasData, setEstadisticasData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
@@ -90,11 +91,33 @@ export default function Usuarios() {
     }
   };
 
+  // Función para obtener estadísticas
+  const obtenerEstadisticasData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log("🔄 Obteniendo estadísticas...");
+      
+      const data = await obtenerEstadisticasUsuarios();
+      
+      console.log("✅ Estadísticas recibidas:", data);
+      setEstadisticasData(data);
+      
+    } catch (err) {
+      console.error("❌ Error obteniendo estadísticas:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Ejecutar la prueba al cargar el componente
   useEffect(() => {
     probarConexionDocentes();
     obtenerAlumnosData();
     obtenerAdministradoresData();
+    obtenerEstadisticasData();
   }, []);
 
   // Función para generar iniciales del nombre
@@ -357,12 +380,26 @@ export default function Usuarios() {
       <div className="admin-page-container admin-usuarios-container">
         {/* Estadísticas de usuarios */}
         <div className="stats-grid">
-          <CardStats icon={<FaUserGraduate/>} number={"2,847"}label={"Estudiantes"}/>
-          <CardStats icon={<FaChalkboardTeacher/>} number={"156"}label={"Docentes"}/>
-          <CardStats icon={<FaUserShield/>} number={"8"}label={"Administradores"}/>
-          <CardStats icon={<MdLibraryAddCheck/>} number={"89"}label={"Usuarios Activos"}/>
-
-
+          <CardStats 
+            icon={<FaUserGraduate/>} 
+            number={estadisticasData?.total_alumnos || "..."} 
+            label={"Estudiantes"}
+          />
+          <CardStats 
+            icon={<FaChalkboardTeacher/>} 
+            number={estadisticasData?.total_docentes || "..."} 
+            label={"Docentes"}
+          />
+          <CardStats 
+            icon={<FaUserShield/>} 
+            number={estadisticasData?.total_administradores || "..."} 
+            label={"Administradores"}
+          />
+          <CardStats 
+            icon={<MdLibraryAddCheck/>} 
+            number={estadisticasData?.usuarios_activos || "..."} 
+            label={"Usuarios Activos"}
+          />
         </div>
 
         {/* Filtros rápidos */}

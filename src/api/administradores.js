@@ -37,3 +37,19 @@ export async function obtenerAdministradorPorId(id) {
     throw error;
   }
 }
+
+// Obtener estadísticas de usuarios
+export async function obtenerEstadisticasUsuarios() {
+  try {
+    const { data } = await api.get("/administradores/estadisticas-usuarios");
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo estadísticas");
+    }
+    
+    return data.data; // Retorna { total_docentes, total_alumnos, total_administradores, total_usuarios, usuarios_activos, usuarios_inactivos }
+  } catch (error) {
+    console.error("Error en obtenerEstadisticasUsuarios:", error);
+    throw error;
+  }
+}
