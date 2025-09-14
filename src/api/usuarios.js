@@ -3,7 +3,7 @@ import api from "./client";
 // Crear usuario base (para administradores)
 export async function crearUsuario({ nombre, apellido, email, edad, password }) {
   try {
-    const { data } = await api.post("/usuarios/crear-usuario", {
+    const { data } = await api.post("/usuarios/", {
       nombre,
       apellido,
       email,
@@ -15,7 +15,12 @@ export async function crearUsuario({ nombre, apellido, email, edad, password }) 
       throw new Error(data?.error || "Error creando usuario");
     }
     
-    return data.data; // Retorna { id_usuario, ... }
+    console.log('🔍 Respuesta completa del backend:', data);
+    console.log('🔍 data.data:', data.data);
+    console.log('🔍 data.usuario:', data.usuario);
+    
+    // Retornar la estructura completa para que el componente pueda manejarla
+    return data;
   } catch (error) {
     console.error("Error en crearUsuario:", error);
     throw error;

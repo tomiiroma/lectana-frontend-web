@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaUserShield, FaArrowLeft, FaSave, FaEye, FaEyeSlash, FaCheck } from 'react-icons/fa';
+import { crearUsuario } from '../../../api/usuarios';
 import './CreateAdminForm.css';
 
 const CreateAdminForm = ({ onBack, onSubmit, loading }) => {
@@ -18,6 +19,7 @@ const CreateAdminForm = ({ onBack, onSubmit, loading }) => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [createdUserId, setCreatedUserId] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,14 +108,44 @@ const CreateAdminForm = ({ onBack, onSubmit, loading }) => {
         password: formData.password
       };
       
-      // Simular creación de usuario (aquí llamarías a la API)
       try {
-        // const response = await crearUsuario(userData);
-        // setCreatedUserId(response.id_usuario);
-        setCreatedUserId(123); // Simulación
+        const response = await crearUsuario(userData);
+        console.log('✅ Usuario creado - Respuesta completa:', response);
+        console.log('✅ Tipo de respuesta:', typeof response);
+        console.log('✅ Keys de la respuesta:', Object.keys(response));
+        
+        // Extraer el ID del usuario de la respuesta (manejar diferentes estructuras)
+        let userId;
+        
+        // Debugging detallado
+        console.log('🔍 Buscando ID del usuario...');
+        console.log('🔍 response.usuario:', response.usuario);
+        console.log('🔍 response.id_usuario:', response.id_usuario);
+        console.log('🔍 response.data:', response.data);
+        
+        if (response.usuario && response.usuario.id_usuario) {
+          userId = response.usuario.id_usuario;
+          console.log('✅ ID encontrado en response.usuario.id_usuario:', userId);
+        } else if (response.id_usuario) {
+          userId = response.id_usuario;
+          console.log('✅ ID encontrado en response.id_usuario:', userId);
+        } else if (response.data && response.data.id_usuario) {
+          userId = response.data.id_usuario;
+          console.log('✅ ID encontrado en response.data.id_usuario:', userId);
+        } else if (response.data && response.data.usuario && response.data.usuario.id_usuario) {
+          userId = response.data.usuario.id_usuario;
+          console.log('✅ ID encontrado en response.data.usuario.id_usuario:', userId);
+        } else {
+          console.error('❌ No se pudo encontrar el ID del usuario en la respuesta:', response);
+          console.error('❌ Estructura completa de la respuesta:', JSON.stringify(response, null, 2));
+          throw new Error('No se pudo obtener el ID del usuario creado');
+        }
+        
+        setCreatedUserId(userId);
         setCurrentStep(2);
       } catch (error) {
-        console.error('Error creando usuario:', error);
+        console.error('❌ Error creando usuario:', error);
+        setError(error.message || 'Error al crear el usuario');
       }
     }
   };
@@ -145,9 +177,17 @@ const CreateAdminForm = ({ onBack, onSubmit, loading }) => {
         </div>
       </div>
 
-      <div className="form-section">
-        <h3 className="section-title">Información Personal</h3>
-        <div className="form-grid">
+        <div className="form-section">
+          <h3 className="section-title">Información Personal</h3>
+          
+          {error && (
+            <div className="error-message-step">
+              <span className="error-icon">⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+          
+          <div className="form-grid">
           <div className="form-group">
             <label htmlFor="nombre" className="form-label">
               Nombre *

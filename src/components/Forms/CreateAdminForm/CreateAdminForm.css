@@ -284,6 +284,23 @@
   font-weight: 500;
 }
 
+.error-message-step {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.error-icon {
+  font-size: 1.2em;
+}
+
 /* Form Footer */
 .form-footer {
   display: flex;

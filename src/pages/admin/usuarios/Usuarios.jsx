@@ -581,7 +581,10 @@ export default function Usuarios() {
         placeholderTitle={"Buscar Usuarios..."} 
         btnClassName="btnAdd" 
         btnStyle={gradients.greenGradient}
-        onBtnClick={() => setShowCreateUser(true)}
+        onBtnClick={() => {
+          console.log('🔄 Abriendo modal de crear usuario...');
+          setShowCreateUser(true);
+        }}
       />
 
 
@@ -695,7 +698,10 @@ export default function Usuarios() {
       {/* Modal de creación de usuario */}
       <CreateUser
         isOpen={showCreateUser}
-        onClose={() => setShowCreateUser(false)}
+        onClose={() => {
+          console.log('🔄 Cerrando modal desde Usuarios...');
+          setShowCreateUser(false);
+        }}
         onUserCreated={handleUserCreated}
       />
     </>
