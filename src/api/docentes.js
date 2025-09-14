@@ -1,5 +1,33 @@
 import api from "./client";
 
+// Crear nuevo docente
+export async function crearDocente({ nombre, apellido, email, edad, password, dni, institucion_nombre, institucion_pais, institucion_provincia, nivel_educativo, telefono = null }) {
+  try {
+    const { data } = await api.post("/docentes/crear-docente", {
+      nombre,
+      apellido,
+      email,
+      edad,
+      password,
+      dni,
+      institucion_nombre,
+      institucion_pais,
+      institucion_provincia,
+      nivel_educativo,
+      telefono
+    });
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error creando docente");
+    }
+    
+    return data.data; // Retorna datos del docente creado
+  } catch (error) {
+    console.error("Error en crearDocente:", error);
+    throw error;
+  }
+}
+
 // Obtener lista de docentes con paginación y filtros
 export async function obtenerDocentes({ page = 1, limit = 10, q = "", verificado = null } = {}) {
   try {

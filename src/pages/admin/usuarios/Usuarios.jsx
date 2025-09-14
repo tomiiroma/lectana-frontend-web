@@ -1,5 +1,6 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
 import CardStats from "../../../components/Cards/CardData/CardStats";
+import CreateUser from "../../../components/CreateUser/CreateUser";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
@@ -20,6 +21,7 @@ export default function Usuarios() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
+  const [showCreateUser, setShowCreateUser] = useState(false);
 
   // Función para probar la conexión con docentes
   const probarConexionDocentes = async () => {
@@ -171,6 +173,18 @@ export default function Usuarios() {
     obtenerUsuariosActivosData();
     obtenerUsuariosInactivosData();
   }, []);
+
+  // Función para manejar cuando se crea un usuario
+  const handleUserCreated = (userType, userData) => {
+    console.log(`✅ Usuario ${userType} creado exitosamente:`, userData);
+    
+    // Recargar los datos para mostrar el nuevo usuario
+    obtenerEstadisticasData();
+    obtenerUsuariosActivosData();
+    
+    // Mostrar mensaje de éxito (opcional)
+    alert(`¡${userType.charAt(0).toUpperCase() + userType.slice(1)} creado exitosamente!`);
+  };
 
   // Función para generar iniciales del nombre
   const generarIniciales = (nombre, apellido) => {
@@ -562,7 +576,13 @@ export default function Usuarios() {
       <h1 className="admin-page-title admin-usuarios-title">👥 Gestión de Usuarios</h1>
       
       
-          <AdminActionsBar btnTitle={"Nuevo Usuario"} placeholderTitle={"Buscar Usuarios..."} btnClassName="btnAdd" btnStyle={gradients.greenGradient}/>
+          <AdminActionsBar 
+        btnTitle={"Nuevo Usuario"} 
+        placeholderTitle={"Buscar Usuarios..."} 
+        btnClassName="btnAdd" 
+        btnStyle={gradients.greenGradient}
+        onBtnClick={() => setShowCreateUser(true)}
+      />
 
 
       <div className="admin-page-container admin-usuarios-container">
@@ -671,6 +691,13 @@ export default function Usuarios() {
           </div>
         </div>
       </div>
+
+      {/* Modal de creación de usuario */}
+      <CreateUser
+        isOpen={showCreateUser}
+        onClose={() => setShowCreateUser(false)}
+        onUserCreated={handleUserCreated}
+      />
     </>
   );
 }

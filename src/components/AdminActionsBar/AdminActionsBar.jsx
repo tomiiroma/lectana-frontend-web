@@ -5,6 +5,7 @@ function AdminActionsBar({
   btnTitle,
   placeholderTitle,
   onNew,
+  onBtnClick,
   onSearch,
   onFilter,
   onExport,
@@ -13,7 +14,7 @@ function AdminActionsBar({
 }) {
   return (
     <div className={styles.adminActionsBar}>
-      <button className={styles[btnClassName]} onClick={onNew}  style={btnStyle}>
+      <button className={styles[btnClassName]} onClick={onBtnClick || onNew}  style={btnStyle}>
         <FaPlus /> {btnTitle}
       </button>
 
