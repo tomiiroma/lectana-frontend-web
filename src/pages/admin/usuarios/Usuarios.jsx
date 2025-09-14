@@ -6,13 +6,15 @@ import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
 import { MdLibraryAddCheck } from "react-icons/md";
 import { obtenerDocentes } from "../../../api/docentes";
+import { obtenerAlumnos } from "../../../api/alumnos";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
   const [docentesData, setDocentesData] = useState(null);
+  const [alumnosData, setAlumnosData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [filtroActivo, setFiltroActivo] = useState("Todos");
+  const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
 
   // Función para probar la conexión con docentes
   const probarConexionDocentes = async () => {
@@ -38,9 +40,34 @@ export default function Usuarios() {
     }
   };
 
+  // Función para obtener alumnos
+  const obtenerAlumnosData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log("🔄 Obteniendo alumnos...");
+      
+      const data = await obtenerAlumnos({
+        page: 1,
+        limit: 10
+      });
+      
+      console.log("✅ Datos de alumnos recibidos:", data);
+      setAlumnosData(data);
+      
+    } catch (err) {
+      console.error("❌ Error obteniendo alumnos:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Ejecutar la prueba al cargar el componente
   useEffect(() => {
     probarConexionDocentes();
+    obtenerAlumnosData();
   }, []);
 
   // Función para generar iniciales del nombre
@@ -74,7 +101,6 @@ export default function Usuarios() {
             </span>
           </td>
           <td>{docente.institucion_nombre}</td>
-          <td>{docente.nivel_educativo}</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -92,7 +118,44 @@ export default function Usuarios() {
       ));
     }
 
-    // Datos hardcodeados para otros filtros (por ahora)
+    if (filtroActivo === "Estudiantes" && alumnosData?.items) {
+      return alumnosData.items.map((alumno) => (
+        <tr key={alumno.id_alumno}>
+          <td>
+            <div className="user-info">
+              <div className="user-avatar user-avatar-blue">
+                {generarIniciales(alumno.usuario.nombre, alumno.usuario.apellido)}
+              </div>
+              <div>
+                <div className="user-name">
+                  {alumno.usuario.nombre} {alumno.usuario.apellido}
+                </div>
+                <div className="user-id">ID: #{alumno.id_alumno}</div>
+              </div>
+            </div>
+          </td>
+          <td>{alumno.usuario.email}</td>
+          <td><span className="role-badge role-student">Estudiante</span></td>
+          <td><span className="status-badge status-active">Activo</span></td>
+          <td>Aula #{alumno.aula_id_aula}</td>
+          <td>
+            <div className="action-buttons">
+              <button className="btn-action btn-view" title="Ver Perfil">
+                <FaEye />
+              </button>
+              <button className="btn-action btn-edit" title="Editar">
+                <FaEdit />
+              </button>
+              <button className="btn-action btn-delete" title="Desactivar">
+                <FaTrash />
+              </button>
+            </div>
+          </td>
+        </tr>
+      ));
+    }
+
+    // Datos hardcodeados para filtros sin implementar (por ahora)
     return (
       <>
         <tr>
@@ -109,7 +172,6 @@ export default function Usuarios() {
           <td><span className="role-badge role-teacher">Docente</span></td>
           <td><span className="status-badge status-active">Activo</span></td>
           <td>Hace 2 horas</td>
-          <td>15/03/2024</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -138,7 +200,6 @@ export default function Usuarios() {
           <td><span className="role-badge role-student">Estudiante</span></td>
           <td><span className="status-badge status-active">Activo</span></td>
           <td>Hace 1 día</td>
-          <td>22/03/2024</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -167,7 +228,6 @@ export default function Usuarios() {
           <td><span className="role-badge role-admin">Administrador</span></td>
           <td><span className="status-badge status-active">Activo</span></td>
           <td>En línea</td>
-          <td>01/01/2024</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -196,7 +256,6 @@ export default function Usuarios() {
           <td><span className="role-badge role-student">Estudiante</span></td>
           <td><span className="status-badge status-inactive">Inactivo</span></td>
           <td>Hace 2 semanas</td>
-          <td>10/04/2024</td>
           <td>
             <div className="action-buttons">
               <button className="btn-action btn-view" title="Ver Perfil">
@@ -236,12 +295,6 @@ export default function Usuarios() {
 
         {/* Filtros rápidos */}
         <div className="quick-filters">
-          <button 
-            className={`filter-chip ${filtroActivo === "Todos" ? "active" : ""}`}
-            onClick={() => setFiltroActivo("Todos")}
-          >
-            Todos
-          </button>
           <button 
             className={`filter-chip ${filtroActivo === "Estudiantes" ? "active" : ""}`}
             onClick={() => setFiltroActivo("Estudiantes")}
@@ -283,8 +336,11 @@ export default function Usuarios() {
                 <th>Email</th>
                 <th>Rol</th>
                 <th>Estado</th>
-                <th>{filtroActivo === "Docentes" ? "Institución" : "Última Actividad"}</th>
-                <th>{filtroActivo === "Docentes" ? "Nivel Educativo" : "Registro"}</th>
+                <th>
+                  {filtroActivo === "Docentes" ? "Institución" : 
+                   filtroActivo === "Estudiantes" ? "Aula" : 
+                   "Última Actividad"}
+                </th>
                 <th>Acciones</th>
               </tr>
             </thead>
