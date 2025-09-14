@@ -7,13 +7,15 @@ import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserG
 import { MdLibraryAddCheck } from "react-icons/md";
 import { obtenerDocentes } from "../../../api/docentes";
 import { obtenerAlumnos } from "../../../api/alumnos";
-import { obtenerAdministradores, obtenerEstadisticasUsuarios } from "../../../api/administradores";
+import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos } from "../../../api/administradores";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
   const [docentesData, setDocentesData] = useState(null);
   const [alumnosData, setAlumnosData] = useState(null);
   const [administradoresData, setAdministradoresData] = useState(null);
+  const [usuariosActivosData, setUsuariosActivosData] = useState(null);
+  const [usuariosInactivosData, setUsuariosInactivosData] = useState(null);
   const [estadisticasData, setEstadisticasData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -112,12 +114,62 @@ export default function Usuarios() {
     }
   };
 
+  // Función para obtener usuarios activos
+  const obtenerUsuariosActivosData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log("🔄 Obteniendo usuarios activos...");
+      
+      const data = await obtenerUsuariosActivos({
+        page: 1,
+        limit: 20
+      });
+      
+      console.log("✅ Usuarios activos recibidos:", data);
+      setUsuariosActivosData(data);
+      
+    } catch (err) {
+      console.error("❌ Error obteniendo usuarios activos:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función para obtener usuarios inactivos
+  const obtenerUsuariosInactivosData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log("🔄 Obteniendo usuarios inactivos...");
+      
+      const data = await obtenerUsuariosInactivos({
+        page: 1,
+        limit: 20
+      });
+      
+      console.log("✅ Usuarios inactivos recibidos:", data);
+      setUsuariosInactivosData(data);
+      
+    } catch (err) {
+      console.error("❌ Error obteniendo usuarios inactivos:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Ejecutar la prueba al cargar el componente
   useEffect(() => {
     probarConexionDocentes();
     obtenerAlumnosData();
     obtenerAdministradoresData();
     obtenerEstadisticasData();
+    obtenerUsuariosActivosData();
+    obtenerUsuariosInactivosData();
   }, []);
 
   // Función para generar iniciales del nombre
@@ -248,6 +300,136 @@ export default function Usuarios() {
           </td>
         </tr>
       ));
+    }
+
+    if (filtroActivo === "Activos" && usuariosActivosData?.items) {
+      if (usuariosActivosData.items.length === 0) {
+        return (
+          <tr>
+            <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+              <div style={{ fontSize: '18px', marginBottom: '8px' }}>📭</div>
+              <div>No hay usuarios activos por el momento</div>
+            </td>
+          </tr>
+        );
+      }
+
+      return usuariosActivosData.items.map((usuario, index) => {
+        const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
+                           usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
+        
+        const roleBadge = usuario.rol === 'docente' ? 'role-teacher' : 
+                         usuario.rol === 'alumno' ? 'role-student' : 'role-admin';
+        
+        const roleText = usuario.rol === 'docente' ? 'Docente' : 
+                        usuario.rol === 'alumno' ? 'Estudiante' : 'Administrador';
+        
+        const campoEspecifico = usuario.rol === 'docente' ? (usuario.datos_rol?.institucion_nombre || 'Sin institución') :
+                               usuario.rol === 'alumno' ? `Aula #${usuario.datos_rol?.aula_id_aula || 'Sin aula'}` :
+                               `DNI: ${usuario.datos_rol?.dni || 'Sin DNI'}`;
+
+        return (
+          <tr key={`activo-${index}`}>
+            <td>
+              <div className="user-info">
+                <div className={`user-avatar ${avatarColor}`}>
+                  {generarIniciales(usuario.nombre, usuario.apellido)}
+                </div>
+                <div>
+                  <div className="user-name">
+                    {usuario.nombre} {usuario.apellido}
+                  </div>
+                  <div className="user-id">ID: #{usuario.id_usuario}</div>
+                </div>
+              </div>
+            </td>
+            <td>{usuario.email}</td>
+            <td><span className={`role-badge ${roleBadge}`}>{roleText}</span></td>
+            <td>
+              <span className="status-badge status-active">Activo</span>
+            </td>
+            <td>{campoEspecifico}</td>
+            <td>
+              <div className="action-buttons">
+                <button className="btn-action btn-view" title="Ver Perfil">
+                  <FaEye />
+                </button>
+                <button className="btn-action btn-edit" title="Editar">
+                  <FaEdit />
+                </button>
+                <button className="btn-action btn-delete" title="Desactivar">
+                  <FaTrash />
+                </button>
+              </div>
+            </td>
+          </tr>
+        );
+      });
+    }
+
+    if (filtroActivo === "Inactivos" && usuariosInactivosData?.items) {
+      if (usuariosInactivosData.items.length === 0) {
+        return (
+          <tr>
+            <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+              <div style={{ fontSize: '18px', marginBottom: '8px' }}>📭</div>
+              <div>No hay usuarios inactivos por el momento</div>
+            </td>
+          </tr>
+        );
+      }
+
+      return usuariosInactivosData.items.map((usuario, index) => {
+        const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
+                           usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
+        
+        const roleBadge = usuario.rol === 'docente' ? 'role-teacher' : 
+                         usuario.rol === 'alumno' ? 'role-student' : 'role-admin';
+        
+        const roleText = usuario.rol === 'docente' ? 'Docente' : 
+                        usuario.rol === 'alumno' ? 'Estudiante' : 'Administrador';
+        
+        const campoEspecifico = usuario.rol === 'docente' ? (usuario.datos_rol?.institucion_nombre || 'Sin institución') :
+                               usuario.rol === 'alumno' ? `Aula #${usuario.datos_rol?.aula_id_aula || 'Sin aula'}` :
+                               `DNI: ${usuario.datos_rol?.dni || 'Sin DNI'}`;
+
+        return (
+          <tr key={`inactivo-${index}`}>
+            <td>
+              <div className="user-info">
+                <div className={`user-avatar ${avatarColor}`}>
+                  {generarIniciales(usuario.nombre, usuario.apellido)}
+                </div>
+                <div>
+                  <div className="user-name">
+                    {usuario.nombre} {usuario.apellido}
+                  </div>
+                  <div className="user-id">ID: #{usuario.id_usuario}</div>
+                </div>
+              </div>
+            </td>
+            <td>{usuario.email}</td>
+            <td><span className={`role-badge ${roleBadge}`}>{roleText}</span></td>
+            <td>
+              <span className="status-badge status-inactive">Inactivo</span>
+            </td>
+            <td>{campoEspecifico}</td>
+            <td>
+              <div className="action-buttons">
+                <button className="btn-action btn-view" title="Ver Perfil">
+                  <FaEye />
+                </button>
+                <button className="btn-action btn-edit" title="Editar">
+                  <FaEdit />
+                </button>
+                <button className="btn-action btn-delete" title="Reactivar">
+                  <FaTrash />
+                </button>
+              </div>
+            </td>
+          </tr>
+        );
+      });
     }
 
     // Datos hardcodeados para filtros sin implementar (por ahora)
@@ -400,6 +582,11 @@ export default function Usuarios() {
             number={estadisticasData?.usuarios_activos || "..."} 
             label={"Usuarios Activos"}
           />
+          <CardStats 
+            icon={<FaUserGraduate/>} 
+            number={estadisticasData?.usuarios_inactivos || "..."} 
+            label={"Usuarios Inactivos"}
+          />
         </div>
 
         {/* Filtros rápidos */}
@@ -449,6 +636,8 @@ export default function Usuarios() {
                   {filtroActivo === "Docentes" ? "Institución" : 
                    filtroActivo === "Estudiantes" ? "Aula" : 
                    filtroActivo === "Administradores" ? "DNI" :
+                   filtroActivo === "Activos" ? "Información" :
+                   filtroActivo === "Inactivos" ? "Información" :
                    "Última Actividad"}
                 </th>
                 <th>Acciones</th>

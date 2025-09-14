@@ -53,3 +53,47 @@ export async function obtenerEstadisticasUsuarios() {
     throw error;
   }
 }
+
+// Obtener todos los usuarios activos (mezclados)
+export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = {}) {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    if (q) params.append('q', q);
+    
+    const { data } = await api.get(`/administradores/todos-usuarios-activos?${params.toString()}`);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo usuarios activos");
+    }
+    
+    return data.data; // Retorna { items, page, limit, total, total_pages }
+  } catch (error) {
+    console.error("Error en obtenerUsuariosActivos:", error);
+    throw error;
+  }
+}
+
+// Obtener todos los usuarios inactivos (mezclados)
+export async function obtenerUsuariosInactivos({ page = 1, limit = 20, q = "" } = {}) {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    if (q) params.append('q', q);
+    
+    const { data } = await api.get(`/administradores/todos-usuarios-inactivos?${params.toString()}`);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo usuarios inactivos");
+    }
+    
+    return data.data; // Retorna { items, page, limit, total, total_pages }
+  } catch (error) {
+    console.error("Error en obtenerUsuariosInactivos:", error);
+    throw error;
+  }
+}
