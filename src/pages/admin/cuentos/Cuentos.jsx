@@ -3,6 +3,7 @@ import "../AdminPages.css";
 import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import React, { useEffect, useMemo, useState } from "react";
 import CreateStoryWizard from "../../../components/Modals/CreateStoryWizard/CreateStoryWizard";
@@ -21,6 +22,7 @@ export default function Cuentos() {
   const [autores, setAutores] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [totalCuentos, setTotalCuentos] = useState(0);
+  const navigate = useNavigate();
 
   const fetchCuentos = async (params = {}) => {
     setLoading(true);
@@ -159,7 +161,7 @@ export default function Cuentos() {
                   <td>{c.edad_publico ?? "-"}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="btn-action btn-view" title="Ver">
+                      <button className="btn-action btn-view" title="Ver" onClick={() => navigate(`/admin/cuentos/${c.id_cuento ?? c.id ?? ""}`)} disabled={!c.id_cuento && !c.id}>
                         <FaEye />
                       </button>
                       <button className="btn-action btn-edit" title="Editar">
