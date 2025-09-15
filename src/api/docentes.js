@@ -40,7 +40,9 @@ export async function obtenerDocentePorId(id) {
       throw new Error(data?.error || "Error obteniendo docente");
     }
     
-    return data.data; // Retorna datos completos del docente
+    console.log('✅ Docente - Retornando datos:', data.data);
+    // El backend devuelve los datos en data.data
+    return data.data;
   } catch (error) {
     console.error("❌ Error en obtenerDocentePorId:", error);
     console.error("❌ Status:", error.response?.status);
@@ -68,6 +70,25 @@ export async function obtenerDocentes({ page = 1, limit = 10, q = "", verificado
     return data.data; // Retorna { items, page, limit, total, total_pages }
   } catch (error) {
     console.error("Error en obtenerDocentes:", error);
+    throw error;
+  }
+}
+
+// Actualizar docente (admin puede modificar cualquier docente)
+export async function actualizarDocenteAdmin(id, datosActualizacion) {
+  try {
+    console.log(`🔄 Actualizando docente ${id} con datos:`, datosActualizacion);
+    
+    const { data } = await api.put(`/docentes/admin-actualizar-docente/${id}`, datosActualizacion);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error actualizando docente");
+    }
+    
+    console.log('✅ Docente actualizado exitosamente:', data.data);
+    return data.data; // Retorna datos del docente actualizado
+  } catch (error) {
+    console.error("❌ Error en actualizarDocenteAdmin:", error);
     throw error;
   }
 }

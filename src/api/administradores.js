@@ -48,9 +48,9 @@ export async function obtenerAdministradorPorId(id) {
       throw new Error(data?.error || "Error obteniendo administrador");
     }
     
-    // El backend devuelve los datos en data.administrador, no en data.data
+    // El backend devuelve los datos en data.administrador para administradores
     const adminData = data.administrador || data.data;
-    console.log('✅ Retornando datos:', adminData);
+    console.log('✅ Admin - Retornando datos:', adminData);
     return adminData;
   } catch (error) {
     console.error("❌ Error en obtenerAdministradorPorId:", error);
@@ -117,6 +117,29 @@ export async function obtenerUsuariosInactivos({ page = 1, limit = 20, q = "" } 
     return data.data; // Retorna { items, page, limit, total, total_pages }
   } catch (error) {
     console.error("Error en obtenerUsuariosInactivos:", error);
+    throw error;
+  }
+}
+
+// Actualizar administrador (admin puede modificar cualquier administrador)
+export async function actualizarAdministradorAdmin(id, datosActualizacion) {
+  try {
+    console.log(`🔄 Actualizando administrador ${id} con datos:`, datosActualizacion);
+    
+    const { data } = await api.put(`/administradores/admin-actualizar-administrador/${id}`, datosActualizacion);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error actualizando administrador");
+    }
+    
+    console.log('✅ Administrador actualizado exitosamente:', data.data);
+    return data.data; // Retorna datos del administrador actualizado
+  } catch (error) {
+    console.error("❌ Error en actualizarAdministradorAdmin:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    console.error("❌ URL:", error.config?.url);
+    console.error("❌ Request data:", error.config?.data);
     throw error;
   }
 }

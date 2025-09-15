@@ -2,14 +2,16 @@ import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import CreateUser from "../../../components/CreateUser/CreateUser";
 import ModalPerfil from "../../../components/Modales/ModalPerfil/ModalPerfil";
+import ModalEditarUsuario from "../../../components/Modales/ModalEditarUsuario/ModalEditarUsuario";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
 import { MdLibraryAddCheck } from "react-icons/md";
-import { obtenerDocentes } from "../../../api/docentes";
-import { obtenerAlumnos } from "../../../api/alumnos";
-import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos } from "../../../api/administradores";
+import { obtenerDocentes, obtenerDocentePorId } from "../../../api/docentes";
+import { obtenerAlumnos, obtenerAlumnoPorId } from "../../../api/alumnos";
+import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos, obtenerAdministradorPorId } from "../../../api/administradores";
+import { obtenerPerfilPorIdUsuario } from "../../../api/usuarios";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
@@ -24,7 +26,9 @@ export default function Usuarios() {
   const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
   const [showCreateUser, setShowCreateUser] = useState(false);
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
+  const [mostrarModalEditar, setMostrarModalEditar] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [usuarioParaEditar, setUsuarioParaEditar] = useState(null);
   
   // Estado de paginación para cada tipo de usuario
   const [pagination, setPagination] = useState({
@@ -312,6 +316,96 @@ export default function Usuarios() {
     setMostrarModalPerfil(true);
   };
 
+  // Manejar editar usuario
+  const handleEditUser = async (usuario) => {
+    console.log('✏️ Abriendo edición de usuario:', usuario);
+    
+    try {
+      // Obtener datos completos del usuario según el tipo
+      let datosCompletos;
+      const tipo = filtroActivo.toLowerCase();
+      
+      switch (tipo) {
+        case 'estudiantes':
+          console.log('🔍 IDs disponibles para estudiante:', { 
+            id_alumno: usuario.id_alumno, 
+            usuario_id_usuario: usuario.usuario_id_usuario,
+            id_usuario: usuario.id_usuario 
+          });
+          datosCompletos = await obtenerAlumnoPorId(usuario.id_alumno || usuario.usuario_id_usuario);
+          break;
+        case 'docentes':
+          console.log('🔍 IDs disponibles para docente:', { 
+            id_docente: usuario.id_docente, 
+            usuario_id_usuario: usuario.usuario_id_usuario,
+            id_usuario: usuario.id_usuario 
+          });
+          datosCompletos = await obtenerDocentePorId(usuario.id_docente || usuario.usuario_id_usuario);
+          break;
+        case 'administradores':
+          console.log('🔍 IDs disponibles para administrador:', { 
+            id_administrador: usuario.id_administrador, 
+            usuario_id_usuario: usuario.usuario_id_usuario,
+            id_usuario: usuario.id_usuario 
+          });
+          datosCompletos = await obtenerAdministradorPorId(usuario.id_administrador || usuario.usuario_id_usuario);
+          break;
+        case 'activos':
+        case 'inactivos':
+          // Para tablas mixtas, usar el ID del usuario base
+          console.log('🔍 IDs disponibles para tabla mixta:', { 
+            id_usuario: usuario.id_usuario,
+            usuario_id_usuario: usuario.usuario_id_usuario 
+          });
+          datosCompletos = await obtenerPerfilPorIdUsuario(usuario.id_usuario);
+          break;
+        default:
+          throw new Error('Tipo de usuario no válido');
+      }
+      
+      console.log('✅ Datos completos obtenidos:', datosCompletos);
+      
+      setUsuarioParaEditar({
+        tipo: tipo,
+        id: usuario.id_usuario || usuario.id_alumno || usuario.id_docente || usuario.id_administrador,
+        datos: datosCompletos,
+        esTablaMixta: tipo === 'activos' || tipo === 'inactivos'
+      });
+      
+      setMostrarModalEditar(true);
+    } catch (err) {
+      console.error('❌ Error obteniendo datos para editar:', err);
+      alert('Error al cargar los datos del usuario para editar');
+    }
+  };
+
+  // Manejar usuario actualizado
+  const handleUserUpdated = (usuarioActualizado) => {
+    console.log('✅ Usuario actualizado:', usuarioActualizado);
+    
+    // Recargar datos según el filtro actual
+    switch (filtroActivo) {
+      case 'Estudiantes':
+        obtenerAlumnosData(pagination.estudiantes.page);
+        break;
+      case 'Docentes':
+        obtenerDocentesData(pagination.docentes.page);
+        break;
+      case 'Administradores':
+        obtenerAdministradoresData(pagination.administradores.page);
+        break;
+      case 'Activos':
+        obtenerUsuariosActivosData(pagination.activos.page);
+        break;
+      case 'Inactivos':
+        obtenerUsuariosInactivosData(pagination.inactivos.page);
+        break;
+    }
+    
+    // También recargar estadísticas
+    obtenerEstadisticasData();
+  };
+
   // Función para obtener datos de paginación del filtro activo
   const getCurrentPagination = () => {
     switch (filtroActivo) {
@@ -376,7 +470,11 @@ export default function Usuarios() {
               >
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(docente)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -421,7 +519,11 @@ export default function Usuarios() {
               >
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(alumno)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -466,7 +568,11 @@ export default function Usuarios() {
               >
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(administrador)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -535,7 +641,11 @@ export default function Usuarios() {
                 >
                   <FaEye />
                 </button>
-                <button className="btn-action btn-edit" title="Editar">
+                <button 
+                  className="btn-action btn-edit" 
+                  title="Editar"
+                  onClick={() => handleEditUser(usuario)}
+                >
                   <FaEdit />
                 </button>
                 <button className="btn-action btn-delete" title="Desactivar">
@@ -605,7 +715,11 @@ export default function Usuarios() {
                 >
                   <FaEye />
                 </button>
-                <button className="btn-action btn-edit" title="Editar">
+                <button 
+                  className="btn-action btn-edit" 
+                  title="Editar"
+                  onClick={() => handleEditUser(usuario)}
+                >
                   <FaEdit />
                 </button>
                 <button className="btn-action btn-delete" title="Reactivar">
@@ -640,7 +754,11 @@ export default function Usuarios() {
               <button className="btn-action btn-view" title="Ver Perfil">
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(docente)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -668,7 +786,11 @@ export default function Usuarios() {
               <button className="btn-action btn-view" title="Ver Perfil">
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(docente)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -696,7 +818,11 @@ export default function Usuarios() {
               <button className="btn-action btn-view" title="Ver Perfil">
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(docente)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Desactivar">
@@ -724,7 +850,11 @@ export default function Usuarios() {
               <button className="btn-action btn-view" title="Ver Perfil">
                 <FaEye />
               </button>
-              <button className="btn-action btn-edit" title="Editar">
+              <button 
+                className="btn-action btn-edit" 
+                title="Editar"
+                onClick={() => handleEditUser(docente)}
+              >
                 <FaEdit />
               </button>
               <button className="btn-action btn-delete" title="Reactivar">
@@ -929,8 +1059,20 @@ export default function Usuarios() {
         idUsuario={selectedUser?.id}
         esTablaMixta={selectedUser?.isMixedTable || false}
       />
+
+      {/* Modal de edición de usuario */}
+      <ModalEditarUsuario
+        estaAbierto={mostrarModalEditar}
+        alCerrar={() => {
+          console.log('🔄 Cerrando modal de edición...');
+          setMostrarModalEditar(false);
+          setUsuarioParaEditar(null);
+        }}
+        usuarioSeleccionado={usuarioParaEditar?.datos}
+        tipoUsuario={usuarioParaEditar?.tipo}
+        alActualizarExitoso={handleUserUpdated}
+      />
     </>
   );
 }
-
 
