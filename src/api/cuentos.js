@@ -47,6 +47,12 @@ export async function obtenerCuentoPorId(id) {
   return data.data;
 }
 
+export async function obtenerTotalCuentos() {
+  const { data } = await api.get(`/cuentos/estadisticas/total`);
+  if (!data?.ok) throw new Error(data?.error || "Error obteniendo total de cuentos");
+  return data.data?.total ?? 0;
+}
+
 // Subir PDF al cuento: POST /api/cuentos/:id/upload-pdf (form-data: file)
 export async function subirPDFCuentoV2({ cuentoId, file }) {
   const form = new FormData();
