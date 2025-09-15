@@ -4,14 +4,18 @@ import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
 import CardStats from "../../../components/Cards/CardData/CardStats";
+import React, { useState } from "react";
+import CreateStoryWizard from "../../../components/Modals/CreateStoryWizard/CreateStoryWizard";
 
 export default function Cuentos() {
+  const [openWizard, setOpenWizard] = useState(false);
+
   return (
     <>
       <h1 className="admin-page-title admin-cuentos-title">📚 Gestión de Cuentos</h1>
       
 
-      <AdminActionsBar btnTitle={"Nuevo Cuento"} placeholderTitle={"Buscar cuentos..."} btnClassName="btnAdd" btnStyle={gradients.orangeGradient}/>
+      <AdminActionsBar btnTitle={"Nuevo Cuento"} placeholderTitle={"Buscar cuentos..."} btnClassName="btnAdd" btnStyle={gradients.orangeGradient} onBtnClick={() => setOpenWizard(true)}/>
     
       <div className="admin-page-container admin-cuentos-container">
         {/* Estadísticas rápidas */}
@@ -147,6 +151,8 @@ export default function Cuentos() {
           </div>
         </div>
       </div>
+
+      <CreateStoryWizard isOpen={openWizard} onClose={() => setOpenWizard(false)} onCreated={() => { /* TODO: refrescar lista cuando exista */ }}/>
     </>
   );
 }
