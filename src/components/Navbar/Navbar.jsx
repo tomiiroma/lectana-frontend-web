@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useAuth } from "../../auth/AuthContext"; // Desactivado para revisar diseño
+import { useAuth } from "../../auth/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import "./Navbar.css";
 import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser, FaMoon, FaSun } from "react-icons/fa";
@@ -8,10 +8,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser, FaMoon, FaSun }
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  // Simular usuario no autenticado para mostrar botón de login
-  const user = null;
-  const token = null;
-  const logout = () => {};
+  const { user, token, logout } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
 
