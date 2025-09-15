@@ -138,7 +138,7 @@ function Navbar() {
                         Panel Admin
                       </Link>
                     )}
-                    <Link to="/perfil" className="dropdown-item">
+                    <Link to="/admin/perfil" className="dropdown-item">
                       <FaUser />
                       Mi Perfil
                     </Link>

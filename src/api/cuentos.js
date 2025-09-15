@@ -53,6 +53,24 @@ export async function obtenerTotalCuentos() {
   return data.data?.total ?? 0;
 }
 
+// Editar cuento: PUT /api/cuentos/:id
+export async function editarCuento({ id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img }) {
+  const body = {};
+  if (titulo !== undefined) body.titulo = titulo;
+  if (edad_publico !== undefined) body.edad_publico = Number(edad_publico);
+  if (autor_id_autor !== undefined) body.autor_id_autor = Number(autor_id_autor);
+  if (genero_id_genero !== undefined) body.genero_id_genero = Number(genero_id_genero);
+  if (duracion !== undefined) body.duracion = Number(duracion);
+  if (pdf_url !== undefined) body.pdf_url = pdf_url;
+  if (url_img !== undefined) body.url_img = url_img;
+  
+  const { data } = await api.put(`/cuentos/${id}`, body, {
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!data?.ok) throw new Error(data?.error || "Error editando cuento");
+  return data.data;
+}
+
 // Subir PDF al cuento: POST /api/cuentos/:id/upload-pdf (form-data: file)
 export async function subirPDFCuentoV2({ cuentoId, file }) {
   const form = new FormData();

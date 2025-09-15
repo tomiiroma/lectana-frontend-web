@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import React, { useEffect, useMemo, useState } from "react";
 import CreateStoryWizard from "../../../components/Modals/CreateStoryWizard/CreateStoryWizard";
+import EditStoryModal from "../../../components/Modals/EditStoryModal/EditStoryModal";
 import { listarCuentos, obtenerTotalCuentos } from "../../../api/cuentos";
 import { listarAutores } from "../../../api/autores";
 import { listarGeneros } from "../../../api/generos";
 
 export default function Cuentos() {
   const [openWizard, setOpenWizard] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [editingCuentoId, setEditingCuentoId] = useState(null);
   const [cuentos, setCuentos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -164,7 +167,10 @@ export default function Cuentos() {
                       <button className="btn-action btn-view" title="Ver" onClick={() => navigate(`/admin/cuentos/${c.id_cuento ?? c.id ?? ""}`)} disabled={!c.id_cuento && !c.id}>
                         <FaEye />
                       </button>
-                      <button className="btn-action btn-edit" title="Editar">
+                      <button className="btn-action btn-edit" title="Editar" onClick={() => {
+                        setEditingCuentoId(c.id_cuento ?? c.id ?? "");
+                        setOpenEditModal(true);
+                      }} disabled={!c.id_cuento && !c.id}>
                         <FaEdit />
                       </button>
                       <button className="btn-action btn-delete" title="Eliminar">
@@ -196,6 +202,20 @@ export default function Cuentos() {
       </div>
 
       <CreateStoryWizard isOpen={openWizard} onClose={() => setOpenWizard(false)} onCreated={() => { fetchCuentos(search ? { titulo: search } : {}); }}/>
+      
+      <EditStoryModal 
+        isOpen={openEditModal} 
+        onClose={() => {
+          setOpenEditModal(false);
+          setEditingCuentoId(null);
+        }} 
+        cuentoId={editingCuentoId}
+        onUpdated={() => { 
+          fetchCuentos(search ? { titulo: search } : {}); 
+          // Refrescar total también
+          obtenerTotalCuentos().then(total => setTotalCuentos(Number(total) || 0));
+        }}
+      />
     </>
   );
 }
