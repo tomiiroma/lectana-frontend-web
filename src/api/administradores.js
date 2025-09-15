@@ -24,16 +24,39 @@ export async function obtenerAdministradores({ page = 1, limit = 10, q = "" } = 
 
 // Obtener administrador específico por ID
 export async function obtenerAdministradorPorId(id) {
+  console.log('🚀 FUNCIÓN obtenerAdministradorPorId INICIADA');
+  console.log('🚀 ID recibido:', id);
+  console.log('🚀 Tipo de ID:', typeof id);
+  
   try {
+    console.log(`🔄 Admin - Llamando a: /administradores/admin-obtener-administrador/${id}`);
+    
+    // Verificar que el ID sea válido
+    if (!id || id === 'undefined' || id === 'null') {
+      throw new Error('ID de administrador no válido');
+    }
+    
     const { data } = await api.get(`/administradores/admin-obtener-administrador/${id}`);
+    
+    console.log('🔍 Respuesta completa del backend:', data);
+    console.log('🔍 data.ok:', data?.ok);
+    console.log('🔍 data.data:', data?.data);
+    console.log('🔍 data.administrador:', data?.administrador);
+    console.log('🔍 data.error:', data?.error);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo administrador");
     }
     
-    return data.data;
+    // El backend devuelve los datos en data.administrador, no en data.data
+    const adminData = data.administrador || data.data;
+    console.log('✅ Retornando datos:', adminData);
+    return adminData;
   } catch (error) {
-    console.error("Error en obtenerAdministradorPorId:", error);
+    console.error("❌ Error en obtenerAdministradorPorId:", error);
+    console.error("❌ Status del error:", error.response?.status);
+    console.error("❌ Datos del error:", error.response?.data);
+    console.error("❌ URL llamada:", error.config?.url);
     throw error;
   }
 }

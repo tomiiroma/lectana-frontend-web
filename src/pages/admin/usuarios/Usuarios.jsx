@@ -1,6 +1,7 @@
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import CreateUser from "../../../components/CreateUser/CreateUser";
+import ModalPerfil from "../../../components/Modales/ModalPerfil/ModalPerfil";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
@@ -22,46 +23,77 @@ export default function Usuarios() {
   const [error, setError] = useState(null);
   const [filtroActivo, setFiltroActivo] = useState("Estudiantes");
   const [showCreateUser, setShowCreateUser] = useState(false);
+  const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  
+  // Estado de paginación para cada tipo de usuario
+  const [pagination, setPagination] = useState({
+    docentes: { page: 1, total: 0, totalPages: 0 },
+    estudiantes: { page: 1, total: 0, totalPages: 0 },
+    administradores: { page: 1, total: 0, totalPages: 0 },
+    activos: { page: 1, total: 0, totalPages: 0 },
+    inactivos: { page: 1, total: 0, totalPages: 0 }
+  });
 
-  // Función para probar la conexión con docentes
-  const probarConexionDocentes = async () => {
+  // Función para obtener docentes con paginación
+  const obtenerDocentesData = async (page = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Probando conexión con docentes...");
+      console.log("🔄 Obteniendo docentes página", page);
       
       const data = await obtenerDocentes({
-        page: 1,
-        limit: 5
+        page: page,
+        limit: 10
       });
       
-      console.log("✅ Datos recibidos:", data);
+      console.log("✅ Datos de docentes recibidos:", data);
       setDocentesData(data);
       
+      // Actualizar estado de paginación
+      setPagination(prev => ({
+        ...prev,
+        docentes: {
+          page: data.page,
+          total: data.total,
+          totalPages: data.total_pages
+        }
+      }));
+      
     } catch (err) {
-      console.error("❌ Error:", err);
+      console.error("❌ Error obteniendo docentes:", err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para obtener alumnos
-  const obtenerAlumnosData = async () => {
+  // Función para obtener alumnos con paginación
+  const obtenerAlumnosData = async (page = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo alumnos...");
+      console.log("🔄 Obteniendo alumnos página", page);
       
       const data = await obtenerAlumnos({
-        page: 1,
+        page: page,
         limit: 10
       });
       
       console.log("✅ Datos de alumnos recibidos:", data);
       setAlumnosData(data);
+      
+      // Actualizar estado de paginación
+      setPagination(prev => ({
+        ...prev,
+        estudiantes: {
+          page: data.page,
+          total: data.total,
+          totalPages: data.total_pages
+        }
+      }));
       
     } catch (err) {
       console.error("❌ Error obteniendo alumnos:", err);
@@ -71,21 +103,31 @@ export default function Usuarios() {
     }
   };
 
-  // Función para obtener administradores
-  const obtenerAdministradoresData = async () => {
+  // Función para obtener administradores con paginación
+  const obtenerAdministradoresData = async (page = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo administradores...");
+      console.log("🔄 Obteniendo administradores página", page);
       
       const data = await obtenerAdministradores({
-        page: 1,
+        page: page,
         limit: 10
       });
       
       console.log("✅ Datos de administradores recibidos:", data);
       setAdministradoresData(data);
+      
+      // Actualizar estado de paginación
+      setPagination(prev => ({
+        ...prev,
+        administradores: {
+          page: data.page,
+          total: data.total,
+          totalPages: data.total_pages
+        }
+      }));
       
     } catch (err) {
       console.error("❌ Error obteniendo administradores:", err);
@@ -116,21 +158,31 @@ export default function Usuarios() {
     }
   };
 
-  // Función para obtener usuarios activos
-  const obtenerUsuariosActivosData = async () => {
+  // Función para obtener usuarios activos con paginación
+  const obtenerUsuariosActivosData = async (page = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo usuarios activos...");
+      console.log("🔄 Obteniendo usuarios activos página", page);
       
       const data = await obtenerUsuariosActivos({
-        page: 1,
+        page: page,
         limit: 20
       });
       
       console.log("✅ Usuarios activos recibidos:", data);
       setUsuariosActivosData(data);
+      
+      // Actualizar estado de paginación
+      setPagination(prev => ({
+        ...prev,
+        activos: {
+          page: data.page,
+          total: data.total,
+          totalPages: data.total_pages
+        }
+      }));
       
     } catch (err) {
       console.error("❌ Error obteniendo usuarios activos:", err);
@@ -140,21 +192,31 @@ export default function Usuarios() {
     }
   };
 
-  // Función para obtener usuarios inactivos
-  const obtenerUsuariosInactivosData = async () => {
+  // Función para obtener usuarios inactivos con paginación
+  const obtenerUsuariosInactivosData = async (page = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo usuarios inactivos...");
+      console.log("🔄 Obteniendo usuarios inactivos página", page);
       
       const data = await obtenerUsuariosInactivos({
-        page: 1,
+        page: page,
         limit: 20
       });
       
       console.log("✅ Usuarios inactivos recibidos:", data);
       setUsuariosInactivosData(data);
+      
+      // Actualizar estado de paginación
+      setPagination(prev => ({
+        ...prev,
+        inactivos: {
+          page: data.page,
+          total: data.total,
+          totalPages: data.total_pages
+        }
+      }));
       
     } catch (err) {
       console.error("❌ Error obteniendo usuarios inactivos:", err);
@@ -164,15 +226,40 @@ export default function Usuarios() {
     }
   };
 
-  // Ejecutar la prueba al cargar el componente
+  // Ejecutar la carga inicial de datos
   useEffect(() => {
-    probarConexionDocentes();
+    obtenerDocentesData();
     obtenerAlumnosData();
     obtenerAdministradoresData();
     obtenerEstadisticasData();
     obtenerUsuariosActivosData();
     obtenerUsuariosInactivosData();
   }, []);
+
+  // Función para manejar cambio de página
+  const handlePageChange = (newPage) => {
+    console.log(`🔄 Cambiando a página ${newPage} para filtro: ${filtroActivo}`);
+    
+    switch (filtroActivo) {
+      case "Docentes":
+        obtenerDocentesData(newPage);
+        break;
+      case "Estudiantes":
+        obtenerAlumnosData(newPage);
+        break;
+      case "Administradores":
+        obtenerAdministradoresData(newPage);
+        break;
+      case "Activos":
+        obtenerUsuariosActivosData(newPage);
+        break;
+      case "Inactivos":
+        obtenerUsuariosInactivosData(newPage);
+        break;
+      default:
+        console.log("Filtro no reconocido:", filtroActivo);
+    }
+  };
 
   // Función para manejar cuando se crea un usuario
   const handleUserCreated = (userType, userData) => {
@@ -184,6 +271,69 @@ export default function Usuarios() {
     
     // Mostrar mensaje de éxito (opcional)
     alert(`¡${userType.charAt(0).toUpperCase() + userType.slice(1)} creado exitosamente!`);
+  };
+
+  // Función para manejar clic en "Ver Perfil"
+  const handleViewProfile = (userType, userId) => {
+    console.log(`👁️ Abriendo perfil de ${userType} con ID: ${userId}`);
+    console.log(`🔍 Tipo de usuario: "${userType}"`);
+    console.log(`🔍 ID del usuario: ${userId}`);
+    setSelectedUser({ type: userType, id: userId });
+    setMostrarModalPerfil(true);
+  };
+
+  // Función para manejar clic en "Ver Perfil" desde tablas de activos/inactivos
+  const handleViewProfileFromMixedTable = (usuario) => {
+    console.log(`👁️ Abriendo perfil desde tabla mixta:`, usuario);
+    console.log(`🔍 usuario.rol:`, usuario.rol);
+    console.log(`🔍 usuario.datos_rol:`, usuario.datos_rol);
+    console.log(`🔍 usuario.id_usuario:`, usuario.id_usuario);
+    
+    // En las tablas mixtas, solo tenemos el id_usuario (ID del usuario base)
+    // Necesitamos usar una estrategia diferente para obtener los perfiles
+    
+    // Por ahora, vamos a usar el id_usuario y crear una función especial
+    // que obtenga el perfil basado en el rol y el id_usuario
+    const userId = usuario.id_usuario;
+    const userRole = usuario.rol;
+    
+    console.log(`🔍 Usando id_usuario: ${userId} para rol: ${userRole}`);
+    
+    // Llamar a una función especial que maneje la obtención de perfiles desde tablas mixtas
+    handleViewProfileFromUserId(userRole, userId);
+  };
+
+  // Nueva función para obtener perfiles usando el id_usuario
+  const handleViewProfileFromUserId = (userRole, userId) => {
+    console.log(`🔄 Obteniendo perfil de ${userRole} con id_usuario: ${userId}`);
+    
+    // Usar el modal con la nueva funcionalidad para tablas mixtas
+    setSelectedUser({ type: userRole, id: userId, isMixedTable: true });
+    setMostrarModalPerfil(true);
+  };
+
+  // Función para obtener datos de paginación del filtro activo
+  const getCurrentPagination = () => {
+    switch (filtroActivo) {
+      case "Docentes":
+        return pagination.docentes;
+      case "Estudiantes":
+        return pagination.estudiantes;
+      case "Administradores":
+        return pagination.administradores;
+      case "Activos":
+        return pagination.activos;
+      case "Inactivos":
+        return pagination.inactivos;
+      default:
+        return { page: 1, total: 0, totalPages: 0 };
+    }
+  };
+
+  // Función para verificar si debe mostrar paginación
+  const shouldShowPagination = () => {
+    const currentPagination = getCurrentPagination();
+    return currentPagination.totalPages > 1;
   };
 
   // Función para generar iniciales del nombre
@@ -219,7 +369,11 @@ export default function Usuarios() {
           <td>{docente.institucion_nombre}</td>
           <td>
             <div className="action-buttons">
-              <button className="btn-action btn-view" title="Ver Perfil">
+              <button 
+                className="btn-action btn-view" 
+                title="Ver Perfil"
+                onClick={() => handleViewProfile('docente', docente.id_docente)}
+              >
                 <FaEye />
               </button>
               <button className="btn-action btn-edit" title="Editar">
@@ -260,7 +414,11 @@ export default function Usuarios() {
           <td>Aula #{alumno.aula_id_aula}</td>
           <td>
             <div className="action-buttons">
-              <button className="btn-action btn-view" title="Ver Perfil">
+              <button 
+                className="btn-action btn-view" 
+                title="Ver Perfil"
+                onClick={() => handleViewProfile('estudiante', alumno.id_alumno)}
+              >
                 <FaEye />
               </button>
               <button className="btn-action btn-edit" title="Editar">
@@ -301,7 +459,11 @@ export default function Usuarios() {
           <td>DNI: {administrador.dni}</td>
           <td>
             <div className="action-buttons">
-              <button className="btn-action btn-view" title="Ver Perfil">
+              <button 
+                className="btn-action btn-view" 
+                title="Ver Perfil"
+                onClick={() => handleViewProfile('administrador', administrador.id_administrador)}
+              >
                 <FaEye />
               </button>
               <button className="btn-action btn-edit" title="Editar">
@@ -329,8 +491,6 @@ export default function Usuarios() {
       }
 
       return usuariosActivosData.items.map((usuario, index) => {
-        // Debug: mostrar qué datos están llegando
-        console.log(`Usuario ${index}:`, usuario);
         
         const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
                            usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
@@ -368,7 +528,11 @@ export default function Usuarios() {
             <td>{campoEspecifico}</td>
             <td>
               <div className="action-buttons">
-                <button className="btn-action btn-view" title="Ver Perfil">
+                <button 
+                  className="btn-action btn-view" 
+                  title="Ver Perfil"
+                  onClick={() => handleViewProfileFromMixedTable(usuario)}
+                >
                   <FaEye />
                 </button>
                 <button className="btn-action btn-edit" title="Editar">
@@ -397,8 +561,6 @@ export default function Usuarios() {
       }
 
       return usuariosInactivosData.items.map((usuario, index) => {
-        // Debug: mostrar qué datos están llegando
-        console.log(`Usuario inactivo ${index}:`, usuario);
         
         const avatarColor = usuario.rol === 'docente' ? 'user-avatar-green' : 
                            usuario.rol === 'alumno' ? 'user-avatar-blue' : 'user-avatar-purple';
@@ -436,7 +598,11 @@ export default function Usuarios() {
             <td>{campoEspecifico}</td>
             <td>
               <div className="action-buttons">
-                <button className="btn-action btn-view" title="Ver Perfil">
+                <button 
+                  className="btn-action btn-view" 
+                  title="Ver Perfil"
+                  onClick={() => handleViewProfileFromMixedTable(usuario)}
+                >
                   <FaEye />
                 </button>
                 <button className="btn-action btn-edit" title="Editar">
@@ -678,21 +844,67 @@ export default function Usuarios() {
           </table>
         </div>
 
-        {/* Paginación */}
-        <div className="pagination-container">
-          <div className="pagination-info">
-            Mostrando 1-10 de 3,011 usuarios
+        {/* Paginación Condicional */}
+        {shouldShowPagination() && (
+          <div className="pagination-container">
+            <div className="pagination-info">
+              {(() => {
+                const currentPagination = getCurrentPagination();
+                const startItem = ((currentPagination.page - 1) * 10) + 1;
+                const endItem = Math.min(currentPagination.page * 10, currentPagination.total);
+                return `Mostrando ${startItem}-${endItem} de ${currentPagination.total} usuarios`;
+              })()}
+            </div>
+            <div className="pagination-buttons">
+              {(() => {
+                const currentPagination = getCurrentPagination();
+                const buttons = [];
+                
+                // Botón Anterior
+                buttons.push(
+                  <button 
+                    key="prev"
+                    className="btn-pagination" 
+                    disabled={currentPagination.page === 1}
+                    onClick={() => handlePageChange(currentPagination.page - 1)}
+                  >
+                    Anterior
+                  </button>
+                );
+                
+                // Números de página
+                const startPage = Math.max(1, currentPagination.page - 2);
+                const endPage = Math.min(currentPagination.totalPages, currentPagination.page + 2);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                  buttons.push(
+                    <button 
+                      key={i}
+                      className={`btn-pagination ${i === currentPagination.page ? 'active' : ''}`}
+                      onClick={() => handlePageChange(i)}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+                
+                // Botón Siguiente
+                buttons.push(
+                  <button 
+                    key="next"
+                    className="btn-pagination" 
+                    disabled={currentPagination.page === currentPagination.totalPages}
+                    onClick={() => handlePageChange(currentPagination.page + 1)}
+                  >
+                    Siguiente
+                  </button>
+                );
+                
+                return buttons;
+              })()}
+            </div>
           </div>
-          <div className="pagination-buttons">
-            <button className="btn-pagination" disabled>Anterior</button>
-            <button className="btn-pagination active">1</button>
-            <button className="btn-pagination">2</button>
-            <button className="btn-pagination">3</button>
-            <button className="btn-pagination">...</button>
-            <button className="btn-pagination">302</button>
-            <button className="btn-pagination">Siguiente</button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Modal de creación de usuario */}
@@ -703,6 +915,19 @@ export default function Usuarios() {
           setShowCreateUser(false);
         }}
         onUserCreated={handleUserCreated}
+      />
+
+      {/* Modal de perfil de usuario */}
+      <ModalPerfil
+        estaAbierto={mostrarModalPerfil}
+        alCerrar={() => {
+          console.log('🔄 Cerrando modal de perfil...');
+          setMostrarModalPerfil(false);
+          setSelectedUser(null);
+        }}
+        tipoUsuario={selectedUser?.type}
+        idUsuario={selectedUser?.id}
+        esTablaMixta={selectedUser?.isMixedTable || false}
       />
     </>
   );

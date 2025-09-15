@@ -28,6 +28,27 @@ export async function crearDocente({ nombre, apellido, email, edad, password, dn
   }
 }
 
+// Obtener docente específico por ID
+export async function obtenerDocentePorId(id) {
+  try {
+    console.log(`🔄 Docente - Llamando a: /docentes/admin-obtener-docente/${id}`);
+    const { data } = await api.get(`/docentes/admin-obtener-docente/${id}`);
+    
+    console.log('🔍 Docente - Respuesta completa:', data);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo docente");
+    }
+    
+    return data.data; // Retorna datos completos del docente
+  } catch (error) {
+    console.error("❌ Error en obtenerDocentePorId:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ URL:", error.config?.url);
+    throw error;
+  }
+}
+
 // Obtener lista de docentes con paginación y filtros
 export async function obtenerDocentes({ page = 1, limit = 10, q = "", verificado = null } = {}) {
   try {
