@@ -29,6 +29,7 @@ export default function Cuentos() {
   const [autores, setAutores] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [totalCuentos, setTotalCuentos] = useState(0);
+  const [pagination, setPagination] = useState({ page: 1, total: 0, totalPages: 0 });
   const navigate = useNavigate();
 
   const fetchCuentos = async (params = {}) => {
@@ -36,10 +37,29 @@ export default function Cuentos() {
     setError("");
     try {
       const data = await listarCuentos(params);
-      setCuentos(Array.isArray(data) ? data : []);
+      
+      if (data && typeof data === 'object' && 'items' in data) {
+        // Respuesta con paginación
+        setCuentos(Array.isArray(data.items) ? data.items : []);
+        setPagination({
+          page: data.page || 1,
+          total: data.total || 0,
+          totalPages: data.totalPages || 0
+        });
+      } else {
+        // Respuesta simple (sin paginación)
+        setCuentos(Array.isArray(data) ? data : []);
+        const total = Array.isArray(data) ? data.length : 0;
+        setPagination({
+          page: 1,
+          total: total,
+          totalPages: total > 10 ? Math.ceil(total / 10) : 1
+        });
+      }
     } catch (e) {
       setError(e.message || "Error cargando cuentos");
       setCuentos([]);
+      setPagination({ page: 1, total: 0, totalPages: 0 });
     } finally {
       setLoading(false);
     }
@@ -74,11 +94,30 @@ export default function Cuentos() {
       if (filters.genero_id) params.genero_id = Number(filters.genero_id);
       if (filters.autor_id) params.autor_id = Number(filters.autor_id);
       
+      // Agregar paginación
+      params.page = pagination.page;
+      params.limit = 10;
+      
       console.log("Buscando cuentos con params:", params);
       fetchCuentos(params);
     }, 300);
     return () => clearTimeout(t);
+  }, [search, filters, pagination.page]);
+
+  // Resetear página cuando cambien filtros o búsqueda
+  useEffect(() => {
+    setPagination(prev => ({ ...prev, page: 1 }));
   }, [search, filters]);
+
+  // Función para cambiar de página
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+  };
+
+  // Función para verificar si debe mostrar paginación
+  const shouldShowPagination = () => {
+    return pagination.totalPages > 1;
+  };
 
   return (
     <>
@@ -216,21 +255,65 @@ export default function Cuentos() {
           </table>
         </div>
 
-        {/* Paginación */}
-        <div className="pagination-container">
-          <div className="pagination-info">
-            Mostrando 1-10 de 156 cuentos
+        {/* Paginación Condicional */}
+        {shouldShowPagination() && (
+          <div className="pagination-container">
+            <div className="pagination-info">
+              {(() => {
+                const startItem = ((pagination.page - 1) * 10) + 1;
+                const endItem = Math.min(pagination.page * 10, pagination.total);
+                return `Mostrando ${startItem}-${endItem} de ${pagination.total} cuentos`;
+              })()}
+            </div>
+            <div className="pagination-buttons">
+              {(() => {
+                const buttons = [];
+                
+                // Botón Anterior
+                buttons.push(
+                  <button 
+                    key="prev"
+                    className="btn-pagination" 
+                    disabled={pagination.page === 1}
+                    onClick={() => handlePageChange(pagination.page - 1)}
+                  >
+                    Anterior
+                  </button>
+                );
+                
+                // Números de página
+                const startPage = Math.max(1, pagination.page - 2);
+                const endPage = Math.min(pagination.totalPages, pagination.page + 2);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                  buttons.push(
+                    <button 
+                      key={i}
+                      className={`btn-pagination ${i === pagination.page ? 'active' : ''}`}
+                      onClick={() => handlePageChange(i)}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+                
+                // Botón Siguiente
+                buttons.push(
+                  <button 
+                    key="next"
+                    className="btn-pagination" 
+                    disabled={pagination.page === pagination.totalPages}
+                    onClick={() => handlePageChange(pagination.page + 1)}
+                  >
+                    Siguiente
+                  </button>
+                );
+                
+                return buttons;
+              })()}
+            </div>
           </div>
-          <div className="pagination-buttons">
-            <button className="btn-pagination" disabled>Anterior</button>
-            <button className="btn-pagination active">1</button>
-            <button className="btn-pagination">2</button>
-            <button className="btn-pagination">3</button>
-            <button className="btn-pagination">...</button>
-            <button className="btn-pagination">16</button>
-            <button className="btn-pagination">Siguiente</button>
-          </div>
-        </div>
+        )}
       </div>
 
       <CreateStoryWizard isOpen={openWizard} onClose={() => setOpenWizard(false)} onCreated={() => { fetchCuentos(search ? { titulo: search } : {}); }}/>
