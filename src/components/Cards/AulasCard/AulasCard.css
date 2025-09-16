@@ -48,14 +48,37 @@
   text-transform: uppercase;
 }
 
-.status-active {
+.status-assigned {
   background: var(--success-color);
   color: white;
 }
 
-.status-inactive {
+.status-unassigned {
   background: var(--text-secondary);
   color: white;
+}
+
+.aula-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+}
+
+.code-icon {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.code-text {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 13px;
 }
 
 /* TÍTULOS - DISEÑO SIMPLE */
@@ -130,6 +153,19 @@
   color: var(--text-secondary);
   margin-bottom: 6px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loading-indicator {
+  font-size: 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .progress-bar {
@@ -143,7 +179,20 @@
 .progress-fill {
   background: var(--primary-color);
   height: 100%;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Colores de progreso según porcentaje */
+.progress-fill.progress-low {
+  background: #ef4444; /* Rojo para configuración baja (0-40%) */
+}
+
+.progress-fill.progress-medium {
+  background: #f59e0b; /* Naranja para configuración media (41-70%) */
+}
+
+.progress-fill.progress-high {
+  background: #10b981; /* Verde para configuración alta (71-100%) */
 }
 
 .progress-text {

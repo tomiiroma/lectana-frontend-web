@@ -15,7 +15,7 @@ export default function AdminSidebar() {
 
   function handleLogout() {
     logout();
-    navigate("/login", { replace: true });
+    navigate("/login", { replace: false });
   }
 
   return (
