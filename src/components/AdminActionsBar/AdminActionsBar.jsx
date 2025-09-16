@@ -1,4 +1,4 @@
-import { FaPlus, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
+import { FaPlus, FaSearch, FaFilter } from "react-icons/fa";
 import styles from "./AdminActionsBar.module.css";
 
 function AdminActionsBar({
@@ -8,7 +8,6 @@ function AdminActionsBar({
   onBtnClick,
   onSearch,
   onFilter,
-  onExport,
   btnClassName,
   btnStyle,
   additionalButtons = []
@@ -46,9 +45,6 @@ function AdminActionsBar({
           <FaFilter /> Filtros
         </button>
 
-        <button className={styles.btnSecondary} onClick={onExport}>
-          <FaDownload /> Exportar
-        </button>
       </div>
     </div>
   );
