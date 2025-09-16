@@ -31,21 +31,26 @@ function AdminActionsBar({
         ))}
       </div>
 
-      <div className={styles.searchFilterGroup}>
-        <div className={styles.searchBox}>
-          <FaSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder={placeholderTitle}
-            onChange={(e) => onSearch?.(e.target.value)}
-          />
+      {(placeholderTitle || onSearch || onFilter) && (
+        <div className={styles.searchFilterGroup}>
+          {placeholderTitle && onSearch && (
+            <div className={styles.searchBox}>
+              <FaSearch className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder={placeholderTitle}
+                onChange={(e) => onSearch?.(e.target.value)}
+              />
+            </div>
+          )}
+
+          {onFilter && (
+            <button className={styles.btnSecondary} onClick={onFilter}>
+              <FaFilter /> Filtros
+            </button>
+          )}
         </div>
-
-        <button className={styles.btnSecondary} onClick={onFilter}>
-          <FaFilter /> Filtros
-        </button>
-
-      </div>
+      )}
     </div>
   );
 }

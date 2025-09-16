@@ -54,14 +54,13 @@ export async function obtenerDocentePorId(id) {
 // Obtener lista de docentes con paginación y filtros
 export async function obtenerDocentes({ page = 1, limit = 10, q = "", verificado = null } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
+    if (verificado !== null) params.verificado = verificado;
     
-    if (q) params.append('q', q);
-    if (verificado !== null) params.append('verificado', verificado.toString());
-    
-    const { data } = await api.get(`/docentes/admin-listar-docentes?${params.toString()}`);
+    console.log("API obtenerDocentes - params enviados:", params);
+    const { data } = await api.get("/docentes/admin-listar-docentes", { params });
+    console.log("API obtenerDocentes - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo docentes");

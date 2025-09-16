@@ -3,14 +3,13 @@ import api from "./client";
 // Obtener lista de alumnos con paginación y filtros
 export async function obtenerAlumnos({ page = 1, limit = 10, q = "", aula_id = null } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
+    if (aula_id) params.aula_id = aula_id;
     
-    if (q) params.append('q', q);
-    if (aula_id) params.append('aula_id', aula_id.toString());
-    
-    const { data } = await api.get(`/alumnos/admin-listar-alumnos?${params.toString()}`);
+    console.log("API obtenerAlumnos - params enviados:", params);
+    const { data } = await api.get("/alumnos/admin-listar-alumnos", { params });
+    console.log("API obtenerAlumnos - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo alumnos");

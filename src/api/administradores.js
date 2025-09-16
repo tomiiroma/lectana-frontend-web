@@ -3,13 +3,12 @@ import api from "./client";
 // Obtener lista de administradores con paginación y filtros
 export async function obtenerAdministradores({ page = 1, limit = 10, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/admin-listar-administradores?${params.toString()}`);
+    console.log("API obtenerAdministradores - params enviados:", params);
+    const { data } = await api.get("/administradores/admin-listar-administradores", { params });
+    console.log("API obtenerAdministradores - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo administradores");
@@ -80,13 +79,12 @@ export async function obtenerEstadisticasUsuarios() {
 // Obtener todos los usuarios activos (mezclados)
 export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/todos-usuarios-activos?${params.toString()}`);
+    console.log("API obtenerUsuariosActivos - params enviados:", params);
+    const { data } = await api.get("/administradores/todos-usuarios-activos", { params });
+    console.log("API obtenerUsuariosActivos - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo usuarios activos");
@@ -102,13 +100,12 @@ export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = 
 // Obtener todos los usuarios inactivos (mezclados)
 export async function obtenerUsuariosInactivos({ page = 1, limit = 20, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/todos-usuarios-inactivos?${params.toString()}`);
+    console.log("API obtenerUsuariosInactivos - params enviados:", params);
+    const { data } = await api.get("/administradores/todos-usuarios-inactivos", { params });
+    console.log("API obtenerUsuariosInactivos - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo usuarios inactivos");
