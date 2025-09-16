@@ -10,13 +10,27 @@ function AdminActionsBar({
   onFilter,
   onExport,
   btnClassName,
-  btnStyle
+  btnStyle,
+  additionalButtons = []
 }) {
   return (
     <div className={styles.adminActionsBar}>
-      <button className={styles[btnClassName]} onClick={onBtnClick || onNew}  style={btnStyle}>
-        <FaPlus /> {btnTitle}
-      </button>
+      <div className={styles.actionButtonsGroup}>
+        <button className={styles[btnClassName]} onClick={onBtnClick || onNew}  style={btnStyle}>
+          <FaPlus /> {btnTitle}
+        </button>
+        
+        {additionalButtons.map((btn, index) => (
+          <button 
+            key={index}
+            className={styles[btn.className]} 
+            onClick={btn.onClick} 
+            style={btn.style}
+          >
+            {btn.icon} {btn.title}
+          </button>
+        ))}
+      </div>
 
       <div className={styles.searchFilterGroup}>
         <div className={styles.searchBox}>

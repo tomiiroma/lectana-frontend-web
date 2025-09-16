@@ -2,12 +2,14 @@ import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar
 import "../AdminPages.css";
 import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
-import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload } from "react-icons/fa";
+import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUser, FaTag } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import React, { useEffect, useMemo, useState } from "react";
 import CreateStoryWizard from "../../../components/Modals/CreateStoryWizard/CreateStoryWizard";
 import EditStoryModal from "../../../components/Modals/EditStoryModal/EditStoryModal";
+import CreateAuthorModal from "../../../components/Modals/CreateAuthorModal/CreateAuthorModal";
+import CreateGenreModal from "../../../components/Modals/CreateGenreModal/CreateGenreModal";
 import { listarCuentos, obtenerTotalCuentos } from "../../../api/cuentos";
 import { listarAutores } from "../../../api/autores";
 import { listarGeneros } from "../../../api/generos";
@@ -16,6 +18,8 @@ export default function Cuentos() {
   const [openWizard, setOpenWizard] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editingCuentoId, setEditingCuentoId] = useState(null);
+  const [openAuthorModal, setOpenAuthorModal] = useState(false);
+  const [openGenreModal, setOpenGenreModal] = useState(false);
   const [cuentos, setCuentos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -58,13 +62,19 @@ export default function Cuentos() {
 
   useEffect(() => {
     const t = setTimeout(() => {
-      const params = { ...(
-        search ? { titulo: search } : {}
-      ) };
-      // No enviamos filtros vacíos
+      const params = {};
+      
+      // Búsqueda por título (solo si hay texto)
+      if (search && search.trim()) {
+        params.titulo = search.trim();
+      }
+      
+      // Filtros adicionales (solo si tienen valor)
       if (filters.edad_publico) params.edad_publico = Number(filters.edad_publico);
       if (filters.genero_id) params.genero_id = Number(filters.genero_id);
       if (filters.autor_id) params.autor_id = Number(filters.autor_id);
+      
+      console.log("Buscando cuentos con params:", params);
       fetchCuentos(params);
     }, 300);
     return () => clearTimeout(t);
@@ -75,7 +85,29 @@ export default function Cuentos() {
       <h1 className="admin-page-title admin-cuentos-title">📚 Gestión de Cuentos</h1>
       
 
-      <AdminActionsBar btnTitle={"Nuevo Cuento"} placeholderTitle={"Buscar cuentos..."} btnClassName="btnAdd" btnStyle={gradients.orangeGradient} onBtnClick={() => setOpenWizard(true)} onSearch={setSearch} onFilter={() => setShowFilters((s) => !s)}/>
+      <AdminActionsBar 
+        btnTitle={"Nuevo Cuento"} 
+        placeholderTitle={"Buscar cuentos..."} 
+        btnClassName="btnAdd" 
+        btnStyle={gradients.orangeGradient} 
+        onBtnClick={() => setOpenWizard(true)} 
+        onSearch={setSearch} 
+        onFilter={() => setShowFilters((s) => !s)}
+        additionalButtons={[
+          {
+            title: "Crear Autor",
+            icon: <FaUser />,
+            className: "btnAuthor",
+            onClick: () => setOpenAuthorModal(true)
+          },
+          {
+            title: "Crear Género", 
+            icon: <FaTag />,
+            className: "btnGenre",
+            onClick: () => setOpenGenreModal(true)
+          }
+        ]}
+      />
 
       {showFilters && (
         <div className="admin-filters" style={{
@@ -214,6 +246,24 @@ export default function Cuentos() {
           fetchCuentos(search ? { titulo: search } : {}); 
           // Refrescar total también
           obtenerTotalCuentos().then(total => setTotalCuentos(Number(total) || 0));
+        }}
+      />
+      
+      <CreateAuthorModal 
+        isOpen={openAuthorModal} 
+        onClose={() => setOpenAuthorModal(false)}
+        onCreated={() => {
+          // Refrescar lista de autores para los filtros
+          listarAutores().then(a => setAutores(Array.isArray(a) ? a : []));
+        }}
+      />
+      
+      <CreateGenreModal 
+        isOpen={openGenreModal} 
+        onClose={() => setOpenGenreModal(false)}
+        onCreated={() => {
+          // Refrescar lista de géneros para los filtros
+          listarGeneros().then(g => setGeneros(Array.isArray(g) ? g : []));
         }}
       />
     </>

@@ -36,7 +36,9 @@ export async function crearCuentoPlano({ titulo, edad_publico, autor_id_autor, g
 }
 
 export async function listarCuentos(params = {}) {
+  console.log("API listarCuentos - params recibidos:", params);
   const { data } = await api.get("/cuentos", { params });
+  console.log("API listarCuentos - respuesta:", data);
   if (!data?.ok) throw new Error(data?.error || "Error listando cuentos");
   return data.data;
 }
