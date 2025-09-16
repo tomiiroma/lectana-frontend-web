@@ -19,10 +19,10 @@ export default function Actividades() {
         {/* Estadísticas de actividades */}
         <div className="stats-grid">
 
-              <CardStats icon={<FaClipboardList color="#ef4444"/>} number={"89"}label={"Total Actividades"}/>
-          <CardStats icon={<FaCheckCircle color="#ef4444"/>} number={"67"}label={"Estudiantes"}/>
-          <CardStats icon={<FaClock color="#ef4444"/>} number={"15"}label={"En Progreso"}/>
-          <CardStats icon={<FaChartBar color="#ef4444"/>} number={"8.4"}label={"Puntuación Media"}/>
+              <CardStats icon={<FaClipboardList color="#ef4444"/>} number={"89"} label={"Total Actividades"}/>
+          <CardStats icon={<FaCheckCircle color="#ef4444"/>} number={"67"} label={"Estudiantes"}/>
+          <CardStats icon={<FaClock color="#ef4444"/>} number={"15"} label={"En Progreso"}/>
+          <CardStats icon={<FaChartBar color="#ef4444"/>} number={"8.4"} label={"Puntuación Media"}/>
 
 
 

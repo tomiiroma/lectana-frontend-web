@@ -18,7 +18,7 @@ export default function Login() {
   useEffect(() => {
     if (token && user) {
       const from = location.state?.from?.pathname || "/admin";
-      navigate(from, { replace: true });
+      navigate(from, { replace: false });
     }
   }, [token, user, navigate, location]);
 
@@ -33,7 +33,7 @@ export default function Login() {
       if (result.success) {
         // Redirigir a la página desde donde vino o al admin
         const from = location.state?.from?.pathname || "/admin";
-        navigate(from, { replace: true });
+        navigate(from, { replace: false });
       } else {
         setError(result.message || "Error de autenticación");
       }

@@ -40,7 +40,30 @@ export async function listarCuentos(params = {}) {
   const { data } = await api.get("/cuentos", { params });
   console.log("API listarCuentos - respuesta:", data);
   if (!data?.ok) throw new Error(data?.error || "Error listando cuentos");
-  return data.data;
+  return data.data; // Retorna array de cuentos para usuarios.jsx
+}
+
+// Obtener todos los cuentos sin paginación (para ConfigureAulaModal)
+export async function obtenerTodosLosCuentos() {
+  try {
+    console.log("API obtenerTodosLosCuentos - llamando sin paginación");
+    const { data } = await api.get("/cuentos");
+    console.log("API obtenerTodosLosCuentos - respuesta:", data);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo cuentos");
+    }
+    
+    // Los cuentos pueden devolver estructura simple o con paginación
+    // Verificamos si tiene items o es array directo
+    const cuentosArray = data.data?.items || data.data || [];
+    console.log("API obtenerTodosLosCuentos - cuentos extraídos:", cuentosArray.length);
+    
+    return { ok: true, data: cuentosArray };
+  } catch (error) {
+    console.error("Error en obtenerTodosLosCuentos:", error);
+    throw error;
+  }
 }
 
 export async function obtenerCuentoPorId(id) {
