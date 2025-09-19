@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaTimes, FaArrowLeft, FaArrowRight, FaCheck, FaCalendarAlt, FaClipboardList, FaBook, FaUser, FaUsers } from 'react-icons/fa';
-import { crearActividad, asignarDocente, asignarActividadAulas } from '../../../api/actividades';
+import { FaTimes, FaArrowLeft, FaArrowRight, FaCheck, FaCalendarAlt, FaClipboardList, FaBook, FaUser, FaUsers, FaPlus } from 'react-icons/fa';
+import { crearActividadCompleta, asignarActividadAulas } from '../../../api/actividades';
 import { obtenerTodosLosCuentos } from '../../../api/cuentos';
-import { obtenerDocentes } from '../../../api/docentes';
 import { listarAulas } from '../../../api/aulas';
 import './CreateActividadWizard.css';
 
@@ -19,18 +18,25 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
     cuento_id_cuento: '' // REQUERIDO
   });
 
-  // Paso 2: Asignar docente
-  const [docenteId, setDocenteId] = useState('');
+  // Paso 2: Crear preguntas y respuestas
+  const [preguntas, setPreguntas] = useState([
+    {
+      enunciado: '',
+      respuestas: [
+        { texto: '', es_correcta: false },
+        { texto: '', es_correcta: false }
+      ]
+    }
+  ]);
 
   // Paso 3: Asignar aulas
   const [aulasIds, setAulasIds] = useState([]);
 
   // Datos para los dropdowns
   const [cuentos, setCuentos] = useState([]);
-  const [docentes, setDocentes] = useState([]);
   const [aulas, setAulas] = useState([]);
 
-  // ID de la actividad creada (para el paso 2)
+  // ID de la actividad creada (para el paso 3)
   const [actividadId, setActividadId] = useState(null);
 
   useEffect(() => {
@@ -48,7 +54,15 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
       fecha_entrega: '',
       cuento_id_cuento: ''
     });
-    setDocenteId('');
+    setPreguntas([
+      {
+        enunciado: '',
+        respuestas: [
+          { texto: '', es_correcta: false },
+          { texto: '', es_correcta: false }
+        ]
+      }
+    ]);
     setAulasIds([]);
     setActividadId(null);
     setErrors({});
@@ -56,14 +70,12 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
 
   const cargarDatos = async () => {
     try {
-      const [cuentosData, docentesData, aulasData] = await Promise.all([
+      const [cuentosData, aulasData] = await Promise.all([
         obtenerTodosLosCuentos(),
-        obtenerDocentes(),
         listarAulas()
       ]);
 
       setCuentos(cuentosData.data || []);
-      setDocentes(docentesData.docentes || []);
       setAulas(aulasData || []); // listarAulas() retorna directamente el array
     } catch (error) {
       console.error('Error cargando datos:', error);
@@ -86,8 +98,66 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
     }
   };
 
-  const handleDocenteChange = (e) => {
-    setDocenteId(e.target.value);
+  // Funciones para manejar preguntas y respuestas
+  const handlePreguntaChange = (preguntaIndex, field, value) => {
+    setPreguntas(prev => prev.map((pregunta, index) => 
+      index === preguntaIndex 
+        ? { ...pregunta, [field]: value }
+        : pregunta
+    ));
+  };
+
+  const handleRespuestaChange = (preguntaIndex, respuestaIndex, field, value) => {
+    setPreguntas(prev => prev.map((pregunta, index) => 
+      index === preguntaIndex 
+        ? {
+            ...pregunta,
+            respuestas: pregunta.respuestas.map((respuesta, respIndex) => 
+              respIndex === respuestaIndex 
+                ? { ...respuesta, [field]: value }
+                : respuesta
+            )
+          }
+        : pregunta
+    ));
+  };
+
+  const addPregunta = () => {
+    setPreguntas(prev => [...prev, {
+      enunciado: '',
+      respuestas: [
+        { texto: '', es_correcta: false },
+        { texto: '', es_correcta: false }
+      ]
+    }]);
+  };
+
+  const removePregunta = (preguntaIndex) => {
+    if (preguntas.length > 1) {
+      setPreguntas(prev => prev.filter((_, index) => index !== preguntaIndex));
+    }
+  };
+
+  const addRespuesta = (preguntaIndex) => {
+    setPreguntas(prev => prev.map((pregunta, index) => 
+      index === preguntaIndex 
+        ? {
+            ...pregunta,
+            respuestas: [...pregunta.respuestas, { texto: '', es_correcta: false }]
+          }
+        : pregunta
+    ));
+  };
+
+  const removeRespuesta = (preguntaIndex, respuestaIndex) => {
+    setPreguntas(prev => prev.map((pregunta, index) => 
+      index === preguntaIndex 
+        ? {
+            ...pregunta,
+            respuestas: pregunta.respuestas.filter((_, respIndex) => respIndex !== respuestaIndex)
+          }
+        : pregunta
+    ));
   };
 
   const handleAulaToggle = (aulaId) => {
@@ -122,13 +192,56 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
   };
 
   const validateStep2 = () => {
-    // Paso 2 es opcional, no requiere validación
-    return true;
-  };
+    const newErrors = {};
 
-  const validateStep3 = () => {
-    // Paso 3 es opcional, no requiere validación
-    return true;
+    // Validar que haya al menos una pregunta
+    if (preguntas.length === 0) {
+      newErrors.preguntas = 'Debe crear al menos una pregunta';
+      setErrors(newErrors);
+      return false;
+    }
+
+    // Validar cada pregunta
+    for (let i = 0; i < preguntas.length; i++) {
+      const pregunta = preguntas[i];
+      
+      if (!pregunta.enunciado.trim()) {
+        newErrors[`pregunta_${i}_enunciado`] = 'El enunciado de la pregunta es requerido';
+      }
+
+      // Validación diferenciada por tipo de actividad
+      if (actividadData.tipo === 'multiple_choice') {
+        // Para opción múltiple: respuestas obligatorias con al menos una correcta
+        if (pregunta.respuestas.length === 0) {
+          newErrors[`pregunta_${i}_respuestas`] = 'Las actividades de opción múltiple requieren respuestas';
+        } else if (pregunta.respuestas.length < 2) {
+          newErrors[`pregunta_${i}_respuestas`] = 'Debe tener al menos 2 respuestas';
+        } else {
+          const tieneRespuestaCorrecta = pregunta.respuestas.some(resp => resp.es_correcta);
+          if (!tieneRespuestaCorrecta) {
+            newErrors[`pregunta_${i}_correcta`] = 'Debe tener al menos una respuesta correcta';
+          }
+        }
+      } else if (actividadData.tipo === 'respuesta_abierta') {
+        // Para respuesta abierta: respuestas opcionales, solo ejemplos (es_correcta: false)
+        if (pregunta.respuestas.length > 0) {
+          const tieneRespuestaCorrecta = pregunta.respuestas.some(resp => resp.es_correcta);
+          if (tieneRespuestaCorrecta) {
+            newErrors[`pregunta_${i}_correcta`] = 'Las actividades de respuesta abierta no pueden tener respuestas correctas';
+          }
+        }
+      }
+
+      // Validar que todas las respuestas tengan texto
+      pregunta.respuestas.forEach((respuesta, respIndex) => {
+        if (!respuesta.texto.trim()) {
+          newErrors[`pregunta_${i}_respuesta_${respIndex}`] = 'El texto de la respuesta es requerido';
+        }
+      });
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleNext = async () => {
@@ -136,26 +249,11 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
       if (!validateStep1()) {
         return;
       }
-
-      setLoading(true);
-      try {
-        const data = {
-          descripcion: actividadData.descripcion,
-          tipo: actividadData.tipo,
-          fecha_entrega: actividadData.fecha_entrega || null,
-          cuento_id_cuento: parseInt(actividadData.cuento_id_cuento)
-        };
-
-        const response = await crearActividad(data);
-        setActividadId(response.actividad.id_actividad);
-        setCurrentStep(2);
-      } catch (error) {
-        console.error('Error creando actividad:', error);
-        setErrors({ submit: 'Error al crear la actividad. Inténtalo de nuevo.' });
-      } finally {
-        setLoading(false);
-      }
+      setCurrentStep(2);
     } else if (currentStep === 2) {
+      if (!validateStep2()) {
+        return;
+      }
       setCurrentStep(3);
     }
   };
@@ -163,14 +261,27 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
   const handleFinish = async () => {
     setLoading(true);
     try {
-      // Asignar docente si se seleccionó
-      if (docenteId) {
-        await asignarDocente(actividadId, parseInt(docenteId));
-      }
+      // Crear actividad completa con preguntas y respuestas
+      const data = {
+        fecha_entrega: actividadData.fecha_entrega || null,
+        descripcion: actividadData.descripcion,
+        tipo: actividadData.tipo,
+        cuento_id_cuento: parseInt(actividadData.cuento_id_cuento),
+        preguntas: preguntas.map(pregunta => ({
+          enunciado: pregunta.enunciado,
+          respuestas: pregunta.respuestas.map(respuesta => ({
+            respuesta: respuesta.texto,
+            es_correcta: respuesta.es_correcta
+          }))
+        }))
+      };
 
-      // Asignar aulas si se seleccionaron
+      const response = await crearActividadCompleta(data);
+      setActividadId(response.actividad.id_actividad);
+
+      // Asignar aulas si se seleccionaron (el docente se asigna automáticamente a través del aula)
       if (aulasIds.length > 0) {
-        await asignarActividadAulas(actividadId, aulasIds);
+        await asignarActividadAulas(response.actividad.id_actividad, aulasIds);
       }
 
       onSuccess();
@@ -218,7 +329,7 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
           </div>
           <div className={`step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
             <div className="step-number">2</div>
-            <div className="step-title">Asignar Docente</div>
+            <div className="step-title">Preguntas + Respuestas</div>
           </div>
           <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
             <div className="step-number">3</div>
@@ -312,42 +423,136 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
             </div>
           )}
 
-          {/* Paso 2: Asignar Docente */}
+          {/* Paso 2: Crear Preguntas y Respuestas */}
           {currentStep === 2 && (
             <div className="wizard-step">
               <h3 className="step-header">
-                <FaUser className="step-icon" />
-                Asignar Docente (Opcional)
+                <FaClipboardList className="step-icon" />
+                Crear Preguntas y Respuestas
               </h3>
               
               <div className="step-info">
+                <div className="tipo-indicator">
+                  <span className={`tipo-badge ${actividadData.tipo === 'multiple_choice' ? 'multiple-choice' : 'respuesta-abierta'}`}>
+                    {actividadData.tipo === 'multiple_choice' ? 'Opción Múltiple' : 'Respuesta Abierta'}
+                  </span>
+                </div>
                 <p className="info-text">
-                  La actividad ya fue creada con el cuento seleccionado. Ahora puedes asignar un docente responsable.
+                  {actividadData.tipo === 'multiple_choice' 
+                    ? 'Crea las preguntas y respuestas para tu actividad. Marca al menos una respuesta correcta por pregunta.'
+                    : 'Crea las preguntas para tu actividad. Las respuestas son opcionales y solo sirven como ejemplos.'
+                  }
                 </p>
               </div>
 
               <div className="form-layout">
-                <div className="form-group">
-                  <label htmlFor="docente_id_docente" className="form-label">
-                    <FaUser className="label-icon" />
-                    Docente Responsable
-                  </label>
-                  <select
-                    id="docente_id_docente"
-                    name="docente_id_docente"
-                    value={docenteId}
-                    onChange={handleDocenteChange}
-                    className="form-select"
+                {preguntas.map((pregunta, preguntaIndex) => (
+                  <div key={preguntaIndex} className="pregunta-container">
+                    <div className="pregunta-header">
+                      <h4 className="pregunta-title">Pregunta {preguntaIndex + 1}</h4>
+                      {preguntas.length > 1 && (
+                        <button 
+                          type="button" 
+                          className="btn-remove-pregunta"
+                          onClick={() => removePregunta(preguntaIndex)}
+                        >
+                          <FaTimes />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">
+                        <FaClipboardList className="label-icon" />
+                        Enunciado de la Pregunta *
+                      </label>
+                      <textarea
+                        value={pregunta.enunciado}
+                        onChange={(e) => handlePreguntaChange(preguntaIndex, 'enunciado', e.target.value)}
+                        className={`form-textarea ${errors[`pregunta_${preguntaIndex}_enunciado`] ? 'error' : ''}`}
+                        placeholder="Escribe la pregunta aquí..."
+                        rows="3"
+                      />
+                      {errors[`pregunta_${preguntaIndex}_enunciado`] && (
+                        <span className="error-message">{errors[`pregunta_${preguntaIndex}_enunciado`]}</span>
+                      )}
+                    </div>
+
+                    <div className="respuestas-container">
+                      <div className="respuestas-header">
+                        <label className="form-label">
+                          <FaCheck className="label-icon" />
+                          {actividadData.tipo === 'multiple_choice' ? 'Respuestas *' : 'Respuestas de Ejemplo (Opcional)'}
+                        </label>
+                        <button 
+                          type="button" 
+                          className="btn-add-respuesta"
+                          onClick={() => addRespuesta(preguntaIndex)}
+                        >
+                          <FaPlus /> {actividadData.tipo === 'multiple_choice' ? 'Agregar Respuesta' : 'Agregar Ejemplo'}
+                        </button>
+                      </div>
+
+                      {pregunta.respuestas.map((respuesta, respuestaIndex) => (
+                        <div key={respuestaIndex} className="respuesta-item">
+                          <div className="respuesta-input">
+                            <input
+                              type="text"
+                              value={respuesta.texto}
+                              onChange={(e) => handleRespuestaChange(preguntaIndex, respuestaIndex, 'texto', e.target.value)}
+                              className={`form-input ${errors[`pregunta_${preguntaIndex}_respuesta_${respuestaIndex}`] ? 'error' : ''}`}
+                              placeholder={`Respuesta ${respuestaIndex + 1}...`}
+                            />
+                            {pregunta.respuestas.length > 2 && (
+                              <button 
+                                type="button" 
+                                className="btn-remove-respuesta"
+                                onClick={() => removeRespuesta(preguntaIndex, respuestaIndex)}
+                              >
+                                <FaTimes />
+                              </button>
+                            )}
+                          </div>
+                          {actividadData.tipo === 'multiple_choice' && (
+                            <label className="checkbox-container">
+                              <input
+                                type="checkbox"
+                                checked={respuesta.es_correcta}
+                                onChange={(e) => handleRespuestaChange(preguntaIndex, respuestaIndex, 'es_correcta', e.target.checked)}
+                              />
+                              <span className="checkbox-label">Correcta</span>
+                            </label>
+                          )}
+                          {actividadData.tipo === 'respuesta_abierta' && (
+                            <span className="ejemplo-label">Ejemplo</span>
+                          )}
+                        </div>
+                      ))}
+
+                      {errors[`pregunta_${preguntaIndex}_respuestas`] && (
+                        <span className="error-message">{errors[`pregunta_${preguntaIndex}_respuestas`]}</span>
+                      )}
+                      {errors[`pregunta_${preguntaIndex}_correcta`] && (
+                        <span className="error-message">{errors[`pregunta_${preguntaIndex}_correcta`]}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="add-pregunta-container">
+                  <button 
+                    type="button" 
+                    className="btn-add-pregunta"
+                    onClick={addPregunta}
                   >
-                    <option value="">Seleccionar docente...</option>
-                    {docentes.map(docente => (
-                      <option key={docente.id_docente} value={docente.id_docente}>
-                        {docente.nombre} {docente.apellido}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="help-text">Puedes omitir este paso y asignar el docente más tarde.</p>
+                    <FaPlus className="btn-icon" />
+                    Agregar Pregunta
+                  </button>
                 </div>
+
+                {errors.preguntas && (
+                  <span className="error-message">{errors.preguntas}</span>
+                )}
               </div>
             </div>
           )}
@@ -362,7 +567,7 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
               
               <div className="step-info">
                 <p className="info-text">
-                  Selecciona las aulas donde estará disponible esta actividad.
+                  Selecciona las aulas donde estará disponible esta actividad. El docente se asignará automáticamente a través del aula.
                 </p>
               </div>
 
@@ -384,7 +589,7 @@ const CreateActividadWizard = ({ isOpen, onClose, onSuccess }) => {
                             {aulasIds.includes(aula.id_aula) && <FaCheck className="check-icon" />}
                           </div>
                           <div className="aula-info">
-                            <div className="aula-name">{aula.nombre}</div>
+                            <div className="aula-name">{aula.nombre_aula}</div>
                             <div className="aula-details">
                               <FaUsers className="aula-icon" />
                               {aula.capacidad || 'N/A'} estudiantes

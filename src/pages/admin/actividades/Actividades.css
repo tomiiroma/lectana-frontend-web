@@ -464,10 +464,26 @@
   color: var(--text-secondary);
   font-size: 14px;
   margin-bottom: 20px;
-  padding: 12px;
-  background: rgba(239, 68, 68, 0.1);
-  border-radius: 8px;
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 12px;
   border-left: 4px solid #ef4444;
+  max-width: 600px;
+  text-align: left;
+}
+
+.error-details p {
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+.error-details code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #dc2626;
 }
 
 .no-activities-info {
@@ -577,4 +593,17 @@
   background: rgba(16, 185, 129, 0.1);
   color: #059669;
   border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Indicadores diferenciados por tipo de actividad */
+.tipo-badge.multiple-choice {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.tipo-badge.respuesta-abierta {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }

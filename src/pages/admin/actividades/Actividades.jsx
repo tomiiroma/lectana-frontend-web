@@ -68,7 +68,9 @@ export default function Actividades() {
       console.error('Error cargando actividades:', error);
       
       // Distinguir entre diferentes tipos de errores
-      if (error.message && error.message.includes('Network Error')) {
+      if (error.message && error.message.includes('Error de base de datos')) {
+        setError(`Error de base de datos: ${error.message}. Nota: Este error parece ser del backend. Verifica que la base de datos tenga la estructura correcta.`);
+      } else if (error.message && error.message.includes('Network Error')) {
         setError('Error de conexión con el servidor. Verifica que el backend esté funcionando.');
       } else if (error.message && error.message.includes('500')) {
         setError('Error del servidor. Posiblemente no hay actividades creadas o hay un problema con la base de datos.');
@@ -86,13 +88,24 @@ export default function Actividades() {
   const filtrarActividades = () => {
     let filtradas = actividades;
 
-    // Filtrar por término de búsqueda
+    // Filtrar por término de búsqueda con la nueva estructura
     if (searchTerm) {
-      filtradas = filtradas.filter(actividad =>
-        actividad.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (actividad.cuento?.titulo && actividad.cuento.titulo.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (actividad.docente && `${actividad.docente.nombre} ${actividad.docente.apellido}`.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
+      filtradas = filtradas.filter(actividad => {
+        const descripcionMatch = actividad.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
+        const cuentoMatch = actividad.cuento?.titulo && actividad.cuento.titulo.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        // Buscar en docentes a través de las aulas
+        const docenteMatch = actividad.actividad_aula?.some(aa => {
+          const docente = aa.aula?.docente?.usuario;
+          if (docente) {
+            const nombreCompleto = `${docente.nombre} ${docente.apellido}`.toLowerCase();
+            return nombreCompleto.includes(searchTerm.toLowerCase());
+          }
+          return false;
+        });
+        
+        return descripcionMatch || cuentoMatch || docenteMatch;
+      });
     }
 
     // Filtrar por tipo
@@ -156,11 +169,11 @@ export default function Actividades() {
     setSelectedActividadId(null);
   };
 
-  // Calcular estadísticas
+  // Calcular estadísticas con la nueva estructura
   const estadisticas = {
     total: actividades.length,
     conCuento: actividades.filter(a => a.cuento_id_cuento).length,
-    conDocente: actividades.filter(a => a.docente_id_docente).length,
+    conDocente: actividades.filter(a => a.actividad_aula && a.actividad_aula.some(aa => aa.aula?.docente)).length,
     conAulas: actividades.filter(a => a.actividad_aula && a.actividad_aula.length > 0).length
   };
 
@@ -249,9 +262,12 @@ export default function Actividades() {
               </div>
             ) : (
               <>
-                <p className="error-details">
-                  <strong>Nota:</strong> Este error parece ser del backend. Verifica que la base de datos tenga la estructura correcta.
-                </p>
+                <div className="error-details">
+                  <p><strong>Posible causa:</strong> El backend tiene múltiples consultas SQL con problemas de estructura de base de datos.</p>
+                  <p><strong>Solución:</strong> El backend necesita corregir TODAS las consultas SQL en el servicio de actividades.</p>
+                  <p><strong>Detalles técnicos:</strong> <code>{error.includes('aula_2.nombre') ? 'column aula_2.nombre does not exist' : 'column docente_1.nombre does not exist'}</code></p>
+                  <p><strong>Estado:</strong> El backend corrigió el error de docente pero ahora hay un error similar con aulas.</p>
+                </div>
                 <div className="error-actions">
                   <button className="btn-retry" onClick={cargarActividades}>
                     Reintentar
@@ -331,8 +347,8 @@ export default function Actividades() {
                         <td>{actividad.actividad_aula?.length || 0}</td>
                         <td>{actividad.cuento?.titulo || 'Sin asignar'}</td>
                         <td>
-                          {actividad.docente 
-                            ? `${actividad.docente.nombre} ${actividad.docente.apellido}`
+                          {actividad.actividad_aula?.[0]?.aula?.docente?.usuario 
+                            ? `${actividad.actividad_aula[0].aula.docente.usuario.nombre} ${actividad.actividad_aula[0].aula.docente.usuario.apellido}`
                             : 'Sin asignar'
                           }
                         </td>

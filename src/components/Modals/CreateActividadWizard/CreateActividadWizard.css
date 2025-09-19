@@ -538,6 +538,236 @@
   background: #ef4444;
 }
 
+/* Estilos para preguntas y respuestas */
+.pregunta-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.pregunta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pregunta-title {
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-remove-pregunta {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-pregunta:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.respuestas-container {
+  margin-top: 16px;
+}
+
+.respuestas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.btn-add-respuesta {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-respuesta:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.respuesta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+}
+
+.respuesta-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.respuesta-input input {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.respuesta-input input:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.btn-remove-respuesta {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.btn-remove-respuesta:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ef4444;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-pregunta-container {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.btn-add-pregunta {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-pregunta:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Indicadores de tipo de actividad */
+.tipo-indicator {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.tipo-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tipo-badge.multiple-choice {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.tipo-badge.respuesta-abierta {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
+
+.ejemplo-label {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Estilos diferenciados para respuestas */
+.respuesta-item.multiple-choice {
+  border-left: 4px solid #10b981;
+}
+
+.respuesta-item.respuesta-abierta {
+  border-left: 4px solid #3b82f6;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkbox-label {
+  color: #10b981;
+  font-weight: 700;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .modal-overlay {
@@ -640,6 +870,37 @@
   
   .info-text {
     font-size: 13px;
+  }
+  
+  /* Responsive para preguntas */
+  .pregunta-container {
+    padding: 16px;
+  }
+  
+  .respuesta-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .respuesta-input {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .checkbox-container {
+    justify-content: center;
+  }
+  
+  .respuestas-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .btn-add-respuesta {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -799,6 +1060,29 @@
   .step.completed .step-title {
     color: #10b981;
   }
+  
+  /* Light mode para preguntas */
+  .pregunta-container {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .respuesta-item {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .respuesta-input input {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #1f2937;
+  }
+  
+  .respuesta-input input:focus {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
 }
 
 /* Dark mode adjustments */
@@ -892,5 +1176,28 @@
   
   .step.completed .step-title {
     color: #10b981;
+  }
+  
+  /* Dark mode para preguntas */
+  .pregunta-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .respuesta-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .respuesta-input input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #f9fafb;
+  }
+  
+  .respuesta-input input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
   }
 }

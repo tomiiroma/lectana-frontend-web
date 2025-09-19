@@ -1,6 +1,62 @@
 import api from './client';
 
-// Crear actividad con cuento (Paso 1)
+// Crear actividad completa con preguntas y respuestas (RECOMENDADO)
+export const crearActividadCompleta = async (actividadData) => {
+  try {
+    const response = await api.post('/actividades/completa', actividadData);
+    return response.data;
+  } catch (error) {
+    // Manejo específico de errores de validación diferenciada
+    if (error.response?.status === 400 && error.response?.data?.error) {
+      const errorMessage = error.response.data.error;
+      
+      // Errores específicos del backend para validaciones diferenciadas
+      if (errorMessage.includes('debe tener al menos una respuesta para actividades de opción múltiple')) {
+        throw new Error('Las actividades de opción múltiple requieren respuestas para todas las preguntas');
+      }
+      if (errorMessage.includes('debe tener al menos una respuesta correcta')) {
+        throw new Error('Cada pregunta debe tener al menos una respuesta correcta');
+      }
+      if (errorMessage.includes('no puede tener respuestas marcadas como correctas en actividades de respuesta abierta')) {
+        throw new Error('Las actividades de respuesta abierta no pueden tener respuestas correctas');
+      }
+      
+      throw new Error(errorMessage);
+    }
+    
+    throw error.response?.data || error;
+  }
+};
+
+// Editar actividad completa con preguntas y respuestas (RECOMENDADO)
+export const editarActividadCompleta = async (actividadId, actividadData) => {
+  try {
+    const response = await api.put(`/actividades/${actividadId}/completa`, actividadData);
+    return response.data;
+  } catch (error) {
+    // Manejo específico de errores de validación diferenciada
+    if (error.response?.status === 400 && error.response?.data?.error) {
+      const errorMessage = error.response.data.error;
+      
+      // Errores específicos del backend para validaciones diferenciadas
+      if (errorMessage.includes('debe tener al menos una respuesta para actividades de opción múltiple')) {
+        throw new Error('Las actividades de opción múltiple requieren respuestas para todas las preguntas');
+      }
+      if (errorMessage.includes('debe tener al menos una respuesta correcta')) {
+        throw new Error('Cada pregunta debe tener al menos una respuesta correcta');
+      }
+      if (errorMessage.includes('no puede tener respuestas marcadas como correctas en actividades de respuesta abierta')) {
+        throw new Error('Las actividades de respuesta abierta no pueden tener respuestas correctas');
+      }
+      
+      throw new Error(errorMessage);
+    }
+    
+    throw error.response?.data || error;
+  }
+};
+
+// Crear actividad básica (mantener para compatibilidad)
 export const crearActividad = async (actividadData) => {
   try {
     const response = await api.post('/actividades', actividadData);
@@ -87,17 +143,8 @@ export const eliminarActividad = async (actividadId) => {
   }
 };
 
-// Asignar docente a una actividad (Paso 2)
-export const asignarDocente = async (actividadId, docenteId) => {
-  try {
-    const response = await api.put(`/actividades/${actividadId}/docente`, {
-      docente_id_docente: docenteId
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
-};
+// NOTA: El endpoint de asignar docente fue eliminado del backend
+// Ahora el docente se asigna automáticamente a través del aula
 
 // Asignar actividad a múltiples aulas (Paso 3)
 export const asignarActividadAulas = async (actividadId, aulasIds) => {
@@ -141,21 +188,147 @@ export const obtenerActividadesDeAula = async (aulaId) => {
   }
 };
 
-// Función helper para crear actividad completa en un solo paso
-export const crearActividadCompleta = async (actividadData, cuentoId, docenteId, aulasIds) => {
+// Agregar pregunta individual a actividad existente (RECOMENDADO)
+export const agregarPreguntaAActividad = async (preguntaData) => {
+  try {
+    const response = await api.post('/preguntas/agregar', preguntaData);
+    return response.data;
+  } catch (error) {
+    // Manejo específico de errores de validación diferenciada
+    if (error.response?.status === 400 && error.response?.data?.error) {
+      const errorMessage = error.response.data.error;
+      
+      // Errores específicos del backend para validaciones diferenciadas
+      if (errorMessage.includes('debe tener al menos una respuesta para actividades de opción múltiple')) {
+        throw new Error('Las actividades de opción múltiple requieren respuestas para todas las preguntas');
+      }
+      if (errorMessage.includes('debe tener al menos una respuesta correcta')) {
+        throw new Error('Cada pregunta debe tener al menos una respuesta correcta');
+      }
+      if (errorMessage.includes('no puede tener respuestas marcadas como correctas en actividades de respuesta abierta')) {
+        throw new Error('Las actividades de respuesta abierta no pueden tener respuestas correctas');
+      }
+      
+      throw new Error(errorMessage);
+    }
+    
+    throw error.response?.data || error;
+  }
+};
+
+// Editar pregunta completa con respuestas (RECOMENDADO)
+export const editarPreguntaCompleta = async (preguntaId, preguntaData) => {
+  try {
+    const response = await api.put(`/preguntas/${preguntaId}/completa`, preguntaData);
+    return response.data;
+  } catch (error) {
+    // Manejo específico de errores de validación diferenciada
+    if (error.response?.status === 400 && error.response?.data?.error) {
+      const errorMessage = error.response.data.error;
+      
+      // Errores específicos del backend para validaciones diferenciadas
+      if (errorMessage.includes('debe tener al menos una respuesta para actividades de opción múltiple')) {
+        throw new Error('Las actividades de opción múltiple requieren respuestas para todas las preguntas');
+      }
+      if (errorMessage.includes('debe tener al menos una respuesta correcta')) {
+        throw new Error('Cada pregunta debe tener al menos una respuesta correcta');
+      }
+      if (errorMessage.includes('no puede tener respuestas marcadas como correctas en actividades de respuesta abierta')) {
+        throw new Error('Las actividades de respuesta abierta no pueden tener respuestas correctas');
+      }
+      
+      throw new Error(errorMessage);
+    }
+    
+    throw error.response?.data || error;
+  }
+};
+
+// Editar solo enunciado de pregunta
+export const editarPregunta = async (preguntaId, preguntaData) => {
+  try {
+    const response = await api.put(`/preguntas/${preguntaId}`, preguntaData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Eliminar pregunta individual
+export const eliminarPregunta = async (preguntaId) => {
+  try {
+    const response = await api.delete(`/preguntas/${preguntaId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Eliminar todas las preguntas de una actividad
+export const eliminarTodasLasPreguntas = async (actividadId) => {
+  try {
+    const response = await api.delete(`/preguntas/actividad/${actividadId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Crear múltiples preguntas para una actividad (LEGACY)
+export const crearPreguntas = async (preguntasData) => {
+  try {
+    const response = await api.post('/preguntas/multiple', preguntasData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Crear múltiples respuestas para una pregunta
+export const crearRespuestas = async (respuestasData) => {
+  try {
+    const response = await api.post('/respuestas/multiple', respuestasData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Obtener preguntas de una actividad
+export const obtenerPreguntasActividad = async (actividadId) => {
+  try {
+    const response = await api.get(`/preguntas/actividad/${actividadId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Obtener respuestas de una pregunta
+export const obtenerRespuestasPregunta = async (preguntaId) => {
+  try {
+    const response = await api.get(`/respuestas/pregunta/${preguntaId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Función helper para crear actividad completa en un solo paso (LEGACY - usar crearActividadCompleta)
+export const crearActividadCompletaLegacy = async (actividadData, cuentoId, aulasIds) => {
   try {
     // 1. Crear actividad básica
     const actividadBasica = await crearActividadBasica(actividadData);
     
-    // 2. Asignar cuento y docente si se proporcionan
-    if (cuentoId || docenteId) {
+    // 2. Asignar cuento si se proporciona
+    if (cuentoId) {
       await asignarCuentoDocente(actividadBasica.actividad.id_actividad, {
         cuento_id_cuento: cuentoId,
-        docente_id_docente: docenteId
+        docente_id_docente: null // Ya no se asigna docente directamente
       });
     }
     
-    // 3. Asignar a aulas si se proporcionan
+    // 3. Asignar a aulas si se proporcionan (el docente se asigna automáticamente a través del aula)
     if (aulasIds && aulasIds.length > 0) {
       await asignarActividadAulas(actividadBasica.actividad.id_actividad, aulasIds);
     }

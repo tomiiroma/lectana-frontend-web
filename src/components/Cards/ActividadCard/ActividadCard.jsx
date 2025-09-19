@@ -152,8 +152,8 @@ const ActividadCard = ({
         <div className="assignment-item">
           <FaUser className="assignment-icon" />
           <span className="assignment-text">
-            {actividad.docente 
-              ? `${actividad.docente.nombre} ${actividad.docente.apellido}`
+            {actividad.actividad_aula?.[0]?.aula?.docente?.usuario 
+              ? `${actividad.actividad_aula[0].aula.docente.usuario.nombre} ${actividad.actividad_aula[0].aula.docente.usuario.apellido}`
               : 'Sin docente'
             }
           </span>
