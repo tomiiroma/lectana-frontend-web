@@ -93,9 +93,10 @@ function AulasCard({ aula, onView, onEdit }) {
   
   // Determinar clase CSS según porcentaje
   const getProgressClass = () => {
-    if (configPercentage <= 40) return 'progress-low';
-    if (configPercentage <= 70) return 'progress-medium';
-    return 'progress-high';
+    if (configPercentage <= 30) return 'progress-low';
+    if (configPercentage <= 60) return 'progress-medium';
+    if (configPercentage <= 90) return 'progress-high';
+    return 'progress-complete';
   };
   
   return (
@@ -126,7 +127,7 @@ function AulasCard({ aula, onView, onEdit }) {
           </div>
         </div>
         
-        <div className="aula-progress">
+        <div className={`aula-progress ${getProgressClass()}`}>
           <div className="progress-label">
             Configuración
             {loadingCompleta && <span className="loading-indicator">⏳</span>}

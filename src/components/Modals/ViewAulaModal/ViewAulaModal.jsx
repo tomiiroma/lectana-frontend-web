@@ -50,11 +50,11 @@ function ViewAulaModal({ isOpen, onClose, aulaId }) {
 
   return (
     <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-content view-aula-modal" onClick={(e) => e.stopPropagation()}>
+      <div id="view-aula-modal-unique" className="modal-content view-aula-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>🏫 Detalles del Aula</h2>
           <button className="modal-close" onClick={handleClose} disabled={loading}>
-            ×
+            ✕
           </button>
         </div>
 
@@ -74,121 +74,97 @@ function ViewAulaModal({ isOpen, onClose, aulaId }) {
             </div>
           ) : aula ? (
             <div className="aula-details">
-              {/* Información básica */}
-              <div className="detail-section">
-                <h3>Información General</h3>
-                <div className="detail-grid">
-                  <div className="detail-item">
+              {/* Información General */}
+              <div className="info-section">
+                <h3>📋 Información General</h3>
+                <div className="info-grid aula-modal-info-grid">
+                  <div className="info-item">
                     <label>Nombre:</label>
                     <span>{aula.nombre_aula || "No especificado"}</span>
                   </div>
-                  <div className="detail-item">
+                  <div className="info-item">
                     <label>Grado:</label>
                     <span>{aula.grado || "No especificado"}</span>
                   </div>
-                  <div className="detail-item">
+                  <div className="info-item">
                     <label>Código de Acceso:</label>
-                    <span className="code-badge">{aula.codigo_acceso || "No generado"}</span>
+                    <input type="text" value={aula.codigo_acceso || "No generado"} readOnly className="code-input" />
                   </div>
-                  <div className="detail-item">
+                  <div className="info-item">
                     <label>Docente Asignado:</label>
-                    <span className={`status-badge ${aula.docente ? 'status-assigned' : 'status-unassigned'}`}>
-                      {aula.docente ? 
-                        `${aula.docente.usuario?.nombre || 'Docente'} ${aula.docente.usuario?.apellido || ''}` : 
-                        "Sin asignar"
-                      }
-                    </span>
+                    <input type="text" value={aula.docente ? `${aula.docente.usuario?.nombre || 'Docente'} ${aula.docente.usuario?.apellido || ''}` : "Sin asignar"} readOnly className="teacher-input" />
                   </div>
                 </div>
               </div>
-
 
               {/* Estadísticas */}
-              <div className="detail-section">
-                <h3>Estadísticas</h3>
-                <div className="stats-grid">
-                  <div className="stat-item">
+              <div className="stats-section">
+                <h3>📊 Estadísticas</h3>
+                <div className="stats-cards">
+                  <div className="stat-card">
                     <div className="stat-icon">👨‍🏫</div>
-                    <div className="stat-content">
-                      <div className="stat-number">{aula.docente ? 1 : 0}</div>
-                      <div className="stat-label">Docente</div>
-                    </div>
+                    <div className="stat-number">{aula.docente ? 1 : 0}</div>
+                    <div className="stat-label">Docente</div>
                   </div>
-                  <div className="stat-item">
+                  <div className="stat-card">
                     <div className="stat-icon">👨‍🎓</div>
-                    <div className="stat-content">
-                      <div className="stat-number">{aula.total_estudiantes || 0}</div>
-                      <div className="stat-label">Estudiantes</div>
-                    </div>
+                    <div className="stat-number">{aula.total_estudiantes || 0}</div>
+                    <div className="stat-label">Estudiantes</div>
                   </div>
-                  <div className="stat-item">
+                  <div className="stat-card">
                     <div className="stat-icon">📚</div>
-                    <div className="stat-content">
-                      <div className="stat-number">{aula.total_cuentos || 0}</div>
-                      <div className="stat-label">Cuentos</div>
-                    </div>
+                    <div className="stat-number">{aula.total_cuentos || 0}</div>
+                    <div className="stat-label">Cuentos</div>
                   </div>
                 </div>
               </div>
 
-              {/* Lista de estudiantes */}
-              <div className="detail-section">
-                <h3>Estudiantes Asignados ({aula.total_estudiantes || 0})</h3>
+              {/* Estudiantes */}
+              <div className="students-section">
+                <h3>👨‍🎓 Estudiantes Asignados ({aula.total_estudiantes || 0})</h3>
                 {aula.estudiantes && aula.estudiantes.length > 0 ? (
-                  <div className="list-container">
-                    {aula.estudiantes.slice(0, 10).map((estudiante, index) => (
-                      <div key={estudiante.id || index} className="list-item">
-                        <div className="item-icon">👨‍🎓</div>
-                        <div className="item-content">
-                          <div className="item-name">
+                  <div className="students-list">
+                    {aula.estudiantes.map((estudiante, index) => (
+                      <div key={estudiante.id || index} className="student-item">
+                        <div className="student-icon">👨‍🎓</div>
+                        <div className="student-info">
+                          <div className="student-name">
                             {estudiante.usuario?.nombre || 'Sin nombre'} {estudiante.usuario?.apellido || 'Sin apellido'}
                           </div>
-                          <div className="item-email">{estudiante.usuario?.email || 'Sin email'}</div>
+                          <div className="student-email">{estudiante.usuario?.email || 'Sin email'}</div>
                         </div>
                       </div>
                     ))}
-                    {aula.estudiantes.length > 10 && (
-                      <div className="more-items">
-                        ... y {aula.estudiantes.length - 10} estudiantes más
-                      </div>
-                    )}
                   </div>
                 ) : (
-                  <div className="empty-state">
+                  <div className="empty-students">
                     <div className="empty-icon">👨‍🎓</div>
                     <p>No hay estudiantes asignados a este aula</p>
-                    <small>Usa "Editar" para asignar estudiantes</small>
                   </div>
                 )}
               </div>
 
-              {/* Lista de cuentos */}
-              <div className="detail-section">
-                <h3>Cuentos Asignados ({aula.total_cuentos || 0})</h3>
+              {/* Cuentos */}
+              <div className="cuentos-section">
+                <h3>📚 Cuentos Asignados ({aula.total_cuentos || 0})</h3>
                 {aula.cuentos && aula.cuentos.length > 0 ? (
-                  <div className="list-container">
-                    {aula.cuentos.slice(0, 10).map((cuento, index) => (
-                      <div key={cuento.id || index} className="list-item">
-                        <div className="item-icon">📚</div>
-                        <div className="item-content">
-                          <div className="item-name">{cuento.titulo}</div>
-                          <div className="item-detail">
+                  <div className="cuentos-list">
+                    {aula.cuentos.map((cuento, index) => (
+                      <div key={cuento.id || index} className="cuento-item">
+                        <div className="cuento-icon">📚</div>
+                        <div className="cuento-info">
+                          <div className="cuento-title">{cuento.titulo}</div>
+                          <div className="cuento-details">
                             Edad: {cuento.edad_publico} años | Autor: {cuento.autor?.nombre || 'Sin autor'} {cuento.autor?.apellido || ''} | Género: {cuento.genero?.nombre || 'Sin género'}
                           </div>
                         </div>
                       </div>
                     ))}
-                    {aula.cuentos.length > 10 && (
-                      <div className="more-items">
-                        ... y {aula.cuentos.length - 10} cuentos más
-                      </div>
-                    )}
                   </div>
                 ) : (
-                  <div className="empty-state">
+                  <div className="empty-cuentos">
                     <div className="empty-icon">📚</div>
                     <p>No hay cuentos asignados a este aula</p>
-                    <small>Usa "Editar" para asignar cuentos</small>
                   </div>
                 )}
               </div>
