@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import "../AdminPages.css";
 import "./Perfil.css";
 import { FaSave, FaEdit, FaKey, FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaShieldAlt, FaBell, FaPalette, FaLanguage, FaClock, FaUserShield, FaIdCard, FaCrown, FaUserCheck, FaSpinner } from "react-icons/fa";
-import { obtenerPerfilAdministradorDesdeContext } from '../../../api/perfil';
 import { useAuth } from '../../../auth/AuthContext';
-import EditarPerfilModal from '../../../components/Modals/EditarPerfilModal/EditarPerfilModal';
+import { obtenerPerfilAdministrador } from '../../../api/administradores';
+import EditarPerfilModalSimplificado from '../../../components/Modals/EditarPerfilModal/EditarPerfilModalSimplificado';
 
-export default function Perfil() {
+export default function PerfilSimplificado() {
   const { user } = useAuth();
+  const [showEditModal, setShowEditModal] = useState(false);
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [showEditModal, setShowEditModal] = useState(false);
 
   // Cargar perfil al montar el componente
   useEffect(() => {
     cargarPerfil();
-  }, [user]);
+  }, []);
 
   const cargarPerfil = async () => {
     try {
@@ -27,7 +27,9 @@ export default function Perfil() {
         throw new Error('No hay usuario autenticado');
       }
       
-      const data = await obtenerPerfilAdministradorDesdeContext(user);
+      const data = await obtenerPerfilAdministrador();
+      console.log('🔍 Datos del perfil recibidos:', data);
+      console.log('🔍 Estado activo del usuario:', data.usuario?.activo);
       setPerfil(data);
     } catch (err) {
       console.error('Error cargando perfil:', err);
@@ -37,9 +39,6 @@ export default function Perfil() {
     }
   };
 
-  const handlePerfilActualizado = () => {
-    cargarPerfil(); // Recargar perfil después de actualizar
-  };
   if (loading) {
     return (
       <>
@@ -244,12 +243,10 @@ export default function Perfil() {
       </div>
 
       {/* Modal de Edición */}
-      <EditarPerfilModal 
+      <EditarPerfilModalSimplificado 
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
       />
     </>
   );
 }
-
-

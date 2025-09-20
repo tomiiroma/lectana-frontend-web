@@ -140,3 +140,70 @@ export async function actualizarAdministradorAdmin(id, datosActualizacion) {
     throw error;
   }
 }
+
+// ===== FUNCIONES PARA PERFIL DE ADMINISTRADOR =====
+
+// Obtener perfil del administrador autenticado
+export async function obtenerPerfilAdministrador() {
+  try {
+    console.log('🔄 Obteniendo perfil del administrador autenticado...');
+    
+    const { data } = await api.get('/administrador/obtener-perfil-administrador');
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo perfil del administrador");
+    }
+    
+    console.log('✅ Perfil del administrador obtenido:', data.data);
+    console.log('🔍 Usuario dentro del perfil:', data.data.usuario);
+    console.log('🔍 Campo activo del usuario:', data.data.usuario?.activo);
+    return data.data; // Retorna { id_administrador, dni, usuario_id_usuario, usuario: {...} }
+  } catch (error) {
+    console.error("❌ Error en obtenerPerfilAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    throw error;
+  }
+}
+
+// Actualizar perfil del administrador autenticado
+export async function actualizarPerfilAdministrador(datosActualizacion) {
+  try {
+    console.log('🔄 Actualizando perfil del administrador con datos:', datosActualizacion);
+    
+    const { data } = await api.put('/administrador/actualizar-perfil-administrador', datosActualizacion);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error actualizando perfil del administrador");
+    }
+    
+    console.log('✅ Perfil del administrador actualizado:', data.data);
+    return data.data;
+  } catch (error) {
+    console.error("❌ Error en actualizarPerfilAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    throw error;
+  }
+}
+
+// Cambiar contraseña del administrador autenticado
+export async function cambiarContrasenaAdministrador(datosContrasena) {
+  try {
+    console.log('🔄 Cambiando contraseña del administrador...');
+    
+    const { data } = await api.put('/administrador/cambiar-contrasena-administrador', datosContrasena);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error cambiando contraseña");
+    }
+    
+    console.log('✅ Contraseña cambiada exitosamente');
+    return data.data;
+  } catch (error) {
+    console.error("❌ Error en cambiarContrasenaAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    throw error;
+  }
+}
