@@ -99,10 +99,22 @@ const EditarPerfilModalSimplificado = ({ isOpen, onClose }) => {
           }
         } else {
           if (formData[key] !== perfil.usuario[key]) {
-            cambios[key] = formData[key];
+            // Convertir edad a número si es necesario
+            if (key === 'edad') {
+              cambios[key] = parseInt(formData[key]);
+            } else {
+              cambios[key] = formData[key];
+            }
           }
         }
       });
+
+      console.log('🔍 Datos del formulario:', formData);
+      console.log('🔍 Perfil actual:', perfil);
+      console.log('🔍 Cambios detectados:', cambios);
+      console.log('🔍 Valor específico de edad:', formData.edad, 'Tipo:', typeof formData.edad);
+      console.log('🔍 Valor original de edad:', perfil.usuario.edad, 'Tipo:', typeof perfil.usuario.edad);
+      console.log('🔍 Edad convertida a número:', cambios.edad, 'Tipo:', typeof cambios.edad);
 
       if (Object.keys(cambios).length === 0) {
         setError('No hay cambios para guardar');

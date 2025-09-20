@@ -170,6 +170,8 @@ export async function obtenerPerfilAdministrador() {
 export async function actualizarPerfilAdministrador(datosActualizacion) {
   try {
     console.log('🔄 Actualizando perfil del administrador con datos:', datosActualizacion);
+    console.log('🔍 Tipo de datos enviados:', typeof datosActualizacion);
+    console.log('🔍 Campos específicos:', Object.keys(datosActualizacion));
     
     const { data } = await api.put('/administrador/actualizar-perfil-administrador', datosActualizacion);
     
@@ -183,6 +185,16 @@ export async function actualizarPerfilAdministrador(datosActualizacion) {
     console.error("❌ Error en actualizarPerfilAdministrador:", error);
     console.error("❌ Status:", error.response?.status);
     console.error("❌ Error data:", error.response?.data);
+    console.error("❌ Error completo:", error.response?.data?.detalles);
+    console.error("❌ Field Errors:", error.response?.data?.detalles?.fieldErrors);
+    console.error("❌ Form Errors:", error.response?.data?.detalles?.formErrors);
+    
+    // Mostrar errores específicos de cada campo
+    if (error.response?.data?.detalles?.fieldErrors) {
+      Object.keys(error.response.data.detalles.fieldErrors).forEach(field => {
+        console.error(`❌ Error en campo ${field}:`, error.response.data.detalles.fieldErrors[field]);
+      });
+    }
     throw error;
   }
 }
