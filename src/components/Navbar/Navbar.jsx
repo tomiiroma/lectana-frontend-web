@@ -103,6 +103,15 @@ function Navbar() {
 
         {/* User Section */}
         <div className="header-actions">
+          {/* Botón de modo noche siempre visible */}
+          <button 
+            onClick={toggleTheme}
+            className="theme-toggle-button"
+            title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+          >
+            {isDark ? <FaSun /> : <FaMoon />}
+          </button>
+
           {token && user ? (
             // Usuario logueado
             <div className="user-menu-container">
@@ -153,13 +162,6 @@ function Navbar() {
           ) : (
             // Usuario no logueado
             <div className="auth-buttons">
-              <button 
-                onClick={toggleTheme}
-                className="theme-toggle-button"
-                title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
-              >
-                {isDark ? <FaSun /> : <FaMoon />}
-              </button>
               <Link to="/login" className="login-button">
                 <FaSignInAlt />
                 <span>Iniciar Sesión</span>

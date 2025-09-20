@@ -11,7 +11,7 @@ import CuentoDetalle from "./pages/admin/cuentos/CuentoDetalle.jsx";
 import Usuarios from "./pages/admin/usuarios/Usuarios.jsx";
 import Aulas from "./pages/admin/aulas/Aulas.jsx";
 import Actividades from "./pages/admin/actividades/Actividades.jsx";
-import Perfil from "./pages/admin/perfil/Perfil.jsx";
+import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
 
 function withProviders(element) {
   return (

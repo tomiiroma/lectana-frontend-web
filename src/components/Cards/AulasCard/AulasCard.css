@@ -184,15 +184,19 @@
 
 /* Colores de progreso según porcentaje */
 .progress-fill.progress-low {
-  background: #ef4444; /* Rojo para configuración baja (0-40%) */
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important; /* Rojo para configuración baja (0-30%) */
 }
 
 .progress-fill.progress-medium {
-  background: #f59e0b; /* Naranja para configuración media (41-70%) */
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important; /* Naranja para configuración media (31-60%) */
 }
 
 .progress-fill.progress-high {
-  background: #10b981; /* Verde para configuración alta (71-100%) */
+  background: linear-gradient(90deg, #10b981, #059669) !important; /* Verde para configuración alta (61-90%) */
+}
+
+.progress-fill.progress-complete {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed) !important; /* Púrpura para configuración completa (91-100%) */
 }
 
 .progress-text {
@@ -200,6 +204,23 @@
   color: var(--primary-color);
   font-weight: 600;
   margin-top: 4px;
+}
+
+/* Colores dinámicos para texto de porcentaje */
+.aula-progress.progress-low .progress-text {
+  color: #ef4444 !important;
+}
+
+.aula-progress.progress-medium .progress-text {
+  color: #f59e0b !important;
+}
+
+.aula-progress.progress-high .progress-text {
+  color: #10b981 !important;
+}
+
+.aula-progress.progress-complete .progress-text {
+  color: #8b5cf6 !important;
 }
 
 /* ACCIONES - DISEÑO MEJORADO */

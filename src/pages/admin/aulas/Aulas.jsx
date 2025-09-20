@@ -9,7 +9,7 @@ import ViewAulaModal from "../../../components/Modals/ViewAulaModal/ViewAulaModa
 import EditAulaModal from "../../../components/Modals/EditAulaModal/EditAulaModal";
 import { gradients } from "../../../styles/Gradients";
 import { statusStyles } from "../../../styles/statusStyle";
-import { listarAulas, obtenerEstadisticasAulas } from "../../../api/aulas";
+import { listarAulas, obtenerEstadisticasAulas, obtenerAulaPorId } from "../../../api/aulas";
 import { obtenerEstadisticasUsuarios } from "../../../api/administradores";
 import { useApiRequest } from "../../../hooks/useApiRequest";
 import "../AdminPages.css";
@@ -56,7 +56,26 @@ export default function Aulas() {
       const aulasData = await listarAulas();
       console.log("Aulas cargadas:", aulasData);
       console.log("Primera aula (ejemplo):", aulasData[0]);
-      setAulas(aulasData || []);
+      
+      // Si hay aulas, obtener datos completos para cada una
+      if (aulasData && aulasData.length > 0) {
+        console.log("Obteniendo datos completos para cada aula...");
+        const aulasCompletas = await Promise.all(
+          aulasData.map(async (aula) => {
+            try {
+              const aulaCompleta = await obtenerAulaPorId(aula.id_aula);
+              return aulaCompleta || aula;
+            } catch (error) {
+              console.warn(`Error obteniendo datos completos del aula ${aula.id_aula}:`, error);
+              return aula; // Usar datos básicos si falla
+            }
+          })
+        );
+        console.log("Aulas completas obtenidas:", aulasCompletas);
+        setAulas(aulasCompletas);
+      } else {
+        setAulas([]);
+      }
     } catch (error) {
       console.error("Error cargando aulas:", error);
       
@@ -253,61 +272,95 @@ export default function Aulas() {
                   </td>
                 </tr>
               ) : (
-                aulas.map((aula) => (
-                  <tr key={aula.id_aula}>
-                    <td>
-                      <div className="aula-info">
-                        <div className="aula-icon">🏫</div>
-                        <div>
-                          <div className="aula-name">{aula.nombre_aula || "Sin nombre"}</div>
-                          <div className="aula-code">{aula.codigo_acceso || `AULA-${aula.id_aula}`}</div>
+                aulas.map((aula) => {
+                  // Calcular progreso basado en los datos disponibles
+                  const calcularProgreso = () => {
+                    let progreso = 0;
+                    
+                    // Docente asignado: 40%
+                    if (aula.docente_id_docente) {
+                      progreso += 40;
+                    }
+                    
+                    // Estudiantes asignados: 30%
+                    if (aula.total_estudiantes && aula.total_estudiantes > 0) {
+                      progreso += 30;
+                    }
+                    
+                    // Cuentos asignados: 30%
+                    if (aula.total_cuentos && aula.total_cuentos > 0) {
+                      progreso += 30;
+                    }
+                    
+                    return Math.min(progreso, 100);
+                  };
+                  
+                  const progreso = calcularProgreso();
+                  
+                  // Determinar clase CSS según porcentaje
+                  const getProgressClass = () => {
+                    if (progreso <= 30) return 'progress-low';
+                    if (progreso <= 60) return 'progress-medium';
+                    if (progreso <= 90) return 'progress-high';
+                    return 'progress-complete';
+                  };
+                  
+                  return (
+                    <tr key={aula.id_aula}>
+                      <td>
+                        <div className="aula-info">
+                          <div className="aula-icon">🏫</div>
+                          <div>
+                            <div className="aula-name">{aula.nombre_aula || "Sin nombre"}</div>
+                            <div className="aula-code">{aula.codigo_acceso || `AULA-${aula.id_aula}`}</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>{aula.grado || "Sin grado"}</td>
-                    <td>
-                      {aula.docente_id_docente ? 
-                        `${aula.docente?.nombre || 'Docente'} ${aula.docente?.apellido || ''}` : 
-                        "Sin asignar"
-                      }
-                    </td>
-                    <td>{aula.total_estudiantes || 0}</td>
-                    <td>
-                      <div className="mini-progress">
-                        <div className="mini-progress-bar">
-                          <div 
-                            className="mini-progress-fill" 
-                            style={{width: `${aula.progreso || 0}%`}}
-                          ></div>
+                      </td>
+                      <td>{aula.grado || "Sin grado"}</td>
+                      <td>
+                        {aula.docente_id_docente ? 
+                          `${aula.docente?.nombre || 'Docente'} ${aula.docente?.apellido || ''}` : 
+                          "Sin asignar"
+                        }
+                      </td>
+                      <td>{aula.total_estudiantes || 0}</td>
+                      <td>
+                        <div className={`mini-progress ${getProgressClass()}`}>
+                          <div className="mini-progress-bar">
+                            <div 
+                              className={`mini-progress-fill ${getProgressClass()}`}
+                              style={{width: `${progreso}%`}}
+                            ></div>
+                          </div>
+                          <span>{progreso}%</span>
                         </div>
-                        <span>{aula.progreso || 0}%</span>
-                      </div>
-                    </td>
-                    <td>
-                      <span className={`status-badge ${aula.docente_id_docente ? 'status-assigned' : 'status-unassigned'}`}>
-                        {aula.docente_id_docente ? 'Con Docente' : 'Sin Docente'}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="action-buttons">
-                        <button 
-                          className="btn-action btn-view" 
-                          title="Ver"
-                          onClick={() => handleViewAula(aula.id_aula)}
-                        >
-                          <FaEye />
-                        </button>
-                        <button 
-                          className="btn-action btn-edit" 
-                          title="Editar"
-                          onClick={() => handleEditAula(aula.id_aula)}
-                        >
-                          <FaEdit />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td>
+                        <span className={`status-badge ${aula.docente_id_docente ? 'status-assigned' : 'status-unassigned'}`}>
+                          {aula.docente_id_docente ? 'Con Docente' : 'Sin Docente'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="action-buttons">
+                          <button 
+                            className="btn-action btn-view" 
+                            title="Ver"
+                            onClick={() => handleViewAula(aula.id_aula)}
+                          >
+                            <FaEye />
+                          </button>
+                          <button 
+                            className="btn-action btn-edit" 
+                            title="Editar"
+                            onClick={() => handleEditAula(aula.id_aula)}
+                          >
+                            <FaEdit />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

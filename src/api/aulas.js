@@ -18,6 +18,7 @@ export async function listarAulas() {
   }
 }
 
+
 // Obtener aula por ID
 export async function obtenerAulaPorId(id) {
   try {

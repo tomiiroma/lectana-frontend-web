@@ -8,7 +8,7 @@ import "../AdminPages.css";
 import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
 import { MdLibraryAddCheck } from "react-icons/md";
-import { obtenerDocentes, obtenerDocentePorId } from "../../../api/docentes";
+import { obtenerDocentesConFiltros, obtenerDocentePorId } from "../../../api/docentes";
 import { obtenerAlumnos, obtenerAlumnoPorId } from "../../../api/alumnos";
 import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos, obtenerAdministradorPorId } from "../../../api/administradores";
 import { obtenerPerfilPorIdUsuario } from "../../../api/usuarios";
@@ -50,7 +50,7 @@ export default function Usuarios() {
       const params = { page, limit: 10 };
       if (search && search.trim()) params.q = search.trim();
       
-      const data = await obtenerDocentes(params);
+      const data = await obtenerDocentesConFiltros(params);
       
       console.log("✅ Datos de docentes recibidos:", data);
       setDocentesData(data);

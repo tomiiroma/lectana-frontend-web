@@ -66,6 +66,7 @@ export async function obtenerTodosLosCuentos() {
   }
 }
 
+
 export async function obtenerCuentoPorId(id) {
   const { data } = await api.get(`/cuentos/${id}`);
   if (!data?.ok) throw new Error(data?.error || "Error obteniendo cuento");
