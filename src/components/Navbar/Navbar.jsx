@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useAuth } from "../../auth/AuthContext"; // Desactivado para revisar diseño
+import { useAuth } from "../../auth/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import "./Navbar.css";
 import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser, FaMoon, FaSun } from "react-icons/fa";
@@ -8,10 +8,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUserCircle, FaCog, FaUser, FaMoon, FaSun }
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  // Simular usuario no autenticado para mostrar botón de login
-  const user = null;
-  const token = null;
-  const logout = () => {};
+  const { user, token, logout } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
 
@@ -106,6 +103,15 @@ function Navbar() {
 
         {/* User Section */}
         <div className="header-actions">
+          {/* Botón de modo noche siempre visible */}
+          <button 
+            onClick={toggleTheme}
+            className="theme-toggle-button"
+            title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+          >
+            {isDark ? <FaSun /> : <FaMoon />}
+          </button>
+
           {token && user ? (
             // Usuario logueado
             <div className="user-menu-container">
@@ -141,7 +147,7 @@ function Navbar() {
                         Panel Admin
                       </Link>
                     )}
-                    <Link to="/perfil" className="dropdown-item">
+                    <Link to="/admin/perfil" className="dropdown-item">
                       <FaUser />
                       Mi Perfil
                     </Link>
@@ -156,13 +162,6 @@ function Navbar() {
           ) : (
             // Usuario no logueado
             <div className="auth-buttons">
-              <button 
-                onClick={toggleTheme}
-                className="theme-toggle-button"
-                title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
-              >
-                {isDark ? <FaSun /> : <FaMoon />}
-              </button>
               <Link to="/login" className="login-button">
                 <FaSignInAlt />
                 <span>Iniciar Sesión</span>

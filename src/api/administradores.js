@@ -3,13 +3,12 @@ import api from "./client";
 // Obtener lista de administradores con paginación y filtros
 export async function obtenerAdministradores({ page = 1, limit = 10, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/admin-listar-administradores?${params.toString()}`);
+    console.log("API obtenerAdministradores - params enviados:", params);
+    const { data } = await api.get("/administradores/admin-listar-administradores", { params });
+    console.log("API obtenerAdministradores - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo administradores");
@@ -80,13 +79,12 @@ export async function obtenerEstadisticasUsuarios() {
 // Obtener todos los usuarios activos (mezclados)
 export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/todos-usuarios-activos?${params.toString()}`);
+    console.log("API obtenerUsuariosActivos - params enviados:", params);
+    const { data } = await api.get("/administradores/todos-usuarios-activos", { params });
+    console.log("API obtenerUsuariosActivos - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo usuarios activos");
@@ -102,13 +100,12 @@ export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = 
 // Obtener todos los usuarios inactivos (mezclados)
 export async function obtenerUsuariosInactivos({ page = 1, limit = 20, q = "" } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
     
-    if (q) params.append('q', q);
-    
-    const { data } = await api.get(`/administradores/todos-usuarios-inactivos?${params.toString()}`);
+    console.log("API obtenerUsuariosInactivos - params enviados:", params);
+    const { data } = await api.get("/administradores/todos-usuarios-inactivos", { params });
+    console.log("API obtenerUsuariosInactivos - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo usuarios inactivos");
@@ -140,6 +137,85 @@ export async function actualizarAdministradorAdmin(id, datosActualizacion) {
     console.error("❌ Error data:", error.response?.data);
     console.error("❌ URL:", error.config?.url);
     console.error("❌ Request data:", error.config?.data);
+    throw error;
+  }
+}
+
+// ===== FUNCIONES PARA PERFIL DE ADMINISTRADOR =====
+
+// Obtener perfil del administrador autenticado
+export async function obtenerPerfilAdministrador() {
+  try {
+    console.log('🔄 Obteniendo perfil del administrador autenticado...');
+    
+    const { data } = await api.get('/administrador/obtener-perfil-administrador');
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo perfil del administrador");
+    }
+    
+    console.log('✅ Perfil del administrador obtenido:', data.data);
+    console.log('🔍 Usuario dentro del perfil:', data.data.usuario);
+    console.log('🔍 Campo activo del usuario:', data.data.usuario?.activo);
+    return data.data; // Retorna { id_administrador, dni, usuario_id_usuario, usuario: {...} }
+  } catch (error) {
+    console.error("❌ Error en obtenerPerfilAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    throw error;
+  }
+}
+
+// Actualizar perfil del administrador autenticado
+export async function actualizarPerfilAdministrador(datosActualizacion) {
+  try {
+    console.log('🔄 Actualizando perfil del administrador con datos:', datosActualizacion);
+    console.log('🔍 Tipo de datos enviados:', typeof datosActualizacion);
+    console.log('🔍 Campos específicos:', Object.keys(datosActualizacion));
+    
+    const { data } = await api.put('/administrador/actualizar-perfil-administrador', datosActualizacion);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error actualizando perfil del administrador");
+    }
+    
+    console.log('✅ Perfil del administrador actualizado:', data.data);
+    return data.data;
+  } catch (error) {
+    console.error("❌ Error en actualizarPerfilAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
+    console.error("❌ Error completo:", error.response?.data?.detalles);
+    console.error("❌ Field Errors:", error.response?.data?.detalles?.fieldErrors);
+    console.error("❌ Form Errors:", error.response?.data?.detalles?.formErrors);
+    
+    // Mostrar errores específicos de cada campo
+    if (error.response?.data?.detalles?.fieldErrors) {
+      Object.keys(error.response.data.detalles.fieldErrors).forEach(field => {
+        console.error(`❌ Error en campo ${field}:`, error.response.data.detalles.fieldErrors[field]);
+      });
+    }
+    throw error;
+  }
+}
+
+// Cambiar contraseña del administrador autenticado
+export async function cambiarContrasenaAdministrador(datosContrasena) {
+  try {
+    console.log('🔄 Cambiando contraseña del administrador...');
+    
+    const { data } = await api.put('/administrador/cambiar-contrasena-administrador', datosContrasena);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error cambiando contraseña");
+    }
+    
+    console.log('✅ Contraseña cambiada exitosamente');
+    return data.data;
+  } catch (error) {
+    console.error("❌ Error en cambiarContrasenaAdministrador:", error);
+    console.error("❌ Status:", error.response?.status);
+    console.error("❌ Error data:", error.response?.data);
     throw error;
   }
 }

@@ -1,5 +1,25 @@
 /* Estilos específicos para la página de Aulas */
 
+/* RESET DE EMERGENCIA PARA AULAS - Forzar visibilidad */
+.admin-aulas-container,
+.admin-aulas-container *,
+.aulas-grid,
+.aulas-grid *,
+.aula-card,
+.aula-card * {
+  color: #1f2937 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Títulos específicos */
+.admin-aulas-title {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
 .aulas-actions {
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
 }
@@ -49,14 +69,16 @@
 
 /* Tarjetas de aula */
 .aula-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95) !important;
   border-radius: 20px;
   padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  color: #1f2937 !important;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1) !important;
 }
 
 .aula-card::before {
@@ -99,27 +121,27 @@
   text-transform: uppercase;
 }
 
-.status-active {
+.status-assigned {
   background: rgba(16, 185, 129, 0.1);
   color: #059669;
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.status-inactive {
+.status-unassigned {
   background: rgba(107, 114, 128, 0.1);
   color: #4b5563;
   border: 1px solid rgba(107, 114, 128, 0.3);
 }
 
 .aula-title {
-  color: var(--text-primary) !important;
+  color: #1f2937 !important;
   font-size: 1.3em;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .aula-description {
-  color: var(--text-secondary) !important;
+  color: #4b5563 !important;
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
@@ -171,11 +193,45 @@
   transition: width 0.3s ease;
 }
 
+/* Colores dinámicos para barras de progreso según porcentaje */
+.progress-fill.progress-low {
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important;
+}
+
+.progress-fill.progress-medium {
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+}
+
+.progress-fill.progress-high {
+  background: linear-gradient(90deg, #10b981, #059669) !important;
+}
+
+.progress-fill.progress-complete {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed) !important;
+}
+
 .progress-text {
   font-size: 12px;
   color: #8b5cf6;
   font-weight: 600;
   margin-left: 8px;
+}
+
+/* Colores dinámicos para texto de porcentaje en tarjetas */
+.aula-progress.progress-low .progress-text {
+  color: #ef4444 !important;
+}
+
+.aula-progress.progress-medium .progress-text {
+  color: #f59e0b !important;
+}
+
+.aula-progress.progress-high .progress-text {
+  color: #10b981 !important;
+}
+
+.aula-progress.progress-complete .progress-text {
+  color: #8b5cf6 !important;
 }
 
 .aula-actions {
@@ -240,12 +296,17 @@
 
 /* Tabla específica de aulas */
 .aulas-table th {
-  background: var(--primary-color) !important;
+  background: #8b5cf6 !important;
   color: white !important;
 }
 
 .aulas-table tr:hover {
-  background-color: var(--bg-tertiary) !important;
+  background-color: rgba(139, 92, 246, 0.05) !important;
+}
+
+.aulas-table td {
+  color: #1f2937 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
 }
 
 .aula-info {
@@ -298,11 +359,45 @@
   transition: width 0.3s ease;
 }
 
+/* Colores dinámicos para mini barras de progreso */
+.mini-progress-fill.progress-low {
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important;
+}
+
+.mini-progress-fill.progress-medium {
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+}
+
+.mini-progress-fill.progress-high {
+  background: linear-gradient(90deg, #10b981, #059669) !important;
+}
+
+.mini-progress-fill.progress-complete {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed) !important;
+}
+
 .mini-progress span {
   font-size: 12px;
   color: #8b5cf6;
   font-weight: 600;
   min-width: 30px;
+}
+
+/* Colores dinámicos para texto de porcentaje */
+.mini-progress.progress-low span {
+  color: #ef4444 !important;
+}
+
+.mini-progress.progress-medium span {
+  color: #f59e0b !important;
+}
+
+.mini-progress.progress-high span {
+  color: #10b981 !important;
+}
+
+.mini-progress.progress-complete span {
+  color: #8b5cf6 !important;
 }
 
 /* Responsive para aulas */
@@ -338,4 +433,151 @@
 
 .aula-create:hover {
   animation: pulse-purple 2s infinite;
+}
+
+/* Estados de carga, error y vacío */
+.loading-state,
+.error-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-icon,
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.error-state h3,
+.empty-state h3 {
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.error-state p,
+.empty-state p {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 24px;
+  max-width: 400px;
+}
+
+.btn-retry,
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-retry:hover,
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.error-state {
+  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(254, 226, 226, 0.3);
+}
+
+.error-details {
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  border-left: 4px solid #ef4444;
+}
+
+.error-details p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.error-details code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #dc2626;
+}
+
+.empty-state {
+  border-color: rgba(139, 92, 246, 0.2);
+  background: rgba(139, 92, 246, 0.02);
+}
+
+/* REGLAS DE EMERGENCIA PARA BOTONES Y ELEMENTOS */
+.btn-action {
+  color: #1f2937 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-action:hover {
+  background: rgba(139, 92, 246, 0.1) !important;
+  border-color: #8b5cf6 !important;
+  color: #8b5cf6 !important;
+}
+
+/* Forzar visibilidad en todos los elementos de aulas */
+.admin-aulas-container h1,
+.admin-aulas-container h2,
+.admin-aulas-container h3,
+.admin-aulas-container p,
+.admin-aulas-container span,
+.admin-aulas-container div {
+  color: #1f2937 !important;
+}
+
+/* Estadísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.stats-grid .stat-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important;
+  border: 1px solid rgba(139, 92, 246, 0.2) !important;
 }

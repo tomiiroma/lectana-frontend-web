@@ -48,14 +48,37 @@
   text-transform: uppercase;
 }
 
-.status-active {
+.status-assigned {
   background: var(--success-color);
   color: white;
 }
 
-.status-inactive {
+.status-unassigned {
   background: var(--text-secondary);
   color: white;
+}
+
+.aula-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+}
+
+.code-icon {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.code-text {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 13px;
 }
 
 /* TÍTULOS - DISEÑO SIMPLE */
@@ -130,6 +153,19 @@
   color: var(--text-secondary);
   margin-bottom: 6px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loading-indicator {
+  font-size: 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .progress-bar {
@@ -143,7 +179,24 @@
 .progress-fill {
   background: var(--primary-color);
   height: 100%;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Colores de progreso según porcentaje */
+.progress-fill.progress-low {
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important; /* Rojo para configuración baja (0-30%) */
+}
+
+.progress-fill.progress-medium {
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important; /* Naranja para configuración media (31-60%) */
+}
+
+.progress-fill.progress-high {
+  background: linear-gradient(90deg, #10b981, #059669) !important; /* Verde para configuración alta (61-90%) */
+}
+
+.progress-fill.progress-complete {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed) !important; /* Púrpura para configuración completa (91-100%) */
 }
 
 .progress-text {
@@ -151,6 +204,23 @@
   color: var(--primary-color);
   font-weight: 600;
   margin-top: 4px;
+}
+
+/* Colores dinámicos para texto de porcentaje */
+.aula-progress.progress-low .progress-text {
+  color: #ef4444 !important;
+}
+
+.aula-progress.progress-medium .progress-text {
+  color: #f59e0b !important;
+}
+
+.aula-progress.progress-high .progress-text {
+  color: #10b981 !important;
+}
+
+.aula-progress.progress-complete .progress-text {
+  color: #8b5cf6 !important;
 }
 
 /* ACCIONES - DISEÑO MEJORADO */

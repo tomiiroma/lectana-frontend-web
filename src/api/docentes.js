@@ -51,23 +51,71 @@ export async function obtenerDocentePorId(id) {
   }
 }
 
-// Obtener lista de docentes con paginación y filtros
-export async function obtenerDocentes({ page = 1, limit = 10, q = "", verificado = null } = {}) {
+// Obtener lista de docentes con paginación y filtros (para usuarios.jsx)
+export async function obtenerDocentesConFiltros({ page = 1, limit = 10, q = "", verificado = null } = {}) {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    const params = { page, limit };
+    if (q) params.q = q;
+    if (verificado !== null) params.verificado = verificado;
     
-    if (q) params.append('q', q);
-    if (verificado !== null) params.append('verificado', verificado.toString());
-    
-    const { data } = await api.get(`/docentes/admin-listar-docentes?${params.toString()}`);
+    console.log("API obtenerDocentesConFiltros - params enviados:", params);
+    const { data } = await api.get("/docentes/admin-listar-docentes", { params });
+    console.log("API obtenerDocentesConFiltros - respuesta:", data);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo docentes");
     }
     
     return data.data; // Retorna { items, page, limit, total, total_pages }
+  } catch (error) {
+    console.error("Error en obtenerDocentesConFiltros:", error);
+    throw error;
+  }
+}
+
+// Obtener todos los docentes sin paginación (para ConfigureAulaModal)
+export async function obtenerTodosLosDocentes() {
+  try {
+    console.log("API obtenerTodosLosDocentes - llamando sin paginación");
+    const { data } = await api.get("/docentes/admin-listar-docentes", { 
+      params: { page: 1, limit: 100 } 
+    });
+    console.log("API obtenerTodosLosDocentes - respuesta:", data);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo docentes");
+    }
+    
+    // El backend devuelve { ok: true, data: { items: [...], page: 1, ... } }
+    // Necesitamos extraer solo los items
+    const docentesArray = data.data?.items || data.data || [];
+    console.log("API obtenerTodosLosDocentes - docentes extraídos:", docentesArray.length);
+    
+    return { ok: true, data: docentesArray };
+  } catch (error) {
+    console.error("Error en obtenerTodosLosDocentes:", error);
+    throw error;
+  }
+}
+
+// Obtener docentes (alias para compatibilidad con actividades)
+export async function obtenerDocentes() {
+  try {
+    console.log("API obtenerDocentes - solicitando docentes...");
+    const { data } = await api.get("/docentes/admin-listar-docentes", { 
+      params: { page: 1, limit: 100 } 
+    });
+    console.log("API obtenerDocentes - respuesta:", data);
+    
+    if (!data?.ok) {
+      throw new Error(data?.error || "Error obteniendo docentes");
+    }
+    
+    // El backend devuelve { ok: true, data: { items: [...], page: 1, ... } }
+    const docentesArray = data.data?.items || data.data || [];
+    console.log("API obtenerDocentes - docentes extraídos:", docentesArray.length);
+    
+    return { ok: true, docentes: docentesArray };
   } catch (error) {
     console.error("Error en obtenerDocentes:", error);
     throw error;

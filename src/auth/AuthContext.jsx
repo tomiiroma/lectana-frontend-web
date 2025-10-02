@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useRef } from "react";
 import api from "../api/client";
 
 const AuthContext = createContext(null);
@@ -10,27 +10,63 @@ export function AuthProvider({ children }) {
     return raw ? JSON.parse(raw) : null;
   });
   const [loading, setLoading] = useState(false);
+  
+  // Referencias para controlar verificaciones
+  const verificationTimeoutRef = useRef(null);
+  const lastVerificationRef = useRef(0);
+  const isVerifyingRef = useRef(false);
 
-  // Verificar token al inicializar
+  // Verificar token al inicializar con throttling
   useEffect(() => {
     const checkToken = async () => {
+      // Evitar verificaciones múltiples simultáneas
+      if (isVerifyingRef.current) {
+        return;
+      }
+
+      // Throttling: solo verificar si han pasado al menos 5 segundos desde la última verificación
+      const now = Date.now();
+      if (now - lastVerificationRef.current < 5000) {
+        return;
+      }
+
       if (token && !user) {
+        isVerifyingRef.current = true;
+        lastVerificationRef.current = now;
+
         try {
-          // Intentar obtener información del usuario con el token existente
+          console.log("🔍 Verificando token...");
           const res = await api.get("/auth/verify");
           if (res.data?.usuario) {
             setUser(res.data.usuario);
+            console.log("✅ Token verificado correctamente");
           }
         } catch (error) {
-          // Si el token es inválido, limpiar
-          console.log("Token inválido, limpiando autenticación");
+          // Si el token es inválido, limpiar sin redireccionar automáticamente
+          console.log("❌ Token inválido, limpiando autenticación");
           setToken(null);
           setUser(null);
+          // No redireccionar aquí para evitar bucles de navegación
+        } finally {
+          isVerifyingRef.current = false;
         }
       }
     };
 
-    checkToken();
+    // Limpiar timeout anterior
+    if (verificationTimeoutRef.current) {
+      clearTimeout(verificationTimeoutRef.current);
+    }
+
+    // Ejecutar verificación con delay para evitar verificaciones inmediatas múltiples
+    verificationTimeoutRef.current = setTimeout(checkToken, 100);
+
+    // Cleanup
+    return () => {
+      if (verificationTimeoutRef.current) {
+        clearTimeout(verificationTimeoutRef.current);
+      }
+    };
   }, [token, user]);
 
   useEffect(() => {

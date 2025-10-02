@@ -11,6 +11,12 @@
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
 }
 
+.actionButtonsGroup {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .searchFilterGroup {
   display: flex;
   gap: 12px;
@@ -30,6 +36,7 @@
   font-size: 14px;
   transition: all 0.3s ease;
   width: 280px;
+  color: #000000;
 }
 
 .searchBox input:focus {
@@ -84,5 +91,45 @@ background: linear-gradient(135deg, #3b82f6, #1e40af);
   border-color: #f59e0b;
   color: #f59e0b;
   transform: translateY(-1px);
+}
+
+.btnAuthor {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btnAuthor:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btnGenre {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.btnGenre:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 

@@ -7,10 +7,11 @@ import Login from "./pages/Login.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import AdminDashboard from "./pages/admin/dashboard/Dashboard.jsx";
 import Cuentos from "./pages/admin/cuentos/Cuentos.jsx";
+import CuentoDetalle from "./pages/admin/cuentos/CuentoDetalle.jsx";
 import Usuarios from "./pages/admin/usuarios/Usuarios.jsx";
 import Aulas from "./pages/admin/aulas/Aulas.jsx";
 import Actividades from "./pages/admin/actividades/Actividades.jsx";
-import Perfil from "./pages/admin/perfil/Perfil.jsx";
+import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
 
 function withProviders(element) {
   return (
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: "cuentos",
         element: <Cuentos />,
+      },
+      {
+        path: "cuentos/:id",
+        element: <CuentoDetalle />,
       },
       {
         path: "usuarios",

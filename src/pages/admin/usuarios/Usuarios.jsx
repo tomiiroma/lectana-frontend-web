@@ -8,7 +8,7 @@ import "../AdminPages.css";
 import "./Usuarios.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
 import { MdLibraryAddCheck } from "react-icons/md";
-import { obtenerDocentes, obtenerDocentePorId } from "../../../api/docentes";
+import { obtenerDocentesConFiltros, obtenerDocentePorId } from "../../../api/docentes";
 import { obtenerAlumnos, obtenerAlumnoPorId } from "../../../api/alumnos";
 import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos, obtenerAdministradorPorId } from "../../../api/administradores";
 import { obtenerPerfilPorIdUsuario } from "../../../api/usuarios";
@@ -40,17 +40,17 @@ export default function Usuarios() {
   });
 
   // Función para obtener docentes con paginación
-  const obtenerDocentesData = async (page = 1) => {
+  const obtenerDocentesData = async (page = 1, search = "") => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo docentes página", page);
+      console.log("🔄 Obteniendo docentes página", page, "búsqueda:", search);
       
-      const data = await obtenerDocentes({
-        page: page,
-        limit: 10
-      });
+      const params = { page, limit: 10 };
+      if (search && search.trim()) params.q = search.trim();
+      
+      const data = await obtenerDocentesConFiltros(params);
       
       console.log("✅ Datos de docentes recibidos:", data);
       setDocentesData(data);
@@ -74,17 +74,17 @@ export default function Usuarios() {
   };
 
   // Función para obtener alumnos con paginación
-  const obtenerAlumnosData = async (page = 1) => {
+  const obtenerAlumnosData = async (page = 1, search = "") => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo alumnos página", page);
+      console.log("🔄 Obteniendo alumnos página", page, "búsqueda:", search);
       
-      const data = await obtenerAlumnos({
-        page: page,
-        limit: 10
-      });
+      const params = { page, limit: 10 };
+      if (search && search.trim()) params.q = search.trim();
+      
+      const data = await obtenerAlumnos(params);
       
       console.log("✅ Datos de alumnos recibidos:", data);
       setAlumnosData(data);
@@ -108,17 +108,17 @@ export default function Usuarios() {
   };
 
   // Función para obtener administradores con paginación
-  const obtenerAdministradoresData = async (page = 1) => {
+  const obtenerAdministradoresData = async (page = 1, search = "") => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo administradores página", page);
+      console.log("🔄 Obteniendo administradores página", page, "búsqueda:", search);
       
-      const data = await obtenerAdministradores({
-        page: page,
-        limit: 10
-      });
+      const params = { page, limit: 10 };
+      if (search && search.trim()) params.q = search.trim();
+      
+      const data = await obtenerAdministradores(params);
       
       console.log("✅ Datos de administradores recibidos:", data);
       setAdministradoresData(data);
@@ -163,17 +163,17 @@ export default function Usuarios() {
   };
 
   // Función para obtener usuarios activos con paginación
-  const obtenerUsuariosActivosData = async (page = 1) => {
+  const obtenerUsuariosActivosData = async (page = 1, search = "") => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo usuarios activos página", page);
+      console.log("🔄 Obteniendo usuarios activos página", page, "búsqueda:", search);
       
-      const data = await obtenerUsuariosActivos({
-        page: page,
-        limit: 20
-      });
+      const params = { page, limit: 20 };
+      if (search && search.trim()) params.q = search.trim();
+      
+      const data = await obtenerUsuariosActivos(params);
       
       console.log("✅ Usuarios activos recibidos:", data);
       setUsuariosActivosData(data);
@@ -197,17 +197,17 @@ export default function Usuarios() {
   };
 
   // Función para obtener usuarios inactivos con paginación
-  const obtenerUsuariosInactivosData = async (page = 1) => {
+  const obtenerUsuariosInactivosData = async (page = 1, search = "") => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log("🔄 Obteniendo usuarios inactivos página", page);
+      console.log("🔄 Obteniendo usuarios inactivos página", page, "búsqueda:", search);
       
-      const data = await obtenerUsuariosInactivos({
-        page: page,
-        limit: 20
-      });
+      const params = { page, limit: 20 };
+      if (search && search.trim()) params.q = search.trim();
+      
+      const data = await obtenerUsuariosInactivos(params);
       
       console.log("✅ Usuarios inactivos recibidos:", data);
       setUsuariosInactivosData(data);
@@ -240,25 +240,52 @@ export default function Usuarios() {
     obtenerUsuariosInactivosData();
   }, []);
 
+
+  // useEffect para manejar cambio de filtro activo
+  useEffect(() => {
+    console.log("🔄 Cambiando filtro activo a:", filtroActivo);
+    
+    // Cargar datos del nuevo filtro
+    switch (filtroActivo) {
+      case "Docentes":
+        obtenerDocentesData(1, "");
+        break;
+      case "Estudiantes":
+        obtenerAlumnosData(1, "");
+        break;
+      case "Administradores":
+        obtenerAdministradoresData(1, "");
+        break;
+      case "Activos":
+        obtenerUsuariosActivosData(1, "");
+        break;
+      case "Inactivos":
+        obtenerUsuariosInactivosData(1, "");
+        break;
+      default:
+        console.log("Filtro no reconocido:", filtroActivo);
+    }
+  }, [filtroActivo]);
+
   // Función para manejar cambio de página
   const handlePageChange = (newPage) => {
     console.log(`🔄 Cambiando a página ${newPage} para filtro: ${filtroActivo}`);
     
     switch (filtroActivo) {
       case "Docentes":
-        obtenerDocentesData(newPage);
+        obtenerDocentesData(newPage, "");
         break;
       case "Estudiantes":
-        obtenerAlumnosData(newPage);
+        obtenerAlumnosData(newPage, "");
         break;
       case "Administradores":
-        obtenerAdministradoresData(newPage);
+        obtenerAdministradoresData(newPage, "");
         break;
       case "Activos":
-        obtenerUsuariosActivosData(newPage);
+        obtenerUsuariosActivosData(newPage, "");
         break;
       case "Inactivos":
-        obtenerUsuariosInactivosData(newPage);
+        obtenerUsuariosInactivosData(newPage, "");
         break;
       default:
         console.log("Filtro no reconocido:", filtroActivo);
@@ -874,7 +901,6 @@ export default function Usuarios() {
       
           <AdminActionsBar 
         btnTitle={"Nuevo Usuario"} 
-        placeholderTitle={"Buscar Usuarios..."} 
         btnClassName="btnAdd" 
         btnStyle={gradients.greenGradient}
         onBtnClick={() => {
