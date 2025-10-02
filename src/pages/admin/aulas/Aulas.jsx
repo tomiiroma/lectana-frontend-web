@@ -2,13 +2,15 @@ import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar
 import AulasCard from "../../../components/Cards/AulasCard/AulasCard";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import CreateCard from "../../../components/Cards/CreateCard/CreateCard";
+import Table from "../../../components/Table/Table";
 import { gradients } from "../../../styles/Gradients";
 import { statusStyles } from "../../../styles/statusStyle";
 import "../AdminPages.css";
 import "./Aulas.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaUsers, FaChalkboardTeacher, FaGraduationCap, FaClock } from "react-icons/fa";
-
-
+import BtnEdit from "../../../components/Buttons/ActionButtons/btnEdit";
+import BtnDelete from "../../../components/Buttons/ActionButtons/btnDelete";
+import BtnView from "../../../components/Buttons/ActionButtons/btnView";
 export default function Aulas() {
   return (
     <>
@@ -44,88 +46,22 @@ export default function Aulas() {
 
         {/* Tabla resumen */}
         <div className="table-container" style={{marginTop: '32px'}}>
-          <h3 style={{marginBottom: '16px', color: '#8b5cf6', fontWeight: '600'}}>Resumen de Aulas</h3>
-          <table className="admin-table aulas-table">
-            <thead>
-              <tr>
-                <th>Aula</th>
-                <th>Grado</th>
-                <th>Docente</th>
-                <th>Estudiantes</th>
-                <th>Progreso</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div className="aula-info">
-                    <div className="aula-icon">🎒</div>
-                    <div>
-                      <div className="aula-name">Aventuras de Lectura</div>
-                      <div className="aula-code">AULA-001</div>
-                    </div>
-                  </div>
-                </td>
-                <td>5° Grado A</td>
-                <td>María González</td>
-                <td>28</td>
-                <td>
-                  <div className="mini-progress">
-                    <div className="mini-progress-bar">
-                      <div className="mini-progress-fill" style={{width: '78%'}}></div>
-                    </div>
-                    <span>78%</span>
-                  </div>
-                </td>
-                <td><span className="status-badge status-active">Activa</span></td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="btn-action btn-view" title="Ver">
-                      <FaEye />
-                    </button>
-                    <button className="btn-action btn-edit" title="Editar">
-                      <FaEdit />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="aula-info">
-                    <div className="aula-icon">✨</div>
-                    <div>
-                      <div className="aula-name">Cuentos Mágicos</div>
-                      <div className="aula-code">AULA-002</div>
-                    </div>
-                  </div>
-                </td>
-                <td>3° Grado B</td>
-                <td>Carlos Mendez</td>
-                <td>24</td>
-                <td>
-                  <div className="mini-progress">
-                    <div className="mini-progress-bar">
-                      <div className="mini-progress-fill" style={{width: '92%'}}></div>
-                    </div>
-                    <span>92%</span>
-                  </div>
-                </td>
-                <td><span className="status-badge status-active">Activa</span></td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="btn-action btn-view" title="Ver">
-                      <FaEye />
-                    </button>
-                    <button className="btn-action btn-edit" title="Editar">
-                      <FaEdit />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <Table
+  items={[
+    { id: 1, nombre: "Agustín", email: "aguero@mail.com" },
+    { id: 2, nombre: "Carla",  email: "carla@mail.com" },
+  ]}
+  tipo="usuarios"
+  columns={[
+    { header: "ID", accessor: "id" },
+    { header: "Nombre", accessor: "nombre" },
+    { header: "Email", accessor: "email" },
+  ]}
+  onVer={(item) => console.log("Ver", item)}
+  onEditar={(item) => console.log("Editar", item)}
+  headerColor={gradients.purpleGradient.background}
+/>
+
         </div>
       </div>
     </>

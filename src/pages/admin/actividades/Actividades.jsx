@@ -2,6 +2,7 @@ import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar
 import AulasCard from "../../../components/Cards/AulasCard/AulasCard";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import CreateCard from "../../../components/Cards/CreateCard/CreateCard";
+import Table from "../../../components/Table/Table";
 import { gradients } from "../../../styles/Gradients";
 import { statusStyles } from "../../../styles/statusStyle";
 import "../AdminPages.css";
@@ -54,92 +55,21 @@ export default function Actividades() {
 
         {/* Tabla de rendimiento */}
         <div className="table-container" style={{marginTop: '32px'}}>
-          <h3 style={{marginBottom: '16px', color: '#ef4444', fontWeight: '600'}}>Rendimiento por Actividad</h3>
-          <table className="admin-table actividades-table">
-            <thead>
-              <tr>
-                <th>Actividad</th>
-                <th>Tipo</th>
-                <th>Participantes</th>
-                <th>Tasa de Éxito</th>
-                <th>Tiempo Promedio</th>
-                <th>Puntuación</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div className="actividad-info">
-                    <div className="actividad-icon">📖</div>
-                    <div>
-                      <div className="actividad-name">El Dragón y la Princesa</div>
-                      <div className="actividad-code">ACT-001</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span className="type-badge type-comprension">Comprensión</span></td>
-                <td>156</td>
-                <td>
-                  <div className="success-rate">
-                    <div className="rate-bar">
-                      <div className="rate-fill" style={{width: '85%'}}></div>
-                    </div>
-                    <span>85%</span>
-                  </div>
-                </td>
-                <td>12 min</td>
-                <td>
-                  <div className="score-display">8.5/10</div>
-                </td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="btn-action btn-view" title="Ver">
-                      <FaEye />
-                    </button>
-                    <button className="btn-action btn-edit" title="Editar">
-                      <FaEdit />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="actividad-info">
-                    <div className="actividad-icon">✨</div>
-                    <div>
-                      <div className="actividad-name">Palabras Mágicas</div>
-                      <div className="actividad-code">ACT-002</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span className="type-badge type-vocabulario">Vocabulario</span></td>
-                <td>203</td>
-                <td>
-                  <div className="success-rate">
-                    <div className="rate-bar">
-                      <div className="rate-fill" style={{width: '92%'}}></div>
-                    </div>
-                    <span>92%</span>
-                  </div>
-                </td>
-                <td>8 min</td>
-                <td>
-                  <div className="score-display">9.2/10</div>
-                </td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="btn-action btn-view" title="Ver">
-                      <FaEye />
-                    </button>
-                    <button className="btn-action btn-edit" title="Editar">
-                      <FaEdit />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                 <Table
+  items={[
+    { id: 1, nombre: "Actividad", email: "5 Grado C" },
+    { id: 2, nombre: "Actividad",  email: "5 Grado C" },
+  ]}
+  tipo="usuarios"
+  columns={[
+    { header: "ID", accessor: "id" },
+    { header: "Nombre", accessor: "nombre" },
+    { header: "Aula", accessor: "email" },
+  ]}
+  onVer={(item) => console.log("Ver", item)}
+  onEditar={(item) => console.log("Editar", item)}
+  headerColor={gradients.redGradient.background}
+/>
         </div>
       </div>
     </>
