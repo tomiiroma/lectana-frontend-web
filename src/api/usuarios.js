@@ -75,3 +75,34 @@ export async function crearAdministrador({ dni, usuario_id_usuario }) {
     throw error;
   }
 }
+
+
+export async function desactivarUsuario(id_usuario){
+  try{
+    const { data } = await api.put(`usuarios/desactivarUsuario/${id_usuario}`)
+    
+    if (!data?.ok){
+            throw new Error(data?.error || "Error desactivando Usuario");
+    }
+
+     return data.message;
+  }catch(error){
+    console.error("Error desactivando Usuario", error)
+    throw error
+  }
+}
+
+  export async function activarUsuario(id_usuario){
+  try{
+    const { data } = await api.put(`usuarios/activarUsuario/${id_usuario}`)
+    
+    if (!data?.ok){
+            throw new Error(data?.error || "Error activando Usuario");
+    }
+
+     return data.message;
+  }catch(error){
+    console.error("Error activando Usuario", error)
+    throw error
+  }
+}

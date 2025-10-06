@@ -6,13 +6,14 @@ import ModalEditarUsuario from "../../../components/Modales/ModalEditarUsuario/M
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Usuarios.css";
-import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
+import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUserGraduate, FaChalkboardTeacher, FaUserShield, FaCheck } from "react-icons/fa";
 import { MdLibraryAddCheck } from "react-icons/md";
 import { obtenerDocentesConFiltros, obtenerDocentePorId } from "../../../api/docentes";
 import { obtenerAlumnos, obtenerAlumnoPorId } from "../../../api/alumnos";
 import { obtenerAdministradores, obtenerEstadisticasUsuarios, obtenerUsuariosActivos, obtenerUsuariosInactivos, obtenerAdministradorPorId } from "../../../api/administradores";
-import { obtenerPerfilPorIdUsuario } from "../../../api/usuarios";
+import { activarUsuario, desactivarUsuario, obtenerPerfilPorIdUsuario } from "../../../api/usuarios";
 import { useEffect, useState } from "react";
+import toast from 'react-hot-toast';
 
 export default function Usuarios() {
   const [docentesData, setDocentesData] = useState(null);
@@ -38,6 +39,54 @@ export default function Usuarios() {
     activos: { page: 1, total: 0, totalPages: 0 },
     inactivos: { page: 1, total: 0, totalPages: 0 }
   });
+
+
+const handleDesactivarUsuario = async(id_usuario, estado) => {
+  setLoading(true);
+  setError(null);
+
+  try {
+   if (estado) {
+      await desactivarUsuario(id_usuario);
+      console.log("✅ Usuario desactivado - about to show toast");
+      toast.success('Usuario desactivado correctamente');
+    } else {
+      await activarUsuario(id_usuario);
+      console.log("✅ Usuario activado - about to show toast");
+      toast.success('Usuario activado correctamente');
+    }
+ 
+    const updateUsuario = (prevData) => {
+      if (!prevData) return prevData;
+      
+      // ⭐ Changed from 'usuarios' to 'items'
+      if (prevData.items && Array.isArray(prevData.items)) {
+        return {
+          ...prevData,
+          items: prevData.items.map(user => 
+            user.id_usuario === id_usuario 
+              ? { ...user, activo: !estado } 
+              : user
+          )
+        };
+      }
+      
+      return prevData;
+    };
+
+    setDocentesData(prevData => updateUsuario(prevData));
+    setAlumnosData(prevData => updateUsuario(prevData));
+    setAdministradoresData(prevData => updateUsuario(prevData));
+    setUsuariosActivosData(prevData => updateUsuario(prevData));
+    setUsuariosInactivosData(prevData => updateUsuario(prevData));
+    
+  } catch (error) {
+    console.error("Error al cambiar estado de usuario:", error);
+    setError(error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Función para obtener docentes con paginación
   const obtenerDocentesData = async (page = 1, search = "") => {
@@ -406,6 +455,8 @@ export default function Usuarios() {
     }
   };
 
+
+
   // Manejar usuario actualizado
   const handleUserUpdated = (usuarioActualizado) => {
     console.log('✅ Usuario actualizado:', usuarioActualizado);
@@ -504,9 +555,7 @@ export default function Usuarios() {
               >
                 <FaEdit />
               </button>
-              <button className="btn-action btn-delete" title="Desactivar">
-                <FaTrash />
-              </button>
+        
             </div>
           </td>
         </tr>
@@ -553,9 +602,7 @@ export default function Usuarios() {
               >
                 <FaEdit />
               </button>
-              <button className="btn-action btn-delete" title="Desactivar">
-                <FaTrash />
-              </button>
+            
             </div>
           </td>
         </tr>
@@ -602,9 +649,7 @@ export default function Usuarios() {
               >
                 <FaEdit />
               </button>
-              <button className="btn-action btn-delete" title="Desactivar">
-                <FaTrash />
-              </button>
+          
             </div>
           </td>
         </tr>
@@ -675,9 +720,13 @@ export default function Usuarios() {
                 >
                   <FaEdit />
                 </button>
-                <button className="btn-action btn-delete" title="Desactivar">
-                  <FaTrash />
-                </button>
+                <button
+  className={`btn-action ${usuario.activo ? "btn-delete" : "btn-reactivate"}`}
+  title={usuario.activo ? "Desactivar" : "Reactivar"}
+  onClick={() => handleDesactivarUsuario(usuario.id_usuario, usuario.activo)}
+>
+  {usuario.activo ? <FaTrash /> : <FaCheck />}
+</button>
               </div>
             </td>
           </tr>
@@ -749,9 +798,13 @@ export default function Usuarios() {
                 >
                   <FaEdit />
                 </button>
-                <button className="btn-action btn-delete" title="Reactivar">
-                  <FaTrash />
-                </button>
+              <button
+  className={`btn-action ${usuario.activo ? "btn-delete" : "btn-reactivate"}`}
+  title={usuario.activo ? "Desactivar" : "Reactivar"}
+  onClick={() => handleDesactivarUsuario(usuario.id_usuario, usuario.activo)}
+>
+  {usuario.activo ? <FaTrash /> : <FaCheck />}
+</button>
               </div>
             </td>
           </tr>
