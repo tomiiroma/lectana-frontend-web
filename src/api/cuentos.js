@@ -1,119 +1,111 @@
 import api from "./client";
 
-// Versión alineada con el tutorial del backend
-export async function crearCuentoV2({
-  titulo,
-  edad_publico,
-  autor_id_autor,
-  genero_id_genero,
-}) {
-  const body = {
-    titulo,
-    edad_publico: Number(edad_publico),
-    autor_id_autor: Number(autor_id_autor),
-    genero_id_genero: Number(genero_id_genero),
-  };
-  console.log("API enviando body:", body);
+/**
+ * Obtener todos los cuentos con filtros opcionales
+ * @param {Object} params - Parámetros de filtrado
+ * @param {number} params.page - Número de página
+ * @param {number} params.limit - Límite de resultados por página
+ * @param {string} params.categoria - Filtrar por categoría
+ * @param {string} params.edad - Filtrar por edad
+ * @param {string} params.busqueda - Búsqueda por título
+ */
+export async function obtenerCuentos(params = {}) {
   try {
-    const { data } = await api.post("/cuentos", body, {
-      headers: { "Content-Type": "application/json" },
-    });
-    console.log("API respuesta exitosa:", data);
-    if (!data?.ok) throw new Error(data?.error || "Error creando cuento");
-    return data.data;
+    const response = await api.get("/cuentos", { params });
+    return response.data;
   } catch (error) {
-    console.error("Error en API crearCuentoV2:", error);
-    console.error("Response data:", error.response?.data);
-    console.error("Status:", error.response?.status);
+    console.error("Error al obtener cuentos:", error);
     throw error;
   }
 }
 
-// Nuevo flujo: crear cuento plano (sin archivos)
-export async function crearCuentoPlano({ titulo, edad_publico, autor_id_autor, genero_id_genero }) {
-  console.log("API crearCuentoPlano recibió:", { titulo, edad_publico, autor_id_autor, genero_id_genero });
-  return crearCuentoV2({ titulo, edad_publico, autor_id_autor, genero_id_genero });
-}
-
-export async function listarCuentos(params = {}) {
-  console.log("API listarCuentos - params recibidos:", params);
-  const { data } = await api.get("/cuentos", { params });
-  console.log("API listarCuentos - respuesta:", data);
-  if (!data?.ok) throw new Error(data?.error || "Error listando cuentos");
-  return data.data; // Retorna array de cuentos para usuarios.jsx
-}
-
-// Obtener todos los cuentos sin paginación (para ConfigureAulaModal)
-export async function obtenerTodosLosCuentos() {
-  try {
-    console.log("API obtenerTodosLosCuentos - llamando sin paginación");
-    const { data } = await api.get("/cuentos");
-    console.log("API obtenerTodosLosCuentos - respuesta:", data);
-    
-    if (!data?.ok) {
-      throw new Error(data?.error || "Error obteniendo cuentos");
-    }
-    
-    // Los cuentos pueden devolver estructura simple o con paginación
-    // Verificamos si tiene items o es array directo
-    const cuentosArray = data.data?.items || data.data || [];
-    console.log("API obtenerTodosLosCuentos - cuentos extraídos:", cuentosArray.length);
-    
-    return { ok: true, data: cuentosArray };
-  } catch (error) {
-    console.error("Error en obtenerTodosLosCuentos:", error);
-    throw error;
-  }
-}
-
-
+/**
+ * Obtener cuento por ID
+ */
 export async function obtenerCuentoPorId(id) {
-  const { data } = await api.get(`/cuentos/${id}`);
-  if (!data?.ok) throw new Error(data?.error || "Error obteniendo cuento");
-  return data.data;
+  try {
+    const response = await api.get(`/cuentos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener cuento:", error);
+    throw error;
+  }
 }
 
+/**
+ * Crear nuevo cuento
+ */
+export async function crearCuento(data) {
+  try {
+    const response = await api.post("/cuentos", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear cuento:", error);
+    throw error;
+  }
+}
+
+/**
+ * Actualizar cuento
+ */
+export async function actualizarCuento(id, data) {
+  try {
+    const response = await api.put(`/cuentos/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar cuento:", error);
+    throw error;
+  }
+}
+
+/**
+ * Eliminar cuento
+ */
+export async function eliminarCuento(id) {
+  try {
+    const response = await api.delete(`/cuentos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar cuento:", error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener categorías de cuentos
+ */
+export async function obtenerCategorias() {
+  try {
+    const response = await api.get("/cuentos/categorias");
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener categorías:", error);
+    throw error;
+  }
+}
+
+// Mock de obtener total de cuentos
 export async function obtenerTotalCuentos() {
-  const { data } = await api.get(`/cuentos/estadisticas/total`);
-  if (!data?.ok) throw new Error(data?.error || "Error obteniendo total de cuentos");
-  return data.data?.total ?? 0;
+  console.log("MOCK: obtenerTotalCuentos");
+  return 0;
 }
 
-// Editar cuento: PUT /api/cuentos/:id
+// Mock de editar cuento
 export async function editarCuento({ id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img }) {
-  const body = {};
-  if (titulo !== undefined) body.titulo = titulo;
-  if (edad_publico !== undefined) body.edad_publico = Number(edad_publico);
-  if (autor_id_autor !== undefined) body.autor_id_autor = Number(autor_id_autor);
-  if (genero_id_genero !== undefined) body.genero_id_genero = Number(genero_id_genero);
-  if (duracion !== undefined) body.duracion = Number(duracion);
-  if (pdf_url !== undefined) body.pdf_url = pdf_url;
-  if (url_img !== undefined) body.url_img = url_img;
-  
-  const { data } = await api.put(`/cuentos/${id}`, body, {
-    headers: { "Content-Type": "application/json" },
-  });
-  if (!data?.ok) throw new Error(data?.error || "Error editando cuento");
-  return data.data;
+  console.log("MOCK: editarCuento:", { id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img });
+  return { id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img };
 }
 
-// Subir PDF al cuento: POST /api/cuentos/:id/upload-pdf (form-data: file)
+// Mock de subir PDF
 export async function subirPDFCuentoV2({ cuentoId, file }) {
-  const form = new FormData();
-  form.append("file", file);
-  // No seteamos Content-Type manualmente para que axios incluya el boundary
-  const { data } = await api.post(`/cuentos/${cuentoId}/upload-pdf`, form);
-  if (!data?.ok) throw new Error(data?.error || "Error subiendo PDF");
-  return data.data;
+  console.log("MOCK: subirPDFCuentoV2:", { cuentoId, fileName: file?.name });
+  return { url: "mock-pdf-url.pdf" };
 }
 
-// Subir imagen portada: POST /api/imagenes/cuentos/:id/upload-imagen (form-data: file)
+// Mock de subir imagen
 export async function subirImagenCuento({ cuentoId, file }) {
-  const form = new FormData();
-  form.append("file", file);
-  const { data } = await api.post(`/imagenes/cuentos/${cuentoId}/upload-imagen`, form);
-  if (!data?.ok) throw new Error(data?.error || "Error subiendo imagen");
-  return data.data;
+  console.log("MOCK: subirImagenCuento:", { cuentoId, fileName: file?.name });
+  return { url: "mock-image-url.jpg" };
 }
 
 

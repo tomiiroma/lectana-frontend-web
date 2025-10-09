@@ -23,22 +23,22 @@
 }
 
 .stat-card-orange {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--status-warning);
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
 }
 
 .stat-card-green {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--status-success);
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
 }
 
 .stat-card-blue {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--text-link);
   box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
 }
 
 .stat-card-purple {
-  border-left: 4px solid #8b5cf6;
+  border-left: 4px solid var(--status-pending);
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
 }
 
@@ -127,19 +127,19 @@
 
 .cat-adventure {
   background: rgba(245, 158, 11, 0.1);
-  color: #d97706;
+  color: var(--status-warning);
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .cat-fantasy {
   background: rgba(139, 92, 246, 0.1);
-  color: #7c3aed;
+  color: var(--status-pending);
   border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 .cat-scifi {
   background: rgba(6, 182, 212, 0.1);
-  color: #0891b2;
+  color: var(--status-info);
   border: 1px solid rgba(6, 182, 212, 0.3);
 }
 
@@ -154,13 +154,13 @@
 
 .status-published {
   background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  color: var(--status-success);
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .status-draft {
   background: rgba(107, 114, 128, 0.1);
-  color: #4b5563;
+  color: var(--status-inactive);
   border: 1px solid rgba(107, 114, 128, 0.3);
 }
 
@@ -184,7 +184,7 @@
 
 .btn-view {
   background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+  color: var(--text-link);
 }
 
 .btn-view:hover {
@@ -194,7 +194,7 @@
 
 .btn-edit {
   background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
+  color: var(--status-warning);
 }
 
 .btn-edit:hover {
@@ -204,7 +204,7 @@
 
 .btn-delete {
   background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  color: var(--status-error);
 }
 
 .btn-delete:hover {
@@ -255,4 +255,13 @@
 .btn-pagination:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Filter label styling */
+.filter-label {
+  display: block;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  margin-bottom: 6px;
+  font-weight: 500;
 }

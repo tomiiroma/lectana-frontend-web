@@ -1,33 +1,30 @@
 /* Estilos globales para páginas admin - Colorido y minimalista */
 
+/* Optimized admin page styles */
 .admin-page-title {
     background: linear-gradient(135deg, var(--secondary-color), var(--primary-color), var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 2.25em;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-weight: 800;
-    margin: 20px 30px 30px 30px;
+    font: 800 2.25em/1.2 'Inter', system-ui, sans-serif;
+    margin: 20px 30px 30px;
     text-shadow: 0 4px 8px var(--shadow-light);
 }
 
 .admin-page-container {
     margin: 20px;
     padding: 24px;
+    min-height: 400px;
     background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
     border-radius: 20px;
     backdrop-filter: blur(15px);
-    border: 1px solid var(--border-secondary);
     box-shadow: var(--shadow-medium);
-    min-height: 400px;
 }
 
 .admin-page-content {
+    font: 1.1em/1.6 'Inter', system-ui, sans-serif;
     color: var(--text-primary);
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 1.1em;
-    line-height: 1.6;
 }
 
 .admin-section-divider {

@@ -1,4 +1,7 @@
-/* Sistema de Temas - Variables CSS */
+/* OPTIMIZED CSS SYSTEM - Main Theme Variables */
+/* Import utility classes for better performance */
+@import url('./utilities.css');
+@import url('./theme-overrides.css');
 :root {
   /* Modo Claro */
   --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #e7e5e4 75%, #f8fafc 100%);
@@ -12,16 +15,16 @@
   --text-tertiary: #6B7280;
   --text-accent: #0056D2;
   
-  /* Brand Colors */
+  /* Brand Colors - Optimized */
   --primary-color: #8b5cf6;
   --secondary-color: #0056D2;
   --accent-color: #00C57D;
   --primary-hover: #1D4ED8;
   
-  /* Button Backgrounds */
-  --btn-primary-bg: linear-gradient(135deg, #0056D2 0%, #00C57D 100%);
+  /* Button System - Consolidated */
+  --btn-primary-bg: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
   --btn-primary-text: #ffffff;
-  --btn-primary-hover: linear-gradient(135deg, #1D4ED8 0%, #10b981 100%);
+  --btn-primary-hover: linear-gradient(135deg, var(--primary-hover) 0%, #10b981 100%);
   --btn-secondary-bg: #ffffff;
   --btn-secondary-border: #d1d5db;
   --btn-secondary-hover: #f9fafb;
@@ -53,6 +56,27 @@
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --info-color: #06b6d4;
+  --error-color: #ef4444;
+  
+  /* Semantic Colors for Status */
+  --status-success: #059669;
+  --status-warning: #d97706;
+  --status-error: #dc2626;
+  --status-info: #0891b2;
+  --status-pending: #7c3aed;
+  --status-inactive: #6b7280;
+  --status-active: #10b981;
+  
+  /* Text Color Variants */
+  --text-link: #0056d2;
+  --text-link-hover: #1d4ed8;
+  --text-muted: #9ca3af;
+  --text-disabled: #d1d5db;
+  
+  /* Background Variants */
+  --bg-modal: rgba(255, 255, 255, 0.98);
+  --bg-tooltip: rgba(0, 0, 0, 0.9);
+  --bg-highlight: rgba(0, 86, 210, 0.1);
   
   --pattern-overlay: radial-gradient(circle at 25% 25%, rgba(0, 86, 210, 0.02) 0%, transparent 50%);
 }
@@ -70,16 +94,16 @@
   --text-tertiary: #94a3b8;
   --text-accent: #60a5fa;
   
-  /* Brand Colors */
+  /* Brand Colors - Dark Mode Optimized */
   --primary-color: #a78bfa;
   --secondary-color: #3b82f6;
   --accent-color: #34d399;
   --primary-hover: #60a5fa;
   
-  /* Button Backgrounds */
-  --btn-primary-bg: linear-gradient(135deg, #6366f1 0%, #34d399 100%);
+  /* Button System - Dark Mode Consolidated */
+  --btn-primary-bg: linear-gradient(135deg, #6366f1 0%, var(--accent-color) 100%);
   --btn-primary-text: #ffffff;
-  --btn-primary-hover: linear-gradient(135deg, #8b5cf6 0%, #22d3ee 100%);
+  --btn-primary-hover: linear-gradient(135deg, var(--primary-color) 0%, #22d3ee 100%);
   --btn-secondary-bg: #1e293b;
   --btn-secondary-border: #475569;
   --btn-secondary-hover: #334155;
@@ -111,56 +135,74 @@
   --success-color: #34d399;
   --warning-color: #fbbf24;
   --info-color: #22d3ee;
+  --error-color: #f87171;
+  
+  /* Semantic Colors for Status */
+  --status-success: #34d399;
+  --status-warning: #fbbf24;
+  --status-error: #f87171;
+  --status-info: #22d3ee;
+  --status-pending: #a78bfa;
+  --status-inactive: #94a3b8;
+  --status-active: #34d399;
+  
+  /* Text Color Variants */
+  --text-link: #60a5fa;
+  --text-link-hover: #93c5fd;
+  --text-muted: #6b7280;
+  --text-disabled: #4b5563;
+  
+  /* Background Variants */
+  --bg-modal: rgba(30, 41, 59, 0.98);
+  --bg-tooltip: rgba(0, 0, 0, 0.9);
+  --bg-highlight: rgba(96, 165, 250, 0.2);
   
   --pattern-overlay: radial-gradient(circle at 25% 25%, rgba(96, 165, 250, 0.05) 0%, transparent 50%);
 }
 
-/* Reset básico para eliminar bordes blancos */
-* {
+/* Optimized reset */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body,
+#root {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-#root {
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* Fondo con variables de tema */
+/* Optimized body styles */
 body {
   background: var(--bg-primary);
   background-attachment: fixed;
   background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  position: relative;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
+  animation: gradientShift 15s ease infinite;
 }
 
-/* Animación sutil del gradiente */
+/* Optimized keyframe animation */
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
-/* Patrón geométrico sutil de fondo con variables de tema */
+/* Optimized background pattern */
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image: 
     var(--pattern-overlay),
     radial-gradient(circle at 75% 75%, var(--border-primary) 0%, transparent 50%),
@@ -170,7 +212,7 @@ body::before {
   transition: background-image 0.3s ease;
 }
 
-/* Asegurar que todos los contenedores principales ocupen el espacio completo */
+/* Consolidated container styles */
 .admin-layout,
 .admin-container,
 .admin-content {
@@ -178,14 +220,12 @@ body::before {
   width: 100%;
 }
 
-/* Sistema de temas simplificado - solo variables CSS */
-
-/* REGLA FINAL DE SEGURIDAD GLOBAL - Asegura visibilidad en cualquier situación */
+/* Optimized theme system */
 * {
   color: inherit;
 }
 
-/* Asegurar que los elementos principales siempre tengan color visible */
+/* Main containers color inheritance */
 body, 
 .admin-page,
 .admin-container,
@@ -193,23 +233,40 @@ body,
   color: var(--text-primary);
 }
 
-/* PROTECCIÓN PARA BOTONES DE LANDING - NO TOCAR */
+/* Button protection - maintain original styling */
 .PrimaryButton,
 .SecondaryButton {
-  /* Estos botones nunca deben ser afectados por reglas de admin */
   padding: inherit !important;
   font-size: inherit !important;
   min-width: inherit !important;
 }
 
-/* Override para elementos que pueden tener colores hardcodeados problemáticos */
+/* Smart color inheritance system */
+/* Override inline styles with theme-aware colors */
 [style*="color: #6b7280"],
-[style*="color: #374151"],
-[style*="color: #06b6d4"],
+[style*="color: #9ca3af"],
 [style*="color: rgb(107, 114, 128)"],
+[style*="color: rgb(156, 163, 175)"] {
+  color: var(--text-muted) !important;
+}
+
+[style*="color: #374151"],
+[style*="color: #1f2937"],
 [style*="color: rgb(55, 65, 81)"],
-[style*="color: rgb(6, 182, 212)"] {
-  color: var(--text-primary) !important;
+[style*="color: rgb(31, 41, 55)"] {
+  color: var(--text-secondary) !important;
+}
+
+[style*="color: #0056d2"],
+[style*="color: #3b82f6"],
+[style*="color: rgb(0, 86, 210)"],
+[style*="color: rgb(59, 130, 246)"] {
+  color: var(--text-link) !important;
+}
+
+[style*="color: #cbd5e1"],
+[style*="color: rgb(203, 213, 225)"] {
+  color: var(--text-tertiary) !important;
 }
 
 

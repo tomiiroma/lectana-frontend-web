@@ -103,65 +103,73 @@ function Navbar() {
 
         {/* User Section */}
         <div className="header-actions">
-          {/* Botón de modo noche siempre visible */}
-          <button 
-            onClick={toggleTheme}
-            className="theme-toggle-button"
-            title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
-          >
-            {isDark ? <FaSun /> : <FaMoon />}
-          </button>
-
           {token && user ? (
             // Usuario logueado
-            <div className="user-menu-container">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <button 
-                className="user-menu-trigger"
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                onClick={toggleTheme}
+                className="theme-toggle-button"
+                title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
               >
-                <div className="user-avatar">
-                  <FaUserCircle />
-                </div>
-                <div className="user-info">
-                  <span className="user-name">{getUserDisplayName()}</span>
-                  <span className="user-role">{getUserRole()}</span>
-                </div>
+                {isDark ? <FaSun size={20} /> : <FaMoon size={20} />}
               </button>
+              
+              <div className="user-menu-container">
+                <button 
+                  className="user-menu-trigger"
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                >
+                  <div className="user-avatar">
+                    <FaUserCircle />
+                  </div>
+                  <div className="user-info">
+                    <span className="user-name">{getUserDisplayName()}</span>
+                    <span className="user-role">{getUserRole()}</span>
+                  </div>
+                </button>
 
-              {isUserMenuOpen && (
-                <div className="user-dropdown">
-                  <div className="dropdown-header">
-                    <div className="dropdown-avatar">
-                      <FaUserCircle />
+                {isUserMenuOpen && (
+                  <div className="user-dropdown">
+                    <div className="dropdown-header">
+                      <div className="dropdown-avatar">
+                        <FaUserCircle />
+                      </div>
+                      <div className="dropdown-info">
+                        <span className="dropdown-name">{getUserDisplayName()}</span>
+                        <span className="dropdown-email">{user.email}</span>
+                      </div>
                     </div>
-                    <div className="dropdown-info">
-                      <span className="dropdown-name">{getUserDisplayName()}</span>
-                      <span className="dropdown-email">{user.email}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="dropdown-menu">
-                    {user.rol?.toLowerCase() === "administrador" && (
-                      <Link to="/admin" className="dropdown-item">
-                        <FaCog />
-                        Panel Admin
+                    
+                    <div className="dropdown-menu">
+                      {user.rol?.toLowerCase() === "administrador" && (
+                        <Link to="/admin" className="dropdown-item">
+                          <FaCog />
+                          Panel Admin
+                        </Link>
+                      )}
+                      <Link to="/admin/perfil" className="dropdown-item">
+                        <FaUser />
+                        Mi Perfil
                       </Link>
-                    )}
-                    <Link to="/admin/perfil" className="dropdown-item">
-                      <FaUser />
-                      Mi Perfil
-                    </Link>
-                    <button onClick={handleLogout} className="dropdown-item logout-item">
-                      <FaSignOutAlt />
-                      Cerrar Sesión
-                    </button>
+                      <button onClick={handleLogout} className="dropdown-item logout-item">
+                        <FaSignOutAlt />
+                        Cerrar Sesión
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ) : (
             // Usuario no logueado
             <div className="auth-buttons">
+              <button 
+                onClick={toggleTheme}
+                className="theme-toggle-button"
+                title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+              >
+                {isDark ? <FaSun size={20} /> : <FaMoon size={20} />}
+              </button>
               <Link to="/login" className="login-button">
                 <FaSignInAlt />
                 <span>Iniciar Sesión</span>

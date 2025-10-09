@@ -162,15 +162,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   color: var(--text-accent);
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 1.8rem !important;
   backdrop-filter: blur(10px);
 }
 
@@ -178,6 +178,22 @@
   background: var(--border-primary);
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 4px 16px var(--shadow-light);
+}
+
+.theme-toggle-button svg {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 24px !important;
+}
+
+.theme-toggle-button > *,
+.theme-toggle-button svg,
+.theme-toggle-button [data-icon] {
+  font-size: 1.8rem !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
 }
 
 /* User Menu */

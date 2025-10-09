@@ -159,11 +159,11 @@ export default function Cuentos() {
           margin: "12px 0"
         }}>
           <div>
-            <label style={{ display: "block", color: "#cbd5e1", fontSize: 12, marginBottom: 6 }}>Edad público</label>
+            <label className="filter-label">Edad público</label>
             <input type="number" min="4" max="18" value={filters.edad_publico} onChange={(e)=> setFilters({ ...filters, edad_publico: e.target.value })} className="form-input" placeholder="4-18" />
           </div>
           <div>
-            <label style={{ display: "block", color: "#cbd5e1", fontSize: 12, marginBottom: 6 }}>Género</label>
+            <label className="filter-label">Género</label>
             <select className="form-input" value={filters.genero_id} onChange={(e)=> setFilters({ ...filters, genero_id: e.target.value })}>
               <option value="">Todos</option>
               {generos.map((g) => (
@@ -172,7 +172,7 @@ export default function Cuentos() {
             </select>
           </div>
           <div>
-            <label style={{ display: "block", color: "#cbd5e1", fontSize: 12, marginBottom: 6 }}>Autor</label>
+            <label className="filter-label">Autor</label>
             <select className="form-input" value={filters.autor_id} onChange={(e)=> setFilters({ ...filters, autor_id: e.target.value })}>
               <option value="">Todos</option>
               {autores.map((a) => (

@@ -1,4 +1,5 @@
 import CardInfo from "../../../../components/Cards/CardInfo"
+import { useNavigate } from "react-router-dom"
 import "./ExplorarCategoriasSection.css"
 import { FaBook,FaCompass,FaBuildingColumns,FaHeart   } from "react-icons/fa6";
 import { BsStars } from "react-icons/bs";
@@ -6,6 +7,11 @@ import { MdScience } from "react-icons/md";
 
 
 function ExplorarCategorias(){
+    const navigate = useNavigate();
+
+    const irACatalogo = (categoria) => {
+        navigate(`/catalogo?categoria=${encodeURIComponent(categoria)}`);
+    };
     return(
         <>
         <section id="categorias" className="container-ExplorarCategorias">
@@ -16,42 +22,43 @@ function ExplorarCategorias(){
         icon={<FaBook size={48} color="lightblue" />}
         titulo="Fantasía"
         descripcion="28 cuentos"
-                width={"155px"} height={"155px"}
-
+        width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Fantasía")}
       />      
        <CardInfo
         icon={<FaCompass size={48} color="lightgreen" />}
-        titulo="Fantasía"
-        descripcion="28 cuentos"
-                width={"155px"} height={"155px"}
-
+        titulo="Aventura"
+        descripcion="35 cuentos"
+        width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Aventura")}
       /> 
        <CardInfo
         icon={<BsStars size={48} color="lightpurple" />}
-        titulo="Fantasía"
-        descripcion="28 cuentos"
-                width={"155px"} height={"155px"}
-
+        titulo="Misterio"
+        descripcion="22 cuentos"
+        width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Misterio")}
       /> 
        <CardInfo
         icon={<MdScience size={48} color="yellow" />}
-        titulo="Fantasía"
-        descripcion="28 cuentos"
+        titulo="Ciencia"
+        descripcion="18 cuentos"
         width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Ciencia")}
       />   
          <CardInfo
         icon={<FaBuildingColumns size={48} color="gold" />}
-        titulo="Fantasía"
-        descripcion="28 cuentos"
-                width={"155px"} height={"155px"}
-
+        titulo="Historia"
+        descripcion="31 cuentos"
+        width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Historia")}
       />   
          <CardInfo
         icon={<FaHeart size={48} color="red" />}
         titulo="Valores"
         descripcion="28 cuentos"
-                width={"155px"} height={"155px"}
-
+        width={"155px"} height={"155px"}
+        onClick={() => irACatalogo("Valores")}
       />   
       </div>
       </section>
