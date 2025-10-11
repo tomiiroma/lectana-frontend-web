@@ -1,0 +1,29 @@
+button{
+    padding: 10px 16px;
+  border: 2px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover{
+    transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btnEdit:hover{
+    background-color: rgb(215, 190, 237);
+}
+.btnView:hover{
+      background-color: rgb(198, 235, 224);
+}
+.btnDelete:hover{
+      background-color: rgb(226, 123, 123);
+}

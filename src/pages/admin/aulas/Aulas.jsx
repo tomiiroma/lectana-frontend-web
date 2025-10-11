@@ -15,8 +15,9 @@ import { useApiRequest } from "../../../hooks/useApiRequest";
 import "../AdminPages.css";
 import "./Aulas.css";
 import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaUsers, FaChalkboardTeacher, FaGraduationCap, FaClock } from "react-icons/fa";
-
-
+import BtnEdit from "../../../components/Buttons/ActionButtons/btnEdit";
+import BtnDelete from "../../../components/Buttons/ActionButtons/btnDelete";
+import BtnView from "../../../components/Buttons/ActionButtons/btnView";
 export default function Aulas() {
   const [aulas, setAulas] = useState([]);
   const [loading, setLoading] = useState(false);

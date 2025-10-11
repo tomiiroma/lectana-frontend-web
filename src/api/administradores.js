@@ -7,7 +7,7 @@ export async function obtenerAdministradores({ page = 1, limit = 10, q = "" } = 
     if (q) params.q = q;
     
     console.log("API obtenerAdministradores - params enviados:", params);
-    const { data } = await api.get("/administradores/admin-listar-administradores", { params });
+    const { data } = await api.get("/administrador/admin-listar-administradores", { params });
     console.log("API obtenerAdministradores - respuesta:", data);
     
     if (!data?.ok) {
@@ -28,14 +28,14 @@ export async function obtenerAdministradorPorId(id) {
   console.log('🚀 Tipo de ID:', typeof id);
   
   try {
-    console.log(`🔄 Admin - Llamando a: /administradores/admin-obtener-administrador/${id}`);
+    console.log(`🔄 Admin - Llamando a: /administrador/admin-obtener-administrador/${id}`);
     
     // Verificar que el ID sea válido
     if (!id || id === 'undefined' || id === 'null') {
       throw new Error('ID de administrador no válido');
     }
     
-    const { data } = await api.get(`/administradores/admin-obtener-administrador/${id}`);
+    const { data } = await api.get(`/administrador/admin-obtener-administrador/${id}`);
     
     console.log('🔍 Respuesta completa del backend:', data);
     console.log('🔍 data.ok:', data?.ok);
@@ -63,7 +63,7 @@ export async function obtenerAdministradorPorId(id) {
 // Obtener estadísticas de usuarios
 export async function obtenerEstadisticasUsuarios() {
   try {
-    const { data } = await api.get("/administradores/estadisticas-usuarios");
+    const { data } = await api.get("/administrador/estadisticas-usuarios");
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error obteniendo estadísticas");
@@ -83,7 +83,7 @@ export async function obtenerUsuariosActivos({ page = 1, limit = 20, q = "" } = 
     if (q) params.q = q;
     
     console.log("API obtenerUsuariosActivos - params enviados:", params);
-    const { data } = await api.get("/administradores/todos-usuarios-activos", { params });
+    const { data } = await api.get("/administrador/todos-usuarios-activos", { params });
     console.log("API obtenerUsuariosActivos - respuesta:", data);
     
     if (!data?.ok) {
@@ -104,7 +104,7 @@ export async function obtenerUsuariosInactivos({ page = 1, limit = 20, q = "" } 
     if (q) params.q = q;
     
     console.log("API obtenerUsuariosInactivos - params enviados:", params);
-    const { data } = await api.get("/administradores/todos-usuarios-inactivos", { params });
+    const { data } = await api.get("/administrador/todos-usuarios-inactivos", { params });
     console.log("API obtenerUsuariosInactivos - respuesta:", data);
     
     if (!data?.ok) {
@@ -123,7 +123,7 @@ export async function actualizarAdministradorAdmin(id, datosActualizacion) {
   try {
     console.log(`🔄 Actualizando administrador ${id} con datos:`, datosActualizacion);
     
-    const { data } = await api.put(`/administradores/admin-actualizar-administrador/${id}`, datosActualizacion);
+    const { data } = await api.put(`/administrador/admin-actualizar-administrador/${id}`, datosActualizacion);
     
     if (!data?.ok) {
       throw new Error(data?.error || "Error actualizando administrador");

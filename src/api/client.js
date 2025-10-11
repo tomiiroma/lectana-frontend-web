@@ -14,6 +14,7 @@ if (isProd) {
 
 const api = axios.create({
   baseURL,
+  withCredentials: true,
 });
 
 // Cache para evitar peticiones duplicadas
