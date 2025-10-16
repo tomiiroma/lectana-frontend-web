@@ -104,7 +104,7 @@ function Catalogo() {
           </Link>
           <h1 className="catalogo-title">Catálogo de Cuentos</h1>
           <p className="catalogo-subtitle">
-            Explora nuestra colección de {librosEjemplo.length} cuentos educativos
+            Explora nuestra colección de {loading ? '...' : totalLibros} cuentos educativos
           </p>
         </div>
       </div>

@@ -84,28 +84,116 @@ export async function obtenerCategorias() {
   }
 }
 
-// Mock de obtener total de cuentos
+/**
+ * Obtener total de cuentos
+ */
 export async function obtenerTotalCuentos() {
-  console.log("MOCK: obtenerTotalCuentos");
-  return 0;
+  try {
+    const response = await api.get("/cuentos/total");
+    return response.data.total || 0;
+  } catch (error) {
+    console.error("Error al obtener total de cuentos:", error);
+    return 0;
+  }
 }
 
-// Mock de editar cuento
+/**
+ * Editar cuento
+ */
 export async function editarCuento({ id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img }) {
-  console.log("MOCK: editarCuento:", { id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img });
-  return { id, titulo, edad_publico, autor_id_autor, genero_id_genero, duracion, pdf_url, url_img };
+  try {
+    const response = await api.put(`/cuentos/${id}`, {
+      titulo,
+      edad_publico,
+      autor_id_autor,
+      genero_id_genero,
+      duracion,
+      pdf_url,
+      url_img
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al editar cuento:", error);
+    throw error;
+  }
 }
 
-// Mock de subir PDF
+/**
+ * Subir PDF de cuento (versión 2)
+ */
 export async function subirPDFCuentoV2({ cuentoId, file }) {
-  console.log("MOCK: subirPDFCuentoV2:", { cuentoId, fileName: file?.name });
-  return { url: "mock-pdf-url.pdf" };
+  try {
+    const formData = new FormData();
+    formData.append('pdf', file);
+    const response = await api.post(`/cuentos/${cuentoId}/pdf`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al subir PDF:", error);
+    throw error;
+  }
 }
 
-// Mock de subir imagen
+/**
+ * Subir imagen de cuento
+ */
 export async function subirImagenCuento({ cuentoId, file }) {
-  console.log("MOCK: subirImagenCuento:", { cuentoId, fileName: file?.name });
-  return { url: "mock-image-url.jpg" };
+  try {
+    const formData = new FormData();
+    formData.append('imagen', file);
+    const response = await api.post(`/cuentos/${cuentoId}/imagen`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al subir imagen:", error);
+    throw error;
+  }
+}
+
+/**
+ * Crear cuento plano (sin estructura compleja)
+ */
+export async function crearCuentoPlano(data) {
+  try {
+    const response = await api.post("/cuentos/plano", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear cuento plano:", error);
+    throw error;
+  }
+}
+
+/**
+ * Listar cuentos con paginación
+ */
+export async function listarCuentos(params = {}) {
+  try {
+    const response = await api.get("/cuentos/lista", { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error al listar cuentos:", error);
+    return {
+      data: [],
+      total: 0,
+      page: params.page || 1,
+      limit: params.limit || 10
+    };
+  }
+}
+
+/**
+ * Obtener todos los cuentos sin filtros
+ */
+export async function obtenerTodosLosCuentos() {
+  try {
+    const response = await api.get("/cuentos/todos");
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener todos los cuentos:", error);
+    return { data: [] };
+  }
 }
 
 
