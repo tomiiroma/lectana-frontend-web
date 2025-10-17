@@ -39,13 +39,19 @@ export default function AdminSidebar() {
       }}
     >
       <div>
-      <div
+      <NavLink 
+        to="/"
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: "5px",
+          textDecoration: "none",
+          cursor: "pointer",
+          transition: "transform 0.2s ease",
         }}
+        onMouseEnter={(e) => e.target.closest('a').style.transform = "scale(1.02)"}
+        onMouseLeave={(e) => e.target.closest('a').style.transform = "scale(1)"}
       >
         <img src="/lectana.svg" alt="Logo" className="header-logo" />
         <h1
@@ -55,11 +61,12 @@ export default function AdminSidebar() {
             fontFamily: "Inter, Inter Fallback",
             color: "var(--sidebar-title)",
             textShadow: "var(--shadow-light)",
+            transition: "color 0.2s ease",
           }}
         >
           Lectana Admin
         </h1>
-      </div>
+      </NavLink>
       <hr style={{ 
         width: "100%", 
         padding: 0, 

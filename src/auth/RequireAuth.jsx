@@ -5,7 +5,7 @@ export default function RequireAuth({ children }) {
   const { token, user, loading } = useAuth();
   const location = useLocation();
 
-  // Si está cargando, mostrar un loading o nada
+  // Si está cargando, mostrar un loading
   if (loading) {
     return (
       <div style={{ 

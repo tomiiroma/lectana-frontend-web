@@ -660,8 +660,8 @@ const handleDesactivarUsuario = async(id_usuario, estado) => {
       if (usuariosActivosData.items.length === 0) {
         return (
           <tr>
-            <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-              <div style={{ fontSize: '18px', marginBottom: '8px' }}>📭</div>
+            <td colSpan="6" className="empty-state">
+              <div className="empty-icon">📭</div>
               <div>No hay usuarios activos por el momento</div>
             </td>
           </tr>
@@ -738,8 +738,8 @@ const handleDesactivarUsuario = async(id_usuario, estado) => {
       if (usuariosInactivosData.items.length === 0) {
         return (
           <tr>
-            <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-              <div style={{ fontSize: '18px', marginBottom: '8px' }}>📭</div>
+            <td colSpan="6" className="empty-state">
+              <div className="empty-icon">📭</div>
               <div>No hay usuarios inactivos por el momento</div>
             </td>
           </tr>

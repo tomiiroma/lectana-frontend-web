@@ -12,6 +12,8 @@ import Usuarios from "./pages/admin/usuarios/Usuarios.jsx";
 import Aulas from "./pages/admin/aulas/Aulas.jsx";
 import Actividades from "./pages/admin/actividades/Actividades.jsx";
 import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
+import DescargaApp from "./pages/DescargaApp/DescargaApp.jsx";
+import Catalogo from "./pages/Catalogo/Catalogo.jsx";
 
 function withProviders(element) {
   return (
@@ -34,6 +36,18 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: withProviders(<Login />),
+  },
+
+  // Ruta de descarga de la app
+  {
+    path: "/descarga-app",
+    element: withProviders(<DescargaApp />),
+  },
+
+  // Ruta de catálogo de cuentos
+  {
+    path: "/catalogo",
+    element: withProviders(<Catalogo />),
   },
 
   {

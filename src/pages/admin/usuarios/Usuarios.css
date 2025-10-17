@@ -132,32 +132,32 @@
 
 .role-student {
   background: rgba(59, 130, 246, 0.1);
-  color: #2563eb;
+  color: var(--text-link);
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .role-teacher {
   background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  color: var(--status-success);
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .role-admin {
   background: rgba(139, 92, 246, 0.1);
-  color: #7c3aed;
+  color: var(--status-pending);
   border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 /* Estados de usuario */
 .status-active {
   background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  color: var(--status-success);
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .status-inactive {
   background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
+  color: var(--status-error);
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
@@ -334,4 +334,16 @@
     height: 40px;
     font-size: 14px;
   }
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 18px;
+  margin-bottom: 8px;
 }

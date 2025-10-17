@@ -1,0 +1,183 @@
+/* Theme Color Utilities - Smart Override System */
+
+/* Replace all hardcoded status colors with theme-aware alternatives */
+.status-success,
+[class*="success"],
+.text-success { color: var(--status-success) !important; }
+
+.status-warning,
+[class*="warning"],
+.text-warning { color: var(--status-warning) !important; }
+
+.status-error,
+[class*="error"],
+.text-error { color: var(--status-error) !important; }
+
+.status-info,
+[class*="info"],
+.text-info { color: var(--status-info) !important; }
+
+.status-pending,
+[class*="pending"],
+.text-pending { color: var(--status-pending) !important; }
+
+.status-inactive,
+[class*="inactive"],
+.text-inactive { color: var(--status-inactive) !important; }
+
+.status-active,
+[class*="active"],
+.text-active { color: var(--status-active) !important; }
+
+/* Text color utilities */
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-tertiary { color: var(--text-tertiary) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-link { color: var(--text-link) !important; }
+.text-accent { color: var(--text-accent) !important; }
+
+/* Background utilities */
+.bg-primary { background: var(--bg-primary) !important; }
+.bg-secondary { background: var(--bg-secondary) !important; }
+.bg-tertiary { background: var(--bg-tertiary) !important; }
+.bg-card { background: var(--bg-card) !important; }
+.bg-glass { background: var(--bg-glass) !important; }
+
+/* Border utilities */
+.border-primary { border-color: var(--border-primary) !important; }
+.border-secondary { border-color: var(--border-secondary) !important; }
+.border-accent { border-color: var(--text-accent) !important; }
+
+/* Smart overrides for common hardcoded colors */
+
+/* Replace common gray text colors */
+*[style*="color: #6b7280"],
+*[style*="color: #9ca3af"],
+*[style*="color: #4b5563"] {
+  color: var(--text-muted) !important;
+}
+
+/* Replace common dark text colors */
+*[style*="color: #374151"],
+*[style*="color: #1f2937"],
+*[style*="color: #111827"] {
+  color: var(--text-secondary) !important;
+}
+
+/* Replace common blue colors */
+*[style*="color: #0056d2"],
+*[style*="color: #3b82f6"],
+*[style*="color: #2563eb"] {
+  color: var(--text-link) !important;
+}
+
+/* Replace common light text colors for dark mode */
+*[style*="color: #cbd5e1"],
+*[style*="color: #e2e8f0"],
+*[style*="color: #f8fafc"] {
+  color: var(--text-tertiary) !important;
+}
+
+/* Replace specific status colors */
+*[style*="color: #ef4444"],
+*[style*="color: #dc2626"] {
+  color: var(--status-error) !important;
+}
+
+*[style*="color: #f59e0b"],
+*[style*="color: #d97706"] {
+  color: var(--status-warning) !important;
+}
+
+*[style*="color: #10b981"],
+*[style*="color: #059669"] {
+  color: var(--status-success) !important;
+}
+
+*[style*="color: #8b5cf6"],
+*[style*="color: #7c3aed"] {
+  color: var(--status-pending) !important;
+}
+
+/* Replace border colors */
+*[style*="border-color: #f59e0b"] {
+  border-color: var(--status-warning) !important;
+}
+
+*[style*="border-color: #ef4444"],
+*[style*="border-color: #dc2626"] {
+  border-color: var(--status-error) !important;
+}
+
+*[style*="border-color: #8b5cf6"],
+*[style*="border-color: #7c3aed"] {
+  border-color: var(--status-pending) !important;
+}
+
+*[style*="border-color: #3b82f6"],
+*[style*="border-color: #2563eb"] {
+  border-color: var(--text-link) !important;
+}
+
+/* Replace background colors */
+*[style*="background: #f59e0b"],
+*[style*="background-color: #f59e0b"] {
+  background: var(--status-warning) !important;
+}
+
+*[style*="background: #8b5cf6"],
+*[style*="background-color: #8b5cf6"] {
+  background: var(--status-pending) !important;
+}
+
+/* Component-specific overrides */
+.admin-container *,
+.admin-page *,
+.admin-layout * {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Table styling improvements */
+table td[style*="color: #666"] {
+  color: var(--text-muted) !important;
+}
+
+table td[style*="color: #e53e3e"] {
+  color: var(--status-error) !important;
+}
+
+/* Form elements */
+input, select, textarea {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--text-accent);
+  box-shadow: 0 0 0 2px rgba(0, 86, 210, 0.1);
+}
+
+/* Specific fixes for status indicators */
+.users-status-active,
+.aulas-status-active {
+  color: var(--status-success) !important;
+}
+
+.users-status-inactive,
+.aulas-status-inactive {
+  color: var(--status-inactive) !important;
+}
+
+.cuentos-status-published {
+  color: var(--status-success) !important;
+}
+
+.cuentos-status-draft {
+  color: var(--status-warning) !important;
+}
+
+.cuentos-status-archived {
+  color: var(--status-inactive) !important;
+}

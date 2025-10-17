@@ -1,39 +1,73 @@
-import { createContext, useContext, useEffect, useMemo, useState, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import api from "../api/client";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("token") || null);
-  const [user, setUser] = useState(() => {
-    const raw = localStorage.getItem("user");
-    return raw ? JSON.parse(raw) : null;
-  });
-  const [loading, setLoading] = useState(false);
-  
-  // Referencias para controlar verificaciones
-  const verificationTimeoutRef = useRef(null);
-  const lastVerificationRef = useRef(0);
-  const isVerifyingRef = useRef(false);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth debe usarse dentro de AuthProvider");
+  }
+  return context;
+};
 
-  // Verificar token al inicializar con throttling
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true);
+
+ const login = async (credentials) => {
+  try {
+    console.log("🔐 Iniciando login...");
+    const response = await api.post("/auth/login", credentials);
+    
+    console.log("Respuesta completa:", response.data);
+    
+    if (response.data?.ok) {
+      const { token, user, role } = response.data;
+      
+      if (!token || !user) {
+        console.error(" Datos incompletos:", { token, user });
+        throw new Error("Respuesta del servidor incompleta");
+      }
+      
+      
+      const usuario = { ...user, rol: role || user.rol };
+      
+      // Guardar token y usuario
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(usuario));
+      
+      setToken(token);
+      setUser(usuario);
+      
+      console.log(" Login exitoso");
+      return { success: true };
+    } else {
+      throw new Error(response.data?.error || "Error de autenticación");
+    }
+  } catch (error) {
+    console.error(" Error en login:", error);
+    return { 
+      success: false, 
+      error: error.response?.data?.error || error.message || "Error de conexión" 
+    };
+  }
+};
+
+  // Función de logout
+  const logout = () => {
+    console.log("🚪 Cerrando sesión...");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
+  };
+
+  // Verificar token al inicializar
   useEffect(() => {
     const checkToken = async () => {
-      // Evitar verificaciones múltiples simultáneas
-      if (isVerifyingRef.current) {
-        return;
-      }
-
-      // Throttling: solo verificar si han pasado al menos 5 segundos desde la última verificación
-      const now = Date.now();
-      if (now - lastVerificationRef.current < 5000) {
-        return;
-      }
-
       if (token && !user) {
-        isVerifyingRef.current = true;
-        lastVerificationRef.current = now;
-
         try {
           console.log("🔍 Verificando token...");
           const res = await api.get("/auth/verify");
@@ -42,98 +76,49 @@ export function AuthProvider({ children }) {
             console.log("✅ Token verificado correctamente");
           }
         } catch (error) {
-          // Si el token es inválido, limpiar sin redireccionar automáticamente
           console.log("❌ Token inválido, limpiando autenticación");
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
           setToken(null);
           setUser(null);
-          // No redireccionar aquí para evitar bucles de navegación
-        } finally {
-          isVerifyingRef.current = false;
         }
       }
+      setLoading(false);
     };
 
-    // Limpiar timeout anterior
-    if (verificationTimeoutRef.current) {
-      clearTimeout(verificationTimeoutRef.current);
-    }
-
-    // Ejecutar verificación con delay para evitar verificaciones inmediatas múltiples
-    verificationTimeoutRef.current = setTimeout(checkToken, 100);
-
-    // Cleanup
-    return () => {
-      if (verificationTimeoutRef.current) {
-        clearTimeout(verificationTimeoutRef.current);
-      }
-    };
+    checkToken();
   }, [token, user]);
 
+  // Recuperar usuario del localStorage si existe
   useEffect(() => {
-    if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
-  }, [token]);
-
-  useEffect(() => {
-    if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
-  }, [user]);
-
-  async function login(email, password) {
-    try {
-      const res = await api.post("/auth/login", { email, password });
-      const payload = res?.data ?? {};
-      const ok = typeof payload.ok === "boolean" ? payload.ok : true;
-      if (!ok) throw new Error(payload?.error || "Credenciales inválidas");
-
-      const container = payload && typeof payload.data === "object" ? payload.data : payload;
-      const jwt = container?.token || container?.jwt || container?.accessToken;
-      const usuarioBase = container?.usuario || container?.user;
-      const role = container?.role || container?.rol || usuarioBase?.rol;
-
-      if (!jwt || !usuarioBase) {
-        throw new Error("Formato de respuesta no esperado del servidor");
+    if (token && !user) {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch (error) {
+          console.error("Error parsing saved user:", error);
+          localStorage.removeItem("user");
+        }
       }
-
-      const usuario = role ? { ...usuarioBase, rol: role } : usuarioBase;
-
-      setToken(jwt);
-      setUser(usuario);
-      return { success: true, jwt, usuario };
-    } catch (err) {
-      const serverMsg = err?.response?.data?.error;
-      const status = err?.response?.status;
-      let message = "Error de login";
-      
-      if (serverMsg) {
-        message = serverMsg;
-      } else if (status === 401) {
-        message = "Credenciales inválidas";
-      } else if (err?.message) {
-        message = err.message;
-      }
-      
-      return { success: false, message };
     }
-  }
+  }, [token, user]);
 
-  function logout() {
-    setToken(null);
-    setUser(null);
-  }
+  const value = useMemo(() => ({
+    user,
+    token,
+    loading,
+    login,
+    logout,
+    isAuthenticated: !!user && !!token,
+    isAdmin: user?.rol?.toLowerCase() === "administrador"
+  }), [user, token, loading]);
 
-  const value = useMemo(() => {
-    const role = typeof user?.rol === "string" ? user.rol.toLowerCase() : null;
-    return { token, user, loading, isAdmin: role === "administrador", login, logout };
-  }, [token, user, loading]);
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
-  return ctx;
-}
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 

@@ -28,14 +28,14 @@ export default function Login() {
     setLoading(true);
     
     try {
-      const result = await login(email, password);
+      const result = await login({ email, password });
       
       if (result.success) {
         // Redirigir a la página desde donde vino o al admin
         const from = location.state?.from?.pathname || "/admin";
         navigate(from, { replace: false });
       } else {
-        setError(result.message || "Error de autenticación");
+         setError(result.error || "Error de autenticación");
       }
     } catch (err) {
       console.error("Error de login:", err);

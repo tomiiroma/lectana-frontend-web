@@ -1,40 +1,38 @@
-.PrimaryButton{
+.PrimaryButton {
     background: var(--btn-primary-bg) !important;
     color: var(--btn-primary-text) !important;
-    font-size: 1em;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font: 500 1em/1.5 system-ui, sans-serif;
     width: 230px;
     height: 40px;
     padding: 12px 24px;
     border: none;
     border-radius: 0.5rem;
-    font-weight: 500;
     box-shadow: var(--shadow-medium) !important;
+    cursor: pointer;
     transition: all 0.3s ease;
-
 }
 
 .PrimaryButton:hover {
   background: var(--btn-primary-hover) !important;
   transform: scale(1.02); 
   box-shadow: var(--shadow-large) !important;
-  cursor: pointer;
 }
 
 .SecondaryButton {
-  gap: 0.5rem; 
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  height: 2.5rem;
+  font: 500 1rem/1.5 system-ui, sans-serif;
   white-space: nowrap;
-  font-weight: 500; 
-  height: 2.5rem; 
-  padding: 0.75rem 1.5rem; 
-  border-radius: 0.5rem; 
-  border: 2px solid var(--btn-secondary-border) !important; 
-  color: var(--secondary-color) !important; 
-  background-color: var(--btn-secondary-bg) !important; 
-  font-size: 1rem; 
+  border: 2px solid var(--btn-secondary-border) !important;
+  border-radius: 0.5rem;
+  color: var(--secondary-color) !important;
+  background-color: var(--btn-secondary-bg) !important;
+  box-shadow: var(--shadow-medium) !important;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: var(--shadow-medium) !important;
 }
 
 .SecondaryButton:hover {
@@ -43,6 +41,20 @@
   border-color: var(--secondary-color) !important;
   box-shadow: var(--shadow-large) !important;
   transform: scale(1.02);
+}
+
+/* Link como SecondaryButton */
+a.SecondaryButton {
+  text-decoration: none;
+  justify-content: center;
+}
+
+/* Link como PrimaryButton */
+a.PrimaryButton {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* PROTECCIÓN ESPECÍFICA CONTRA REGLAS DE ADMIN */
