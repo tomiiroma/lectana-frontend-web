@@ -16,35 +16,44 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  // Función de login
-  const login = async (credentials) => {
-    try {
-      console.log("🔐 Iniciando login...");
-      const response = await api.post("/auth/login", credentials);
+ const login = async (credentials) => {
+  try {
+    console.log("🔐 Iniciando login...");
+    const response = await api.post("/auth/login", credentials);
+    
+    console.log("Respuesta completa:", response.data);
+    
+    if (response.data?.ok) {
+      const { token, user, role } = response.data;
       
-      if (response.data?.ok) {
-        const { token: newToken, usuario } = response.data.data;
-        
-        // Guardar token y usuario
-        localStorage.setItem("token", newToken);
-        localStorage.setItem("user", JSON.stringify(usuario));
-        
-        setToken(newToken);
-        setUser(usuario);
-        
-        console.log("✅ Login exitoso");
-        return { success: true };
-      } else {
-        throw new Error(response.data?.error || "Error de autenticación");
+      if (!token || !user) {
+        console.error(" Datos incompletos:", { token, user });
+        throw new Error("Respuesta del servidor incompleta");
       }
-    } catch (error) {
-      console.error("❌ Error en login:", error);
-      return { 
-        success: false, 
-        error: error.response?.data?.error || error.message || "Error de conexión" 
-      };
+      
+      
+      const usuario = { ...user, rol: role || user.rol };
+      
+      // Guardar token y usuario
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(usuario));
+      
+      setToken(token);
+      setUser(usuario);
+      
+      console.log(" Login exitoso");
+      return { success: true };
+    } else {
+      throw new Error(response.data?.error || "Error de autenticación");
     }
-  };
+  } catch (error) {
+    console.error(" Error en login:", error);
+    return { 
+      success: false, 
+      error: error.response?.data?.error || error.message || "Error de conexión" 
+    };
+  }
+};
 
   // Función de logout
   const logout = () => {
