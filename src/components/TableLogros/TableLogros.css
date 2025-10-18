@@ -1,0 +1,164 @@
+.logros-table-container {
+  padding: 24px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+}
+
+.logros-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.logros-table thead {
+  background: #f5f5f5;
+}
+
+.logros-table th {
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333333;
+  border-bottom: 2px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.logros-table tbody tr {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logros-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.logros-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #666666;
+}
+
+.logro-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.badge-desbloqueados {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.btn-view {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.btn-view:hover {
+  background: #1976d2;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-edit {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.btn-edit:hover {
+  background: #f57c00;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-delete {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.btn-delete:hover {
+  background: #d32f2f;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999999;
+  font-style: italic;
+}
+
+.table-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  color: #666666;
+  font-size: 14px;
+}
+
+
+@media (max-width: 768px) {
+  .logro-descripcion {
+    max-width: 200px;
+  }
+}
+
+.logros-table tbody td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+.logro-nombre {
+  font-weight: 600;
+  color: #333333;
+  font-size: 15px;
+  text-align: center;
+}
+
+.logro-descripcion {
+  max-width: 300px;
+  color: #666666;
+  line-height: 1.5;
+  text-align: center;
+}

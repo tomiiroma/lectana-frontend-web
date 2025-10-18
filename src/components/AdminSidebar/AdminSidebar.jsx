@@ -3,7 +3,7 @@ import { useAuth } from "../../auth/AuthContext"; // REACTIVADO - Con autenticac
 import { useTheme } from "../../contexts/ThemeContext";
 import "./AdminSidebar.css";
 import { RiLayoutMasonryLine } from "react-icons/ri";
-import { FaBook, FaUser,FaBuilding,FaClipboardList,FaRegUser, FaMoon, FaSun  } from "react-icons/fa";
+import { FaBook, FaUser,FaBuilding,FaClipboardList,FaTrophy, FaRegUser, FaMoon, FaSun  } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { logout } from "../../api/auth";
 
@@ -115,9 +115,20 @@ export default function AdminSidebar() {
             isActive ? "navlink navlink-active" : "navlink"
           }
         >
+          
           <FaClipboardList style={{color: "var(--danger-color)"}} size={18}/>
           Actividades
         </NavLink>
+          <NavLink
+            to="/admin/logros"
+            className={({ isActive }) =>
+              isActive ? "navlink navlink-active" : "navlink"
+            }
+          >
+            <FaTrophy style={{color: "#9c27b0"}} size={18}/>
+            Logros
+          </NavLink>
+
         <NavLink
           to="/admin/perfil"          className={({ isActive }) =>
             isActive ? "navlink navlink-active" : "navlink"
