@@ -6,9 +6,12 @@ const getApiUrl = () => {
   // Si hay una variable de entorno específica, usarla
   if (import.meta.env.VITE_API_URL) {
     const url = import.meta.env.VITE_API_URL;
+    console.log(`🔍 URL original: ${url}`);
     // Para producción, usar sin /api (el backend tiene ambas rutas)
     if (url.includes('lectana-backend.onrender.com')) {
-      return url.replace('/api', '');
+      const newUrl = url.replace('/api', '');
+      console.log(`🔍 URL modificada: ${newUrl}`);
+      return newUrl;
     }
     // Para local, mantener /api
     return url.endsWith('/api') ? url : `${url}/api`;
