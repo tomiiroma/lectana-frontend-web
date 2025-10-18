@@ -5,7 +5,9 @@ import axios from "axios";
 const getApiUrl = () => {
   // Si hay una variable de entorno específica, usarla
   if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+    const url = import.meta.env.VITE_API_URL;
+    // Asegurar que termine con /api
+    return url.endsWith('/api') ? url : `${url}/api`;
   }
   
   // Detectar si estamos en desarrollo local
@@ -21,6 +23,8 @@ const getApiUrl = () => {
 
 const apiUrl = getApiUrl();
 console.log(`🌐 Usando API URL: ${apiUrl}`);
+console.log(`🔍 Hostname actual: ${window.location.hostname}`);
+console.log(`🔍 VITE_API_URL: ${import.meta.env.VITE_API_URL}`);
 
 const api = axios.create({
   baseURL: apiUrl,
