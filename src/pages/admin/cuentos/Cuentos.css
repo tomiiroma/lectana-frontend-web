@@ -265,3 +265,61 @@
   margin-bottom: 6px;
   font-weight: 500;
 }
+
+/* Audio Player en tabla */
+.admin-table .audio-player-container {
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+}
+
+.admin-table .audio-player-title {
+  display: none;
+}
+
+.admin-table .audio-controls {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.5rem;
+  border-radius: 8px;
+  gap: 0.5rem;
+}
+
+.admin-table .audio-play-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.admin-table .audio-progress-container {
+  gap: 0.5rem;
+}
+
+.admin-table .audio-time {
+  font-size: 0.7rem;
+  min-width: 30px;
+}
+
+.admin-table .audio-volume-container {
+  display: none;
+}
+
+.admin-table .audio-admin-actions {
+  gap: 0.25rem;
+}
+
+.admin-table .audio-btn-icon {
+  padding: 0.25rem;
+  width: 24px;
+  height: 24px;
+}
+
+.admin-table .audio-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.admin-table .audio-icon-small {
+  width: 0.75rem;
+  height: 0.75rem;
+}

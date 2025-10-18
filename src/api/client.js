@@ -3,7 +3,7 @@ import axios from "axios";
 // Configuración base de la API
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
-  baseURL: import.meta.env.VITE_API_URL || "https://lectana-backend.onrender.com/api",
+  withCredentials: true, // ← CRÍTICO: Envía cookies de autenticación
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

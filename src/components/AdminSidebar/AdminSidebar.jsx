@@ -5,23 +5,17 @@ import "./AdminSidebar.css";
 import { RiLayoutMasonryLine } from "react-icons/ri";
 import { FaBook, FaUser,FaBuilding,FaClipboardList,FaRegUser, FaMoon, FaSun  } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { logout } from "../../api/auth";
 
 
 export default function AdminSidebar() {
-  const {  user } = useAuth(); // REACTIVADO - Con autenticación
+  const { user, logout } = useAuth(); // REACTIVADO - Con autenticación
   const navigate = useNavigate();
   const { theme, toggleTheme, isDark } = useTheme();
 
-  async function handleLogout() {
-    try{
+  const handleLogout = async () => {
     await logout();
     navigate("/login", { replace: false });
-    }catch(error){
-      console.error("Error al cerrar Sesion", error)
-    }
-
-  }
+  };
 
   return (
     <aside

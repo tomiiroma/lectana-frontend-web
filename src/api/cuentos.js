@@ -12,7 +12,8 @@ import api from "./client";
 export async function obtenerCuentos(params = {}) {
   try {
     const response = await api.get("/cuentos", { params });
-    return response.data;
+    // El backend devuelve {ok: true, data: Array(7)}
+    return response.data.data || response.data;
   } catch (error) {
     console.error("Error al obtener cuentos:", error);
     throw error;
@@ -25,9 +26,10 @@ export async function obtenerCuentos(params = {}) {
 export async function obtenerCuentoPorId(id) {
   try {
     const response = await api.get(`/cuentos/${id}`);
-    return response.data;
+    // El backend devuelve {ok: true, data: {...}}
+    return response.data.data || response.data;
   } catch (error) {
-    console.error("Error al obtener cuento:", error);
+    console.error(`Error al obtener cuento ${id}:`, error);
     throw error;
   }
 }
@@ -38,7 +40,8 @@ export async function obtenerCuentoPorId(id) {
 export async function crearCuento(data) {
   try {
     const response = await api.post("/cuentos", data);
-    return response.data;
+    // El backend devuelve {ok: true, data: {...}}
+    return response.data.data || response.data;
   } catch (error) {
     console.error("Error al crear cuento:", error);
     throw error;
@@ -51,7 +54,8 @@ export async function crearCuento(data) {
 export async function actualizarCuento(id, data) {
   try {
     const response = await api.put(`/cuentos/${id}`, data);
-    return response.data;
+    // El backend devuelve {ok: true, data: {...}}
+    return response.data.data || response.data;
   } catch (error) {
     console.error("Error al actualizar cuento:", error);
     throw error;
@@ -64,7 +68,8 @@ export async function actualizarCuento(id, data) {
 export async function eliminarCuento(id) {
   try {
     const response = await api.delete(`/cuentos/${id}`);
-    return response.data;
+    // El backend devuelve {ok: true, data: {...}}
+    return response.data.data || response.data;
   } catch (error) {
     console.error("Error al eliminar cuento:", error);
     throw error;
@@ -89,8 +94,9 @@ export async function obtenerCategorias() {
  */
 export async function obtenerTotalCuentos() {
   try {
-    const response = await api.get("/cuentos/total");
-    return response.data.total || 0;
+    const response = await api.get("/cuentos/estadisticas/total");
+    // El backend devuelve {ok: true, data: {total: X}}
+    return response.data.data?.total || response.data.total || 0;
   } catch (error) {
     console.error("Error al obtener total de cuentos:", error);
     return 0;
@@ -170,8 +176,9 @@ export async function crearCuentoPlano(data) {
  */
 export async function listarCuentos(params = {}) {
   try {
-    const response = await api.get("/cuentos/lista", { params });
-    return response.data;
+    const response = await api.get("/cuentos", { params });
+    // El backend devuelve {ok: true, data: Array(7)}
+    return response.data.data || response.data;
   } catch (error) {
     console.error("Error al listar cuentos:", error);
     return {

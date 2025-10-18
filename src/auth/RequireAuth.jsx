@@ -21,9 +21,25 @@ export default function RequireAuth({ children }) {
     );
   }
 
-  // Si no hay token o usuario, redirigir al login
-  if (!token || !user) {
+  // Si no hay token, redirigir al login
+  if (!token) {
     return <Navigate to="/login" state={{ from: location }} replace={false} />;
+  }
+
+  // Si hay token pero no hay usuario aún, mostrar loading
+  if (token && !user) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        color: 'var(--text-primary)'
+      }}>
+        Verificando sesión...
+      </div>
+    );
   }
 
   // Si el usuario no es administrador, redirigir al home
