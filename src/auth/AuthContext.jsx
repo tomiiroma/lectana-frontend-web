@@ -18,19 +18,14 @@ export const AuthProvider = ({ children }) => {
 
  const login = async (credentials) => {
   try {
-    console.log("🔐 Iniciando login...");
     const response = await api.post("/auth/login", credentials);
-    
-    console.log("Respuesta completa:", response.data);
     
     if (response.data?.ok) {
       const { token, user, role } = response.data;
       
       if (!token || !user) {
-        console.error(" Datos incompletos:", { token, user });
         throw new Error("Respuesta del servidor incompleta");
       }
-      
       
       const usuario = { ...user, rol: role || user.rol };
       
@@ -41,13 +36,12 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setUser(usuario);
       
-      console.log(" Login exitoso");
       return { success: true };
     } else {
       throw new Error(response.data?.error || "Error de autenticación");
     }
   } catch (error) {
-    console.error(" Error en login:", error);
+    console.error("Error en login:", error);
     return { 
       success: false, 
       error: error.response?.data?.error || error.message || "Error de conexión" 
@@ -56,8 +50,15 @@ export const AuthProvider = ({ children }) => {
 };
 
   // Función de logout
-  const logout = () => {
-    console.log("🚪 Cerrando sesión...");
+  const logout = async () => {
+    // Intentar notificar al backend (opcional)
+    try {
+      await api.post('/auth/logout');
+    } catch (error) {
+      // Continuar con el logout local aunque falle la notificación
+    }
+    
+    // Limpiar estado local
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
@@ -68,15 +69,28 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkToken = async () => {
       if (token && !user) {
+        // Primero intentar recuperar del localStorage
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+          try {
+            const parsedUser = JSON.parse(savedUser);
+            setUser(parsedUser);
+            setLoading(false);
+            return;
+          } catch (error) {
+            console.error("Error parsing saved user:", error);
+            localStorage.removeItem("user");
+          }
+        }
+        
+        // Si no hay usuario guardado, verificar con el servidor
         try {
-          console.log("🔍 Verificando token...");
-          const res = await api.get("/auth/verify");
+          const res = await api.post("/auth/verify");
           if (res.data?.usuario) {
             setUser(res.data.usuario);
-            console.log("✅ Token verificado correctamente");
+            localStorage.setItem("user", JSON.stringify(res.data.usuario));
           }
         } catch (error) {
-          console.log("❌ Token inválido, limpiando autenticación");
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           setToken(null);
@@ -87,21 +101,6 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkToken();
-  }, [token, user]);
-
-  // Recuperar usuario del localStorage si existe
-  useEffect(() => {
-    if (token && !user) {
-      const savedUser = localStorage.getItem("user");
-      if (savedUser) {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch (error) {
-          console.error("Error parsing saved user:", error);
-          localStorage.removeItem("user");
-        }
-      }
-    }
   }, [token, user]);
 
   const value = useMemo(() => ({

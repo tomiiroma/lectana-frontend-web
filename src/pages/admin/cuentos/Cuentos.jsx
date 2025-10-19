@@ -2,7 +2,7 @@ import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar
 import "../AdminPages.css";
 import { gradients } from "../../../styles/Gradients";
 import "./Cuentos.css";
-import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUser, FaTag } from "react-icons/fa";
+import { FaPlus, FaEdit, FaEye, FaTrash, FaSearch, FaFilter, FaDownload, FaUser, FaTag, FaVolumeUp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import React, { useEffect, useMemo, useState } from "react";
@@ -10,6 +10,7 @@ import CreateStoryWizard from "../../../components/Modals/CreateStoryWizard/Crea
 import EditStoryModal from "../../../components/Modals/EditStoryModal/EditStoryModal";
 import CreateAuthorModal from "../../../components/Modals/CreateAuthorModal/CreateAuthorModal";
 import CreateGenreModal from "../../../components/Modals/CreateGenreModal/CreateGenreModal";
+import AudioPlayer from "../../../components/AudioPlayer/AudioPlayer";
 import { listarCuentos, obtenerTotalCuentos } from "../../../api/cuentos";
 import { listarAutores } from "../../../api/autores";
 import { listarGeneros } from "../../../api/generos";
@@ -201,23 +202,24 @@ export default function Cuentos() {
                 <th>Autor</th>
                 <th>Género</th>
                 <th>Edad</th>
+                <th>Audio</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan={5}>Cargando cuentos...</td>
+                  <td colSpan={6}>Cargando cuentos...</td>
                 </tr>
               )}
               {!loading && error && (
                 <tr>
-                  <td colSpan={5}>Error: {error}</td>
+                  <td colSpan={6}>Error: {error}</td>
                 </tr>
               )}
               {!loading && !error && cuentos.length === 0 && (
                 <tr>
-                  <td colSpan={5}>No hay cuentos para mostrar</td>
+                  <td colSpan={6}>No hay cuentos para mostrar</td>
                 </tr>
               )}
               {!loading && !error && cuentos.map((c, idx) => (
@@ -233,6 +235,17 @@ export default function Cuentos() {
                   <td>{c.autor ? `${c.autor.nombre} ${c.autor.apellido}` : "-"}</td>
                   <td><span className="category-tag">{c.genero?.nombre || "-"}</span></td>
                   <td>{c.edad_publico ?? "-"}</td>
+                  <td>
+                    <div style={{ width: '200px' }}>
+                      <AudioPlayer 
+                        cuentoId={c.id_cuento ?? c.id ?? ""} 
+                        isAdmin={true}
+                        onAudioDeleted={() => {
+                          console.log('Audio eliminado para cuento:', c.id_cuento ?? c.id);
+                        }}
+                      />
+                    </div>
+                  </td>
                   <td>
                     <div className="action-buttons">
                       <button className="btn-action btn-view" title="Ver" onClick={() => navigate(`/admin/cuentos/${c.id_cuento ?? c.id ?? ""}`)} disabled={!c.id_cuento && !c.id}>

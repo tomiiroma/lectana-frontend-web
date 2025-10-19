@@ -1,9 +1,34 @@
 import axios from "axios";
 
 // Configuración base de la API
+// Detectar automáticamente el entorno
+const getApiUrl = () => {
+  // Si hay una variable de entorno específica, usarla
+  if (import.meta.env.VITE_API_URL) {
+    const url = import.meta.env.VITE_API_URL;
+    // Asegurar que termine con /api
+    return url.endsWith('/api') ? url : `${url}/api`;
+  }
+  
+  // Detectar si estamos en desarrollo local
+  const isLocalDev = window.location.hostname === 'localhost' || 
+                     window.location.hostname === '127.0.0.1' ||
+                     window.location.hostname === '';
+  
+  // Usar localhost para desarrollo, producción para deploy
+  return isLocalDev 
+    ? "http://localhost:3000/api"
+    : "https://lectana-backend.onrender.com/api";
+};
+
+const apiUrl = getApiUrl();
+console.log(`🌐 Usando API URL: ${apiUrl}`);
+console.log(`🔍 Hostname actual: ${window.location.hostname}`);
+console.log(`🔍 VITE_API_URL: ${import.meta.env.VITE_API_URL}`);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
-  baseURL: import.meta.env.VITE_API_URL || "https://lectana-backend.onrender.com/api",
+  baseURL: apiUrl,
+  withCredentials: true, // ← CRÍTICO: Envía cookies de autenticación
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
