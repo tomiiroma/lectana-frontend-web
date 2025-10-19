@@ -6,6 +6,7 @@ import LogrosTable from "../../../components/TableLogros/TableLogros";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Logros.css";
+import { useNavigate } from 'react-router-dom'
 import { FaTrophy, FaUsers, FaStar, FaAward, FaPlus } from "react-icons/fa";
 
 export default function Logros() {
@@ -18,6 +19,8 @@ export default function Logros() {
   const [filteredLogros, setFilteredLogros] = useState([]);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     cargarLogros();
@@ -126,9 +129,12 @@ export default function Logros() {
     console.log('Eliminar logro:', logroId);
   };
 
-  const handleViewLogro = (logroId) => {
-    console.log('Ver detalles del logro:', logroId);
-  };
+
+  
+    const handleViewLogro = (logroId) => {
+  navigate(`/admin/logros/${logroId}`);
+};
+
 
   const estadisticas = {
     total: logros.length,
@@ -233,6 +239,8 @@ export default function Logros() {
         onClose={handleCloseModal}
         onSuccess={handleModalSuccess}
       />
+
+
     </>
   );
 }

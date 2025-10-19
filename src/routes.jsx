@@ -10,6 +10,7 @@ import Cuentos from "./pages/admin/cuentos/Cuentos.jsx";
 import CuentoDetalle from "./pages/admin/cuentos/CuentoDetalle.jsx";
 import Usuarios from "./pages/admin/usuarios/Usuarios.jsx";
 import Aulas from "./pages/admin/aulas/Aulas.jsx";
+import LogroDetalle from "./pages/admin/logros/LogroDetalle.jsx";
 import Actividades from "./pages/admin/actividades/Actividades.jsx";
 import Logros from "./pages/admin/logros/Logros.jsx";
 import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
        {
         path: "logros", 
         element: <Logros />,
+      },
+      {
+    path: "logros/:id",
+    element: <LogroDetalle />,
       },
       {
         path: "perfil",
