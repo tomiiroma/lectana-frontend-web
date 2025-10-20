@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { verificarEstadoAudio, obtenerAudioInfo, generarAudio } from '../api/audio';
+import { verificarEstadoAudio, obtenerAudioInfo, generarAudio, generarAudioEL } from '../api/audio';
 
 export const useAudio = (cuentoId) => {
   const [audioState, setAudioState] = useState({
@@ -10,6 +10,63 @@ export const useAudio = (cuentoId) => {
     error: null,
     hasAudio: false
   });
+
+  const generateAudioELCallback = useCallback(async (pdfUrl) => {
+  if (!cuentoId) return;
+
+  setAudioState(prev => ({ 
+    ...prev, 
+    isLoading: true, 
+    status: 'generating', 
+    error: null 
+  }));
+
+  try {
+    await generarAudioEL(cuentoId, pdfUrl);
+
+    // Polling para verificar cuando esté listo
+    const interval = setInterval(async () => {
+      try {
+        const data = await verificarEstadoAudio(cuentoId);
+
+        if (data.status === 'ready') {
+          clearInterval(interval);
+          setAudioState(prev => ({
+            ...prev,
+            isLoading: false,
+            status: 'ready',
+            hasAudio: true
+          }));
+          await fetchAudioUrl();
+        } else if (data.status === 'error') {
+          clearInterval(interval);
+          setAudioState(prev => ({
+            ...prev,
+            status: 'error',
+            error: 'Error al generar audio con ElevenLabs',
+            isLoading: false
+          }));
+        }
+      } catch (error) {
+        clearInterval(interval);
+        setAudioState(prev => ({
+          ...prev,
+          status: 'error',
+          error: 'Error durante la generación con ElevenLabs',
+          isLoading: false
+        }));
+      }
+    }, 2000);
+
+  } catch (error) {
+    setAudioState(prev => ({
+      ...prev,
+      status: 'error',
+      error: 'Error al generar audio con ElevenLabs',
+      isLoading: false
+    }));
+  }
+}, [cuentoId, fetchAudioUrl]);
 
   const checkStatus = useCallback(async () => {
     if (!cuentoId) return;
@@ -123,6 +180,8 @@ export const useAudio = (cuentoId) => {
     }
   }, [cuentoId, fetchAudioUrl]);
 
+
+
   const refreshStatus = useCallback(() => {
     checkStatus();
   }, [checkStatus]);
@@ -133,9 +192,12 @@ export const useAudio = (cuentoId) => {
     }
   }, [cuentoId, checkStatus]);
 
+  
+
   return {
     ...audioState,
     generateAudio,
+      generateAudioEL: generateAudioELCallback, // la IA de ElevenLabs
     refreshStatus
   };
 };

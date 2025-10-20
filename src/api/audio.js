@@ -43,8 +43,19 @@ export async function generarAudio(cuentoId) {
     console.error("Error al generar audio:", error);
     throw error;
   }
-}
 
+}
+  export async function generarAudioEL(cuentoId, pdfUrl) {
+  try {
+ const response = await api.post('/api/audioElevenLabs/pdf-to-audio', {
+      cuentoId,
+      pdfUrl
+    });    return response.data.data || response.data;
+  } catch (error) {
+    console.error("Error al generar audio:", error);
+    throw error;
+  }
+}
 /**
  * Eliminar audio de un cuento (solo admin)
  * @param {number} cuentoId - ID del cuento
