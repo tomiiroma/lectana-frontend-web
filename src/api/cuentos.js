@@ -39,7 +39,13 @@ export async function obtenerCuentoPorId(id) {
  */
 export async function crearCuento(data) {
   try {
-    const response = await api.post("/cuentos", data);
+    const payload = {
+      ...data,
+      edad_publico: data?.edad_publico != null ? Number(data.edad_publico) : data?.edad_publico,
+      autor_id_autor: data?.autor_id_autor != null ? Number(data.autor_id_autor) : data?.autor_id_autor,
+      genero_id_genero: data?.genero_id_genero != null ? Number(data.genero_id_genero) : data?.genero_id_genero,
+    };
+    const response = await api.post("/cuentos", payload);
     // El backend devuelve {ok: true, data: {...}}
     return response.data.data || response.data;
   } catch (error) {
@@ -53,7 +59,13 @@ export async function crearCuento(data) {
  */
 export async function actualizarCuento(id, data) {
   try {
-    const response = await api.put(`/cuentos/${id}`, data);
+    const payload = {
+      ...data,
+      edad_publico: data?.edad_publico != null ? Number(data.edad_publico) : data?.edad_publico,
+      autor_id_autor: data?.autor_id_autor != null ? Number(data.autor_id_autor) : data?.autor_id_autor,
+      genero_id_genero: data?.genero_id_genero != null ? Number(data.genero_id_genero) : data?.genero_id_genero,
+    };
+    const response = await api.put(`/cuentos/${id}`, payload);
     // El backend devuelve {ok: true, data: {...}}
     return response.data.data || response.data;
   } catch (error) {
@@ -110,9 +122,9 @@ export async function editarCuento({ id, titulo, edad_publico, autor_id_autor, g
   try {
     const response = await api.put(`/cuentos/${id}`, {
       titulo,
-      edad_publico,
-      autor_id_autor,
-      genero_id_genero,
+      edad_publico: edad_publico != null ? Number(edad_publico) : edad_publico,
+      autor_id_autor: autor_id_autor != null ? Number(autor_id_autor) : autor_id_autor,
+      genero_id_genero: genero_id_genero != null ? Number(genero_id_genero) : genero_id_genero,
       duracion,
       pdf_url,
       url_img
@@ -163,7 +175,13 @@ export async function subirImagenCuento({ cuentoId, file }) {
  */
 export async function crearCuentoPlano(data) {
   try {
-    const response = await api.post("/cuentos/plano", data);
+    const payload = {
+      ...data,
+      edad_publico: data?.edad_publico != null ? Number(data.edad_publico) : data?.edad_publico,
+      autor_id_autor: data?.autor_id_autor != null ? Number(data.autor_id_autor) : data?.autor_id_autor,
+      genero_id_genero: data?.genero_id_genero != null ? Number(data.genero_id_genero) : data?.genero_id_genero,
+    };
+    const response = await api.post("/cuentos/plano", payload);
     return response.data;
   } catch (error) {
     console.error("Error al crear cuento plano:", error);
