@@ -19,19 +19,17 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      style={{
-          width: 240,
+  style={{
+    width: "100%",
     padding: 12,
     borderRight: "3px solid var(--sidebar-border)",
     background: "var(--sidebar-bg)",
-    height: "100vh",
-    position: "sticky",
-    top: 0,
+    minHeight: "100%",
     display: "flex",
     flexDirection: "column",
     boxShadow: "var(--shadow-medium)"
-      }}
-    >
+  }}
+>
       <div>
       <NavLink 
         to="/"

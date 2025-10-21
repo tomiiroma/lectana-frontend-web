@@ -4,12 +4,27 @@ import { Toaster } from "react-hot-toast";
 
 export default function AdminLayout() {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", minHeight: "100vh" }}>
-      <AdminSidebar />
+     <div style={{ 
+      display: "flex", 
+      minHeight: "100vh",
+      maxHeight: "100vh",  
+      overflow: "hidden"    
+    }}>
+      <div style={{ 
+        width: 240,
+        height: "100vh",
+        overflowY: "auto",  
+        flexShrink: 0
+      }}>
+        <AdminSidebar />
+      </div>
+      
       <main style={{ 
+        flex: 1,
         padding: 24,
         background: "var(--bg-primary)",
-        minHeight: "100vh"
+        height: "100vh",
+        overflowY: "auto"    
       }}>
 
  <Toaster
