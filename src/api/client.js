@@ -6,8 +6,8 @@ const getApiUrl = () => {
   // Si hay una variable de entorno específica, usarla
   if (import.meta.env.VITE_API_URL) {
     const url = import.meta.env.VITE_API_URL;
-    // Asegurar que termine con /api
-    return url.endsWith('/api') ? url : `${url}/api`;
+    console.log(`🔍 URL desde variable de entorno: ${url}`);
+    return url;
   }
   
   // Detectar si estamos en desarrollo local
@@ -18,7 +18,7 @@ const getApiUrl = () => {
   // Usar localhost para desarrollo, producción para deploy
   return isLocalDev 
     ? "http://localhost:3000/api"
-    : "https://lectana-backend.onrender.com/api";
+    : "https://lectana-backend.onrender.com";
 };
 
 const apiUrl = getApiUrl();
@@ -32,6 +32,7 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
+    "Accept": "application/json",
   },
 });
 
@@ -42,9 +43,19 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Asegurar que siempre tengamos los headers correctos
+    config.headers['Content-Type'] = config.headers['Content-Type'] || 'application/json';
+    config.headers['Accept'] = config.headers['Accept'] || 'application/json';
+    
+    // Log para debugging
+    console.log(`🚀 Petición a: ${config.baseURL}${config.url}`);
+    console.log(`🚀 Headers:`, config.headers);
+    
     return config;
   },
   (error) => {
+    console.error('❌ Error en interceptor de request:', error);
     return Promise.reject(error);
   }
 );
@@ -52,15 +63,27 @@ api.interceptors.request.use(
 // Interceptor para manejar respuestas y errores
 api.interceptors.response.use(
   (response) => {
+    console.log(`✅ Respuesta exitosa de: ${response.config.url}`);
     return response;
   },
   (error) => {
+    console.error('❌ Error en respuesta:', error);
+    
+    // Manejar errores CORS específicamente
+    if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+      console.error('🚨 Error CORS detectado:', error.message);
+      console.error('🚨 URL de la petición:', error.config?.url);
+      console.error('🚨 Base URL:', error.config?.baseURL);
+    }
+    
     if (error.response?.status === 401) {
       // Token inválido o expirado
+      console.log('🔐 Token inválido, redirigiendo al login');
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";
     }
+    
     return Promise.reject(error);
   }
 );
