@@ -6,8 +6,8 @@ function DescargaApp() {
   // URL de descarga de la APK (puedes cambiar esta URL por la real)
   const downloadUrl = "https://lectana-app.com/download/lectana.apk";
   
-  // URL del QR code - puedes usar un servicio como QR Server API
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(downloadUrl)}`;
+  // URL del QR code - usando imagen local
+  const qrCodeUrl = "/qr-lectana-app.png";
 
   const handleDirectDownload = () => {
     window.open(downloadUrl, '_blank');

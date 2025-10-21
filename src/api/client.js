@@ -78,10 +78,25 @@ api.interceptors.response.use(
     
     if (error.response?.status === 401) {
       // Token inválido o expirado
-      console.log('🔐 Token inválido, redirigiendo al login');
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+      console.log('🔐 Token inválido detectado');
+      
+      // Solo redirigir al login si estamos en una ruta protegida
+      const currentPath = window.location.pathname;
+      const isProtectedRoute = currentPath.startsWith('/admin') || 
+                              currentPath.startsWith('/perfil') ||
+                              currentPath.startsWith('/dashboard');
+      
+      if (isProtectedRoute) {
+        console.log('🔐 Redirigiendo al login desde ruta protegida');
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      } else {
+        console.log('🔐 Error 401 en ruta pública, no redirigiendo');
+        // Solo limpiar el localStorage sin redirigir
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
     }
     
     return Promise.reject(error);
