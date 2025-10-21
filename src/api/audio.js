@@ -47,7 +47,7 @@ export async function generarAudio(cuentoId) {
 }
   export async function generarAudioEL(cuentoId, pdfUrl) {
   try {
- const response = await api.post('/api/audioElevenLabs/pdf-to-audio', {
+ const response = await api.post('/audioElevenLabs/pdf-to-audio', {
       cuentoId,
       pdfUrl
     });    return response.data.data || response.data;

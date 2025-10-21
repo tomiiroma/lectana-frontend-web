@@ -10,6 +10,28 @@ export const useAudio = (cuentoId) => {
     error: null,
     hasAudio: false
   });
+   const fetchAudioUrl = useCallback(async () => {
+    if (!cuentoId) return;
+    
+    try {
+      const data = await obtenerAudioInfo(cuentoId);
+      
+      setAudioState(prev => ({
+        ...prev,
+        audioUrl: data.audio_url,
+        status: 'ready',
+        duration: data.duration || prev.duration
+      }));
+    } catch (error) {
+      console.error(`Error obteniendo URL de audio para cuento ${cuentoId}:`, error);
+      setAudioState(prev => ({
+        ...prev,
+        status: 'error',
+        error: 'Error al obtener audio'
+      }));
+    }
+  }, [cuentoId]);
+
 
   const generateAudioELCallback = useCallback(async (pdfUrl) => {
   if (!cuentoId) return;
@@ -101,28 +123,7 @@ export const useAudio = (cuentoId) => {
     }
   }, [cuentoId]);
 
-  const fetchAudioUrl = useCallback(async () => {
-    if (!cuentoId) return;
-    
-    try {
-      const data = await obtenerAudioInfo(cuentoId);
-      
-      setAudioState(prev => ({
-        ...prev,
-        audioUrl: data.audio_url,
-        status: 'ready',
-        duration: data.duration || prev.duration
-      }));
-    } catch (error) {
-      console.error(`Error obteniendo URL de audio para cuento ${cuentoId}:`, error);
-      setAudioState(prev => ({
-        ...prev,
-        status: 'error',
-        error: 'Error al obtener audio'
-      }));
-    }
-  }, [cuentoId]);
-
+ 
   const generateAudio = useCallback(async () => {
     if (!cuentoId) return;
     
