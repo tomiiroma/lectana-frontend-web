@@ -4,6 +4,7 @@ import CardStats from "../../../components/Cards/CardData/CardStats";
 import CreateLogroModal from "../../../components/Modals/CreateLogroModal/CreateLogroModal";
 import LogrosTable from "../../../components/TableLogros/TableLogros";
 import { gradients } from "../../../styles/Gradients";
+import EditarLogroModal from "../../../components/Modals/EditLogros/EditLogroModal";
 import "../AdminPages.css";
 import "./Logros.css";
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +12,9 @@ import { FaTrophy, FaUsers, FaStar, FaAward, FaPlus } from "react-icons/fa";
 
 export default function Logros() {
   
+const [showEditModal, setShowEditModal] = useState(false);
+const [selectedLogroId, setSelectedLogroId] = useState(null);
+
   const [logros, setLogros] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -119,8 +123,20 @@ export default function Logros() {
   };
 
   const handleEditLogro = (logroId) => {
-    console.log('Editar logro:', logroId);
-  };
+  console.log('Editar logro:', logroId);
+  setSelectedLogroId(logroId);
+  setShowEditModal(true);
+};
+
+const handleCloseEditModal = () => {
+  setShowEditModal(false);
+  setSelectedLogroId(null);
+};
+
+const handleEditSuccess = () => {
+  console.log('Logro editado exitosamente');
+  cargarLogros(); 
+};
 
   const handleDeleteLogro = (logroId) => {
     if (!window.confirm('¿Estás seguro de que quieres eliminar este logro?')) {
@@ -238,6 +254,13 @@ export default function Logros() {
         isOpen={showCreateModal}
         onClose={handleCloseModal}
         onSuccess={handleModalSuccess}
+      />
+
+      <EditarLogroModal
+          estaAbierto={showEditModal}
+          alCerrar={handleCloseEditModal}
+          alActualizar={handleEditSuccess}
+          logroId={selectedLogroId}
       />
 
 
