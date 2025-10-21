@@ -6,18 +6,19 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 24px;
   text-align: center;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-primary);
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-medium);
 }
 
 .stat-card-orange {
@@ -43,12 +44,12 @@
 .stat-number {
   font-size: 2.5em;
   font-weight: 800;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .stat-label {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 14px;
 }
