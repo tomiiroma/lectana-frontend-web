@@ -7,7 +7,8 @@ import { gradients } from "../../../styles/Gradients";
 import EditarLogroModal from "../../../components/Modals/EditLogros/EditLogroModal";
 import "../AdminPages.css";
 import "./Logros.css";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { obtenerLogros } from '../../../api/logros';
 import { FaTrophy, FaUsers, FaStar, FaAward, FaPlus } from "react-icons/fa";
 
 export default function Logros() {
@@ -34,60 +35,32 @@ const [selectedLogroId, setSelectedLogroId] = useState(null);
     filtrarLogros();
   }, [logros, searchTerm]);
 
-  const cargarLogros = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const logrosMock = [
-        {
-          id_logros: 1,
-          nombre: 'Primer Libro Leído',
-          descripcion: 'Completa tu primera lectura en la plataforma',
-          url_imagen: 'https://via.placeholder.com/50/4CAF50/FFFFFF?text=📚',
-          desbloqueados: 45
-        },
-        {
-          id_logros: 2,
-          nombre: 'Lector Entusiasta',
-          descripcion: 'Lee 5 libros en un mes',
-          url_imagen: 'https://via.placeholder.com/50/2196F3/FFFFFF?text=⭐',
-          desbloqueados: 28
-        },
-        {
-          id_logros: 3,
-          nombre: 'Maestro de la Velocidad',
-          descripcion: 'Completa un libro en menos de 3 días',
-          url_imagen: 'https://via.placeholder.com/50/FF9800/FFFFFF?text=⚡',
-          desbloqueados: 12
-        },
-        {
-          id_logros: 4,
-          nombre: 'Explorador de Géneros',
-          descripcion: 'Lee libros de 5 categorías diferentes',
-          url_imagen: 'https://via.placeholder.com/50/9C27B0/FFFFFF?text=🎭',
-          desbloqueados: 33
-        },
-        {
-          id_logros: 5,
-          nombre: 'Coleccionista',
-          descripcion: 'Desbloquea 10 logros diferentes',
-          url_imagen: 'https://via.placeholder.com/50/F44336/FFFFFF?text=🏆',
-          desbloqueados: 8
-        }
-      ];
-
-      setTimeout(() => {
-        setLogros(logrosMock);
-        setLoading(false);
-      }, 500);
-
-    } catch (error) {
-      console.error('Error cargando logros:', error);
-      setError(`Error al cargar los logros: ${error.message || 'Error de conexión'}`);
+const cargarLogros = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    
+    const response = await obtenerLogros();
+    
+    if (response.ok) {
+      const logrosData = response.logros || [];
+      setLogros(logrosData);
+      
+      if (logrosData.length === 0) {
+        setError('No hay logros creados aún. ¡Crea tu primer logro!');
+      }
+    } else {
+      setError(`Error al cargar los logros: ${response.error || 'Error desconocido'}`);
       setLogros([]);
-      setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error('Error cargando logros:', error);
+    setError(`Error al cargar los logros: ${error.message || 'Error de conexión'}`);
+    setLogros([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const filtrarLogros = () => {
     let filtrados = logros;

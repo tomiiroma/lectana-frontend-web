@@ -30,7 +30,7 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
     const file = e.target.files[0];
     
     if (file) {
-      // Ver que sea una imagen
+      
       if (!file.type.startsWith('image/')) {
         setErrores(prev => ({
           ...prev,
@@ -94,38 +94,50 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
     return Object.keys(nuevosErrores).length === 0;
   };
 
-  const manejarEnvio = async (e) => {
-    e.preventDefault();
-    
-    if (!validarFormulario()) {
-      return;
-    }
-
-    setCargando(true);
-    try {
-      console.log("Creando logro con datos:", datosFormulario);
-      console.log("Imagen seleccionada:", imagenArchivo);
-      
+ const manejarEnvio = async (e) => {
+  e.preventDefault();
   
-      setTimeout(() => {
-        console.log("Logro creado exitosamente (simulado)");
-        
-        setDatosFormulario({ nombre: "", descripcion: "" });
-        setImagenArchivo(null);
-        setImagenPreview(null);
-        setErrores({});
-        
-        onSuccess?.();
-        onClose();
-        setCargando(false);
-      }, 1000);
-      
-    } catch (error) {
-      console.error("Error creando logro:", error);
-      setErrores({ general: "Error al crear el logro. Inténtalo de nuevo." });
-      setCargando(false);
+  if (!validarFormulario()) {
+    return;
+  }
+
+  setCargando(true);
+  try {
+    console.log("Creando logro...");
+    
+    
+    const formData = new FormData();
+    formData.append('nombre', datosFormulario.nombre);
+    formData.append('descripcion', datosFormulario.descripcion);
+    
+    
+    if (imagenArchivo) {
+      formData.append('imagen', imagenArchivo);
     }
-  };
+    
+    
+    const respuesta = await crearLogro(formData);
+    console.log("Logro creado exitosamente:", respuesta);
+    
+   
+    setDatosFormulario({ nombre: "", descripcion: "" });
+    setImagenArchivo(null);
+    setImagenPreview(null);
+    setErrores({});
+    
+    
+    onSuccess?.();
+    onClose();
+    
+  } catch (error) {
+    console.error("Error creando logro:", error);
+    setErrores({ 
+      general: error.response?.data?.error || "Error al crear el logro. Inténtalo de nuevo." 
+    });
+  } finally {
+    setCargando(false);
+  }
+};
 
   const manejarCierre = () => {
     if (!cargando) {
