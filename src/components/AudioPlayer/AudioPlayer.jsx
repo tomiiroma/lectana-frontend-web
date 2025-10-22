@@ -4,13 +4,14 @@ import { useAudio } from '../../hooks/useAudio';
 import { eliminarAudio } from '../../api/audio';
 import './AudioPlayer.css';
 
-const AudioPlayer = ({ cuentoId, isAdmin = false, onAudioDeleted }) => {
+const AudioPlayer = ({ cuentoId,pdfUrl, isAdmin = false, onAudioDeleted }) => {
   const { 
     status, 
     audioUrl, 
     duration, 
     isLoading, 
     error, 
+    generateAudioEL,
     hasAudio,
     generateAudio, 
     refreshStatus 
@@ -141,6 +142,13 @@ const AudioPlayer = ({ cuentoId, isAdmin = false, onAudioDeleted }) => {
                 {isLoading ? 'Generando...' : 'Generar Audio'}
               </button>
             )}
+            <button
+  onClick={() => generateAudioEL(pdfUrl)}
+  disabled={isLoading}
+  className="audio-btn audio-btn-primary"
+>
+  {isLoading ? 'Generando...' : 'Generar Audio ElevenLabs'}
+</button>
           </div>
         );
 
