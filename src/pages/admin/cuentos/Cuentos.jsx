@@ -222,7 +222,9 @@ export default function Cuentos() {
                   <td colSpan={6}>No hay cuentos para mostrar</td>
                 </tr>
               )}
-              {!loading && !error && cuentos.map((c, idx) => (
+{console.log('📦 Array completo de cuentos:', cuentos)}
+
+              {!loading && !error && cuentos.map((c, idx) =>  (
                 <tr key={idx}>
                   <td>
                     <div className="story-info">
@@ -239,6 +241,7 @@ export default function Cuentos() {
                     <div style={{ width: '200px' }}>
                       <AudioPlayer 
                         cuentoId={c.id_cuento ?? c.id ?? ""} 
+                        pdfUrl={c.pdf_url}
                         isAdmin={true}
                         onAudioDeleted={() => {
                           console.log('Audio eliminado para cuento:', c.id_cuento ?? c.id);
