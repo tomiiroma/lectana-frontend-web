@@ -3,18 +3,22 @@ import api from './client';
 
 export const crearLogro = async (formData) => {
   try {
+    
+    
+    
     const response = await api.post('/logros', formData, {
-      headers: { 
-        'Content-Type': 'multipart/form-data' 
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
     });
+    
+    console.log("Respuesta del backend:", response.data);
     return response.data;
   } catch (error) {
-    console.error('Error al crear logro:', error);
+    console.error('Error al crear logro:', error.response?.data || error.message);
     throw error;
   }
 };
-
 
 export const obtenerLogros = async () => {
   try {

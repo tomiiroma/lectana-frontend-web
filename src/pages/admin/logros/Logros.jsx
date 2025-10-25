@@ -127,13 +127,6 @@ const handleEditSuccess = () => {
 
   const estadisticas = {
     total: logros.length,
-    totalDesbloqueados: logros.reduce((sum, logro) => sum + logro.desbloqueados, 0),
-    masPopular: logros.length > 0 
-      ? Math.max(...logros.map(l => l.desbloqueados)) 
-      : 0,
-    promedioDesbloqueados: logros.length > 0 
-      ? Math.round(logros.reduce((sum, logro) => sum + logro.desbloqueados, 0) / logros.length)
-      : 0
   };
 
   return (

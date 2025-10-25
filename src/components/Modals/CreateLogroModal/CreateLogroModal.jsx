@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./CreateLogroModal.css";
+import { crearLogro } from '../../../api/logros';
 
 function CreateLogroModal({ isOpen, onClose, onSuccess }) {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -264,7 +265,6 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
 
             {errores.general && (
               <div className="error-banner">
-                <div className="error-icon">⚠️</div>
                 <span>{errores.general}</span>
               </div>
             )}
