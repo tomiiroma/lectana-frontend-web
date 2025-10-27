@@ -46,3 +46,41 @@ export const eliminarLogro = async (id) => {
     throw error;
   }
 };
+
+
+export const obtenerLogroPorId = async (id) => {
+  try {
+    const response = await api.get(`/logros/${id}`);
+    return {
+      ok: true,
+      logro: response.data.data
+    };
+  } catch (error) {
+    console.error('Error al obtener logro:', error);
+    return {
+      ok: false,
+      error: error.response?.data?.message || error.message
+    };
+  }
+};
+
+
+
+export const actualizarLogro = async (id, formData) => {
+  try {
+    console.log("📤 Actualizando logro...");
+    
+    
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+    
+    const response = await api.put(`/logros/${id}`, formData);
+    
+    console.log(" Logro actualizado:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(' Error al actualizar logro:', error.response?.data || error.message);
+    throw error;
+  }
+};
