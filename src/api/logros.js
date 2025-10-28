@@ -68,14 +68,18 @@ export const obtenerLogroPorId = async (id) => {
 
 export const actualizarLogro = async (id, formData) => {
   try {
-    console.log("📤 Actualizando logro...");
+    console.log(" Actualizando logro...");
     
     
     for (let pair of formData.entries()) {
       console.log(`${pair[0]}:`, pair[1]);
     }
-    
-    const response = await api.put(`/logros/${id}`, formData);
+
+    const response = await api.put(`/logros/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     
     console.log(" Logro actualizado:", response.data);
     return response.data;
