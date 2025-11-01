@@ -88,3 +88,25 @@ export const actualizarLogro = async (id, formData) => {
     throw error;
   }
 };
+
+
+export const obtenerAlumnosLogro = async (logroId) => {
+  try {
+    console.log(`Obteniendo alumnos del logro ${logroId}...`);
+    
+    const response = await api.get(`/logros/${logroId}/alumnos`);
+    
+    console.log("Alumnos obtenidos:", response.data);
+    
+    return {
+      ok: true,
+      data: response.data.data 
+    };
+  } catch (error) {
+    console.error(' Error al obtener alumnos del logro:', error);
+    return {
+      ok: false,
+      error: error.response?.data?.error || error.message
+    };
+  }
+};

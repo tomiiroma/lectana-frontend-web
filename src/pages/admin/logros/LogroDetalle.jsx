@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaSearch, FaTrophy } from 'react-icons/fa';
+import { obtenerAlumnosLogro } from '../../../api/logros';
 import '../AdminPages.css';
 import './LogroDetalle.css';
 
@@ -9,8 +10,8 @@ export default function LogroDetalle() {
   const navigate = useNavigate();
   
   const [logro, setLogro] = useState(null);
-  const [usuarios, setUsuarios] = useState([]);
-  const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
+  const [alumnos, setAlumnos] = useState([]);
+  const [alumnosFiltrados, setAlumnosFiltrados] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -20,91 +21,42 @@ export default function LogroDetalle() {
   }, [id]);
 
   useEffect(() => {
-    filtrarUsuarios();
-  }, [busqueda, usuarios]);
+    filtrarAlumnos();
+  }, [busqueda, alumnos]);
 
   const cargarDatosLogro = async () => {
     setCargando(true);
     setError(null);
     try {
-    
+      const resultado = await obtenerAlumnosLogro(id);
 
-      const logroMock = {
-        id_logros: parseInt(id),
-        nombre: "Primer Libro Leído",
-        descripcion: "Completa tu primera lectura en la plataforma",
-        url_imagen: "https://via.placeholder.com/150/4CAF50/FFFFFF?text=📚",
-        total_desbloqueados: 45
-      };
+      if (!resultado.ok) {
+        throw new Error(resultado.error || 'Error al cargar datos');
+      }
 
-      const usuariosMock = [
-        {
-          id: 1,
-          email: "ana.garcia@ejemplo.com",
-          fecha_desbloqueo: "2024-01-15"
-        },
-        {
-          id: 2,
-          email: "carlos.perez@ejemplo.com",
-          fecha_desbloqueo: "2024-01-20"
-        },
-        {
-          id: 3,
-          email: "maria.lopez@ejemplo.com",
-          fecha_desbloqueo: "2024-02-05"
-        },
-        {
-          id: 4,
-          email: "juan.martinez@ejemplo.com",
-          fecha_desbloqueo: "2024-02-10"
-        },
-        {
-          id: 5,
-          email: "laura.rodriguez@ejemplo.com",
-          fecha_desbloqueo: "2024-02-15"
-        },
-        {
-          id: 6,
-          email: "pedro.sanchez@ejemplo.com",
-          fecha_desbloqueo: "2024-02-20"
-        },
-        {
-          id: 7,
-          email: "sofia.fernandez@ejemplo.com",
-          fecha_desbloqueo: "2024-03-01"
-        },
-        {
-          id: 8,
-          email: "diego.torres@ejemplo.com",
-          fecha_desbloqueo: "2024-03-05"
-        }
-      ];
-
-      setTimeout(() => {
-        setLogro(logroMock);
-        setUsuarios(usuariosMock);
-        setCargando(false);
-      }, 500);
+      setLogro(resultado.data.logro);
+      setAlumnos(resultado.data.alumnos || []);
+      setCargando(false);
 
     } catch (error) {
       console.error("Error cargando datos del logro:", error);
-      setError(`Error al cargar los datos: ${error.message || 'Error de conexión'}`);
+      setError(error.message || 'Error de conexión');
       setCargando(false);
     }
   };
 
-  const filtrarUsuarios = () => {
+  const filtrarAlumnos = () => {
     if (!busqueda.trim()) {
-      setUsuariosFiltrados(usuarios);
+      setAlumnosFiltrados(alumnos);
       return;
     }
 
     const busquedaMinuscula = busqueda.toLowerCase();
-    const filtrados = usuarios.filter(usuario => 
-      usuario.email.toLowerCase().includes(busquedaMinuscula)
+    const filtrados = alumnos.filter(alumno => 
+      alumno.email.toLowerCase().includes(busquedaMinuscula)
     );
 
-    setUsuariosFiltrados(filtrados);
+    setAlumnosFiltrados(filtrados);
   };
 
   const handleVolver = () => {
@@ -112,10 +64,13 @@ export default function LogroDetalle() {
   };
 
   const formatearFecha = (fecha) => {
+    if (!fecha) return 'Sin fecha';
     return new Date(fecha).toLocaleDateString('es-ES', {
       day: '2-digit',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
@@ -144,24 +99,29 @@ export default function LogroDetalle() {
           </div>
         ) : (
           <>
-          
+         
             <div className="logro-info-card">
               <img 
-                src={logro?.url_imagen} 
+                src={logro?.url_imagen || 'https://via.placeholder.com/150/4CAF50/FFFFFF?text=🏆'} 
                 alt={logro?.nombre}
                 className="logro-image"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/150/4CAF50/FFFFFF?text=🏆';
+                }}
               />
               <div className="logro-info">
                 <h1 className="logro-titulo">{logro?.nombre}</h1>
-                <p className="logro-descripcion">{logro?.descripcion}</p>
+                <p className="logro-descripcion">{logro?.descripcion || 'Sin descripción'}</p>
                 <div className="logro-stats-badge">
                   <FaTrophy className="trophy-icon" />
-                  <span>{logro?.total_desbloqueados} estudiantes lo han desbloqueado</span>
+                  <span>
+                    {alumnos.length} {alumnos.length === 1 ? 'estudiante lo ha' : 'estudiantes lo han'} desbloqueado
+                  </span>
                 </div>
               </div>
             </div>
 
-
+         
             <div className="search-section">
               <h2 className="section-title">
                 Estudiantes que desbloquearon este logro
@@ -178,7 +138,7 @@ export default function LogroDetalle() {
               </div>
             </div>
 
-
+          
             <div className="table-container">
               <table className="usuarios-table">
                 <thead>
@@ -189,19 +149,25 @@ export default function LogroDetalle() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuariosFiltrados.length > 0 ? (
-                    usuariosFiltrados.map((usuario, index) => (
-                      <tr key={usuario.id}>
+                  {alumnosFiltrados.length > 0 ? (
+                    alumnosFiltrados.map((alumno, index) => (
+                      <tr key={alumno.id_alumno}>
                         <td>{index + 1}</td>
-                        <td className="email-cell">{usuario.email}</td>
-                        <td className="fecha-cell">{formatearFecha(usuario.fecha_desbloqueo)}</td>
+                        <td className="email-cell">{alumno.email}</td>
+                        <td className="fecha-cell">
+                          {formatearFecha(alumno.fecha_desbloqueo)}
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan="3" className="no-results-cell">
                         <FaSearch className="no-results-icon" />
-                        <p>No se encontraron estudiantes</p>
+                        <p>
+                          {busqueda.trim() 
+                            ? 'No se encontraron estudiantes con ese criterio' 
+                            : 'Ningún estudiante ha desbloqueado este logro aún'}
+                        </p>
                       </td>
                     </tr>
                   )}
@@ -209,10 +175,12 @@ export default function LogroDetalle() {
               </table>
             </div>
 
-   
-            {usuariosFiltrados.length > 0 && (
+
+            {alumnosFiltrados.length > 0 && (
               <div className="table-footer">
-                <p>Mostrando {usuariosFiltrados.length} de {usuarios.length} estudiantes</p>
+                <p>
+                  Mostrando {alumnosFiltrados.length} de {alumnos.length} estudiantes
+                </p>
               </div>
             )}
           </>
