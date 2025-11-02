@@ -40,10 +40,20 @@ export const obtenerLogros = async () => {
 export const eliminarLogro = async (id) => {
   try {
     const response = await api.delete(`/logros/${id}`);
-    return response.data;
+    return {
+      ok: true,
+      data: response.data
+    };
   } catch (error) {
     console.error('Error al eliminar logro:', error);
-    throw error;
+  
+    const mensajeError = error.response?.data?.error || error.message || 'Error desconocido';
+    
+    return {
+      ok: false,
+      error: mensajeError,
+      status: error.response?.status
+    };
   }
 };
 
