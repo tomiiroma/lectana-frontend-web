@@ -8,7 +8,7 @@ import EditarLogroModal from "../../../components/Modals/EditLogros/EditLogroMod
 import "../AdminPages.css";
 import "./Logros.css";
 import { useNavigate } from 'react-router-dom';
-import { obtenerLogros } from '../../../api/logros';
+import { obtenerLogros, eliminarLogro } from '../../../api/logros';
 import { FaTrophy, FaUsers, FaStar, FaAward, FaPlus } from "react-icons/fa";
 
 export default function Logros() {
@@ -24,6 +24,7 @@ const [selectedLogroId, setSelectedLogroId] = useState(null);
   const [filteredLogros, setFilteredLogros] = useState([]);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [eliminando, setEliminando] = useState(null);
 
   const navigate = useNavigate();
 
@@ -111,11 +112,50 @@ const handleEditSuccess = () => {
   cargarLogros(); 
 };
 
-  const handleDeleteLogro = (logroId) => {
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este logro?')) {
+ const handleDeleteLogro = async (logroId) => {
+    
+    const logro = logros.find(l => l.id_logros === logroId);
+    
+    if (!logro) {
+      console.error('Logro no encontrado');
       return;
     }
-    console.log('Eliminar logro:', logroId);
+
+    
+    const confirmar = window.confirm(
+      `¿Estás seguro de eliminar el logro "${logro.nombre}"?\n\n` +
+      `Esta acción no se puede deshacer.`
+    );
+    
+    if (!confirmar) return;
+    
+    try {
+      setEliminando(logroId); 
+      
+      const resultado = await eliminarLogro(logroId);
+      
+      if (resultado.ok) {
+      
+       alert('Logro eliminado exitosamente');
+        
+    
+        setLogros(logros.filter(l => l.id_logros !== logroId));
+      } else {
+        
+        if (resultado.error.includes('alumnos que ya lo han desbloqueado')) {
+          
+              alert('No se puede eliminar este logro porque hay estudiantes que ya lo tienen');
+
+        } else {
+          alert(resultado.error);
+        }
+      }
+    } catch (error) {
+      alert('Error inesperado al eliminar el logro');
+      console.error(error);
+    } finally {
+      setEliminando(null);
+    }
   };
 
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./EditLogroModal.css";
+import { obtenerLogroPorId, actualizarLogro } from "../../../api/logros";
 
 function EditarLogroModal({ estaAbierto, alCerrar, alActualizar, logroId }) {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -20,33 +21,31 @@ function EditarLogroModal({ estaAbierto, alCerrar, alActualizar, logroId }) {
   }, [estaAbierto, logroId]);
 
   const cargarDatosLogro = async () => {
-    setCargandoDatos(true);
-    try {
+  setCargandoDatos(true);
+  try {
+    const response = await obtenerLogroPorId(logroId);
     
-      const logroMock = {
-        id_logros: logroId,
-        nombre: "Primer Libro Leído",
-        descripcion: "Completa tu primera lectura en la plataforma",
-        url_imagen: "https://via.placeholder.com/150/4CAF50/FFFFFF?text=📚"
-      };
-
-      setTimeout(() => {
-        setDatosFormulario({
-          nombre: logroMock.nombre,
-          descripcion: logroMock.descripcion
-        });
-        setImagenActual(logroMock.url_imagen);
-        setImagenPreview(logroMock.url_imagen);
-        setCargandoDatos(false);
-      }, 500);
-
-    } catch (error) {
-      console.error("Error cargando logro:", error);
-      setCargandoDatos(false);
+    if (response.ok) {
+      const logro = response.logro;
+      setDatosFormulario({
+        nombre: logro.nombre,
+        descripcion: logro.descripcion
+      });
+      setImagenActual(logro.url_imagen);
+      setImagenPreview(logro.url_imagen);
+    } else {
+      setErrores({ general: 'Error al cargar el logro' });
     }
+  } catch (error) {
+    console.error("Error cargando logro:", error);
+    setErrores({ general: 'Error al cargar el logro' });
+  } finally {
+    setCargandoDatos(false);
+  }
   };
 
-  const manejarCambioInput = (e) => {
+
+const manejarCambioInput = (e) => {
     const { name, value } = e.target;
     setDatosFormulario(prev => ({
       ...prev,
@@ -60,6 +59,7 @@ function EditarLogroModal({ estaAbierto, alCerrar, alActualizar, logroId }) {
       }));
     }
   };
+
 
   const manejarCambioImagen = (e) => {
     const file = e.target.files[0];
@@ -120,34 +120,39 @@ function EditarLogroModal({ estaAbierto, alCerrar, alActualizar, logroId }) {
     return Object.keys(nuevosErrores).length === 0;
   };
 
-  const manejarEnvio = async (e) => {
-    e.preventDefault();
-    
-    if (!validarFormulario()) {
-      return;
-    }
+const manejarEnvio = async (e) => {
+  e.preventDefault();
+  
+  if (!validarFormulario()) {
+    return;
+  }
 
-    setCargando(true);
-    try {
-      console.log("Actualizando logro con datos:", datosFormulario);
-      console.log("Nueva imagen:", imagenArchivo);
-      
-      
-      
-      setTimeout(() => {
-        console.log("Logro actualizado exitosamente (simulado)");
-        
-        alActualizar?.();
-        manejarCierre();
-        setCargando(false);
-      }, 1000);
-      
-    } catch (error) {
-      console.error("Error actualizando logro:", error);
-      setErrores({ general: "Error al actualizar el logro. Inténtalo de nuevo." });
-      setCargando(false);
+  setCargando(true);
+  try {
+    const formData = new FormData();
+    formData.append('nombre', datosFormulario.nombre);
+    formData.append('descripcion', datosFormulario.descripcion);
+    
+   
+    if (imagenArchivo) {
+      formData.append('imagen', imagenArchivo);
     }
-  };
+    
+    await actualizarLogro(logroId, formData);
+    
+    console.log(" Logro actualizado exitosamente");
+    
+    alActualizar?.();
+    manejarCierre();
+  } catch (error) {
+    console.error("Error actualizando logro:", error);
+    setErrores({ 
+      general: error.response?.data?.error || "Error al actualizar el logro. Inténtalo de nuevo." 
+    });
+  } finally {
+    setCargando(false);
+  }
+};
 
   const manejarCierre = () => {
     if (!cargando) {
