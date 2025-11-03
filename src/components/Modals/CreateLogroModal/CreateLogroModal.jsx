@@ -5,7 +5,9 @@ import { crearLogro } from '../../../api/logros';
 function CreateLogroModal({ isOpen, onClose, onSuccess }) {
   const [datosFormulario, setDatosFormulario] = useState({
     nombre: "",
-    descripcion: ""
+    descripcion: "", 
+    evento: "registro",
+    valor: 1 
   });
   const [imagenArchivo, setImagenArchivo] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
@@ -14,6 +16,27 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
 
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
+
+    if (name === 'evento' && value === 'registro') {
+    setDatosFormulario(prev => ({
+      ...prev,
+      [name]: value,
+      valor: 1  
+    }));
+  } else {
+    setDatosFormulario(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
+  
+  if (errores[name]) {
+    setErrores(prev => ({
+      ...prev,
+      [name]: ""
+    }));
+  }
+    
     setDatosFormulario(prev => ({
       ...prev,
       [name]: value
@@ -91,6 +114,17 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
       nuevosErrores.imagen = "Debes seleccionar una imagen";
     }
 
+    
+    if (!['registro', 'puntos', 'compras'].includes(datosFormulario.evento)) {
+      nuevosErrores.evento = "Selecciona un tipo de evento válido";
+    }
+
+    
+    const valorNum = Number(datosFormulario.valor);
+    if (isNaN(valorNum) || valorNum < 1) {
+      nuevosErrores.valor = "El valor debe ser un número mayor o igual a 1";
+    }
+
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
@@ -110,7 +144,8 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
     const formData = new FormData();
     formData.append('nombre', datosFormulario.nombre);
     formData.append('descripcion', datosFormulario.descripcion);
-    
+    formData.append('evento', datosFormulario.evento);
+    formData.append('valor', datosFormulario.valor);   
     
     if (imagenArchivo) {
       formData.append('imagen', imagenArchivo);
@@ -212,6 +247,57 @@ function CreateLogroModal({ isOpen, onClose, onSuccess }) {
                   )}
                   <div className="helper-text">
                     Describe qué debe hacer el estudiante para conseguir este logro
+                  </div>
+                </div>
+
+                  <div className="form-group">
+                  <label htmlFor="evento" className="form-label">
+                    Tipo de Evento *
+                  </label>
+                  <select
+                    id="evento"
+                    name="evento"
+                    value={datosFormulario.evento}
+                    onChange={manejarCambioInput}
+                    className={`form-input ${errores.evento ? "error" : ""}`}
+                    disabled={cargando}
+                  >
+                    <option value="registro">Registro</option>
+                    <option value="puntos">Puntos</option>
+                    <option value="compras">Compras</option>
+                  </select>
+                  {errores.evento && (
+                    <span className="error-message">{errores.evento}</span>
+                  )}
+                  <div className="helper-text">
+                    ¿Qué acción desbloquea este logro?
+                  </div>
+                </div>
+
+                 <div className="form-group">
+                  <label htmlFor="valor" className="form-label">
+                    Valor Requerido *
+                  </label>
+                  <input
+                    type="number"
+                    id="valor"
+                    name="valor"
+                    value={datosFormulario.valor}
+                    onChange={manejarCambioInput}
+                    min="1"
+                    placeholder="Ej: 100"
+                    className={`form-input ${errores.valor ? "error" : ""}`}
+                    disabled={cargando}
+                  />
+                  {errores.valor && (
+                    <span className="error-message">{errores.valor}</span>
+                  )}
+                  <div className="helper-text">
+                    {datosFormulario.evento === 'registro' 
+                      ? 'Siempre será 1 para registros' 
+                      : datosFormulario.evento === 'puntos'
+                      ? 'Cantidad de puntos necesarios'
+                      : 'Cantidad de compras necesarias'}
                   </div>
                 </div>
 

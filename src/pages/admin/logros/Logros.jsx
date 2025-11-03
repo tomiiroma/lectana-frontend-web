@@ -151,7 +151,7 @@ const handleEditSuccess = () => {
         }
       }
     } catch (error) {
-      alert('Error inesperado al eliminar el logro');
+      alert('Error al eliminar el logro');
       console.error(error);
     } finally {
       setEliminando(null);
