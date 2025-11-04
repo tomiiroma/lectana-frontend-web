@@ -23,7 +23,25 @@ const ViewActividadModal = ({ isOpen, onClose, actividadId, onEdit, onDelete }) 
       setActividad(response.actividad);
     } catch (error) {
       console.error('Error cargando actividad:', error);
-      setError('Error al cargar los detalles de la actividad');
+      
+      // Mensaje de error más específico
+      let errorMessage = 'Error al cargar los detalles de la actividad';
+      
+      if (error.message) {
+        if (error.message.includes('Error de base de datos')) {
+          errorMessage = `Error del backend: ${error.message}. Este es un problema en la consulta SQL del servidor, no del frontend.`;
+        } else if (error.message.includes('No se encontró')) {
+          errorMessage = error.message;
+        } else if (error.message.includes('conexión')) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = error.message;
+        }
+      } else if (error.error) {
+        errorMessage = `Error: ${error.error}`;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -104,7 +122,15 @@ const ViewActividadModal = ({ isOpen, onClose, actividadId, onEdit, onDelete }) 
           <div className="error-container">
             <div className="error-icon">⚠️</div>
             <p className="error-message">{error}</p>
-            <button className="btn-retry" onClick={cargarActividad}>
+            {error.includes('Error de base de datos') || error.includes('column') ? (
+              <div className="error-details" style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#fff3cd', borderRadius: '8px', fontSize: '0.9rem' }}>
+                <p><strong>⚠️ Este es un error del BACKEND:</strong></p>
+                <p>El backend está intentando acceder a una columna de la base de datos que no existe.</p>
+                <p><strong>Acción requerida:</strong> Revisar y corregir la consulta SQL en el controlador de actividades del backend.</p>
+                <p><strong>Detalles técnicos:</strong> La consulta está intentando acceder a <code>respuesta_actividad_2.respuesta</code> pero esa columna no existe en la base de datos.</p>
+              </div>
+            ) : null}
+            <button className="btn-retry" onClick={cargarActividad} style={{ marginTop: '1rem' }}>
               Reintentar
             </button>
           </div>

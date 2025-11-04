@@ -119,7 +119,21 @@ export const obtenerActividadPorId = async (actividadId) => {
     const response = await api.get(`/actividades/${actividadId}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    // Mejorar el manejo de errores
+    if (error.response?.status === 500) {
+      const errorData = error.response?.data;
+      if (errorData?.error && errorData.error.includes('column')) {
+        throw new Error(`Error de base de datos en el backend: ${errorData.error}. La consulta SQL está intentando acceder a una columna que no existe.`);
+      } else {
+        throw new Error(`Error del servidor al obtener la actividad: ${errorData?.error || 'Error desconocido'}`);
+      }
+    } else if (error.response?.status === 404) {
+      throw new Error('No se encontró la actividad solicitada.');
+    } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+      throw new Error('Error de conexión con el servidor.');
+    } else {
+      throw error.response?.data || error;
+    }
   }
 };
 
