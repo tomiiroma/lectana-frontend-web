@@ -4,6 +4,22 @@ import './TableLogros.css';
 
 function LogrosTable({ logros = [], onEdit, onDelete, onView }) {
   
+const formatearEvento = (evento) => {
+    const eventos = {
+      'registro': 'Registro',
+      'puntos': 'Puntos',
+      'compras': 'Compras'
+    };
+    return eventos[evento] || evento;
+  };
+
+  const formatearValor = (evento, valor) => {
+    if (evento === 'registro') return 'Solo puede ser desbloqueado una vez';
+    if (evento === 'puntos') return `${valor} pts`;
+    if (evento === 'compras') return `${valor} compra${valor > 1 ? 's' : ''}`;
+    return valor;
+  };
+
   return (
     <div className="logros-table-container">
       <div className="table-wrapper">
@@ -13,7 +29,9 @@ function LogrosTable({ logros = [], onEdit, onDelete, onView }) {
               <th>Icono</th>
               <th>Nombre</th>
               <th>Descripción</th>
-              <th>Desbloqueados</th>
+              <th>Evento</th>
+              <th>Valor</th>
+              <th>Disponible para</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -30,6 +48,14 @@ function LogrosTable({ logros = [], onEdit, onDelete, onView }) {
                   </td>
                   <td className="logro-nombre">{logro.nombre}</td>
                   <td className="logro-descripcion">{logro.descripcion}</td>
+                  <td>
+                    <span className={`badge-evento badge-${logro.evento}`}>
+                      {formatearEvento(logro.evento)}
+                    </span>
+                  </td>
+                  <td className="logro-valor">
+                    {formatearValor(logro.evento, logro.valor)}
+                  </td>
                   <td>
                     <span className="badge-desbloqueados">
                       {logro.desbloqueados} alumnos
