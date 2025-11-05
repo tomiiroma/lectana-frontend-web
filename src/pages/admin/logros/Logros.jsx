@@ -189,21 +189,6 @@ const handleEditSuccess = () => {
             number={estadisticas.total} 
             label="Total Logros"
           />
-          <CardStats 
-            icon={<FaUsers color="#9c27b0"/>} 
-            number={estadisticas.totalDesbloqueados} 
-            label="Total Desbloqueados"
-          />
-          <CardStats 
-            icon={<FaStar color="#9c27b0"/>} 
-            number={estadisticas.masPopular} 
-            label="Más Popular"
-          />
-          <CardStats 
-            icon={<FaAward color="#9c27b0"/>} 
-            number={estadisticas.promedioDesbloqueados} 
-            label="Promedio por Logro"
-          />
         </div>
 
         {loading ? (
