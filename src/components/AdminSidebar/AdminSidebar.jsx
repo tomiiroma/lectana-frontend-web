@@ -3,7 +3,7 @@ import { useAuth } from "../../auth/AuthContext"; // REACTIVADO - Con autenticac
 import { useTheme } from "../../contexts/ThemeContext";
 import "./AdminSidebar.css";
 import { RiLayoutMasonryLine } from "react-icons/ri";
-import { FaBook, FaUser,FaBuilding,FaClipboardList,FaTrophy, FaRegUser, FaMoon, FaSun  } from "react-icons/fa";
+import { FaBook, FaUser,FaBuilding,FaClipboardList,FaTrophy, FaRegUser, FaMoon, FaSun, FaShoppingCart  } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
 
@@ -120,9 +120,20 @@ export default function AdminSidebar() {
             <FaTrophy style={{color: "#9c27b0"}} size={18}/>
             Logros
           </NavLink>
+          
+          <NavLink
+            to="/admin/tienda"
+            className={({ isActive }) =>
+              isActive ? "navlink navlink-active" : "navlink"
+            }
+          >
+            <FaShoppingCart style={{color: "#7fd6f8ff"}} size={18}/>
+            Tienda
+          </NavLink>
 
         <NavLink
-          to="/admin/perfil"          className={({ isActive }) =>
+          to="/admin/perfil" 
+          className={({ isActive }) =>
             isActive ? "navlink navlink-active" : "navlink"
           }
         >

@@ -16,6 +16,7 @@ import Logros from "./pages/admin/logros/Logros.jsx";
 import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
 import DescargaApp from "./pages/DescargaApp/DescargaApp.jsx";
 import Catalogo from "./pages/Catalogo/Catalogo.jsx";
+import Tienda from "./pages/admin/tienda/Tienda.jsx";
 
 function withProviders(element) {
   return (
@@ -89,8 +90,12 @@ export const router = createBrowserRouter([
         element: <Logros />,
       },
       {
-    path: "logros/:id",
-    element: <LogroDetalle />,
+        path: "logros/:id",
+        element: <LogroDetalle />,
+      },
+      {
+        path: "tienda",
+        element: <Tienda />,
       },
       {
         path: "perfil",
