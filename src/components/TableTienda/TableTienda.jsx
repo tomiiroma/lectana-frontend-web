@@ -1,7 +1,7 @@
 import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import './TableTienda.css';
 
-function TiendaTable({ avatares = [], onEdit, onDelete, onView }) {
+function TiendaTable({ items = [], onEdit, onDelete, onView, searchTerm }) {
   return (
     <div className="tienda-table-container">
       <div className="table-wrapper">
@@ -17,47 +17,47 @@ function TiendaTable({ avatares = [], onEdit, onDelete, onView }) {
             </tr>
           </thead>
           <tbody>
-            {avatares.length > 0 ? (
-              avatares.map((avatar) => (
-                <tr key={avatar.id_avatar}>
+            {items.length > 0 ? (
+              items.map((item) => (
+                <tr key={item.id_item}>
                   <td>
                     <img 
-                      src={avatar.url_imagen} 
-                      alt={avatar.nombre}
+                      src={item.url_imagen} 
+                      alt={item.nombre}
                       className="avatar-preview"
                     />
                   </td>
-                  <td className="avatar-nombre">{avatar.nombre}</td>
-                  <td className="avatar-descripcion">{avatar.descripcion}</td>
+                  <td className="avatar-nombre">{item.nombre}</td>
+                  <td className="avatar-descripcion">{item.descripcion}</td>
                   <td>
                     <span className="badge-precio">
-                      {avatar.precio} pts
+                      {item.precio} pts
                     </span>
                   </td>
                   <td>
                     <span className="badge-comprados">
-                      {avatar.comprados || 0} alumnos
+                      {item.comprados || 0} alumnos
                     </span>
                   </td>
                   <td>
                     <div className="action-buttons">
                       <button 
                         className="btn-action btn-view"
-                        onClick={() => onView(avatar.id_avatar)}
+                        onClick={() => onView(item.id_item)}
                         title="Ver detalles"
                       >
                         <FaEye />
                       </button>
                       <button 
                         className="btn-action btn-edit"
-                        onClick={() => onEdit(avatar.id_avatar)}
+                        onClick={() => onEdit(item.id_item)}
                         title="Editar"
                       >
                         <FaEdit />
                       </button>
                       <button 
                         className="btn-action btn-delete"
-                        onClick={() => onDelete(avatar.id_avatar)}
+                        onClick={() => onDelete(item.id_item)}
                         title="Eliminar"
                       >
                         <FaTrash />
@@ -68,8 +68,11 @@ function TiendaTable({ avatares = [], onEdit, onDelete, onView }) {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="no-results">
-                  No hay avatares para mostrar
+                <td colSpan="6" className="empty-message">
+                  {searchTerm 
+                    ? `No hay avatares que coincidan con "${searchTerm}"`
+                    : 'No hay avatares creados actualmente'
+                  }
                 </td>
               </tr>
             )}
@@ -77,9 +80,9 @@ function TiendaTable({ avatares = [], onEdit, onDelete, onView }) {
         </table>
       </div>
 
-      {avatares.length > 0 && (
+      {items.length > 0 && (
         <div className="table-footer">
-          <p>Total de avatares: {avatares.length}</p>
+          <p>Total de avatares: {items.length}</p>
         </div>
       )}
     </div>

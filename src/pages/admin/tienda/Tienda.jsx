@@ -7,18 +7,19 @@ import "../AdminPages.css";
 import "./Tienda.css";
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUsers, FaStar, FaCoins, FaPlus } from "react-icons/fa";
+import { obtenerItems } from '../../../api/items';
 
 export default function Tienda() {
   
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedAvatarId, setSelectedAvatarId] = useState(null);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
-  const [avatares, setAvatares] = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredAvatares, setFilteredAvatares] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [eliminando, setEliminando] = useState(null);
@@ -26,90 +27,54 @@ export default function Tienda() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    cargarAvatares();
+    cargarItems();
   }, []);
 
   useEffect(() => {
-    filtrarAvatares();
-  }, [avatares, searchTerm]);
+    filtrarItems();
+  }, [items, searchTerm]);
 
-  const cargarAvatares = async () => {
+  const cargarItems = async () => {
     setLoading(true);
     setError(null);
     try {
-      // TODO: Reemplazar con tu API cuando esté lista
-      // const response = await obtenerAvatares();
+      const response = await obtenerItems();
       
-      // MOCK DATA - Datos de ejemplo
-      const mockData = {
-        ok: true,
-        avatares: [
-          {
-            id_avatar: 1,
-            nombre: 'Avatar Robot',
-            descripcion: 'Avatar futurista con diseño robótico',
-            precio: 3,
-            url_imagen: 'https://i.pravatar.cc/150?img=1',
-            comprados: 5
-          },
-          {
-            id_avatar: 2,
-            nombre: 'Avatar Gato',
-            descripcion: 'Lindo avatar de gatito kawaii',
-            precio: 5,
-            url_imagen: 'https://i.pravatar.cc/150?img=2',
-            comprados: 12
-          },
-          {
-            id_avatar: 3,
-            nombre: 'Avatar Espacial',
-            descripcion: 'Avatar de astronauta en el espacio',
-            precio: 9,
-            url_imagen: 'https://i.pravatar.cc/150?img=3',
-            comprados: 3
-          }
-        ]
-      };
-      
-      if (mockData.ok) {
-        const avataresData = mockData.avatares || [];
-        setAvatares(avataresData);
-        
-        if (avataresData.length === 0) {
-          setError('No hay avatares creados aún. ¡Crea tu primer avatar!');
-        }
+      if (response.ok) {
+        const itemsData = response.items || [];
+        setItems(itemsData);
       } else {
-        setError(`Error al cargar los avatares: ${mockData.error || 'Error desconocido'}`);
-        setAvatares([]);
+        setError(`Error al cargar los avatares: ${response.error || 'Error desconocido'}`);
+        setItems([]);
       }
     } catch (error) {
       console.error('Error cargando avatares:', error);
       setError(`Error al cargar los avatares: ${error.message || 'Error de conexión'}`);
-      setAvatares([]);
+      setItems([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filtrarAvatares = () => {
-    let filtrados = avatares;
+  const filtrarItems = () => {
+    let filtrados = items;
 
     if (searchTerm) {
-      filtrados = filtrados.filter(avatar => {
-        const nombreMatch = avatar.nombre.toLowerCase().includes(searchTerm.toLowerCase());
-        const descripcionMatch = avatar.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
+      filtrados = filtrados.filter(item => {
+        const nombreMatch = item.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+        const descripcionMatch = item.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
         return nombreMatch || descripcionMatch;
       });
     }
 
-    setFilteredAvatares(filtrados);
+    setFilteredItems(filtrados);
   };
 
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
-  const handleCreateAvatar = () => {
+  const handleCreateItem = () => {
     setShowCreateModal(true); 
   };
 
@@ -119,52 +84,52 @@ export default function Tienda() {
 
   const handleModalSuccess = () => {
     console.log('Avatar creado exitosamente');
-    cargarAvatares(); 
+    cargarItems(); 
   };
 
-  const handleEditAvatar = (avatarId) => {
-    console.log('Editar avatar:', avatarId);
-    setSelectedAvatarId(avatarId);
+  const handleEditItem = (itemId) => {
+    console.log('Editar avatar:', itemId);
+    setSelectedItemId(itemId);
     setShowEditModal(true);
   };
 
   const handleCloseEditModal = () => {
     setShowEditModal(false);
-    setSelectedAvatarId(null);
+    setSelectedItemId(null);
   };
 
   const handleEditSuccess = () => {
     console.log('Avatar editado exitosamente');
-    cargarAvatares(); 
+    cargarItems(); 
   };
 
-  const handleDeleteAvatar = async (avatarId) => {
-    const avatar = avatares.find(a => a.id_avatar === avatarId);
+  const handleDeleteItem = async (itemId) => {
+    const item = items.find(i => i.id_item === itemId);
     
-    if (!avatar) {
+    if (!item) {
       console.error('Avatar no encontrado');
       return;
     }
 
     const confirmar = window.confirm(
-      `¿Estás seguro de eliminar el avatar "${avatar.nombre}"?\n\n` +
+      `¿Estás seguro de eliminar el avatar "${item.nombre}"?\n\n` +
       `Esta acción no se puede deshacer.`
     );
     
     if (!confirmar) return;
     
     try {
-      setEliminando(avatarId); 
+      setEliminando(itemId); 
       
       // TODO: Reemplazar con tu API cuando esté lista
-      // const resultado = await eliminarAvatar(avatarId);
+      // const resultado = await eliminarItem(itemId);
       
       // MOCK - Simula eliminación exitosa
       const resultado = { ok: true };
       
       if (resultado.ok) {
         alert('Avatar eliminado exitosamente');
-        setAvatares(avatares.filter(a => a.id_avatar !== avatarId));
+        setItems(items.filter(i => i.id_item !== itemId));
       } else {
         if (resultado.error.includes('alumnos que ya lo compraron')) {
           alert('No se puede eliminar este avatar porque hay estudiantes que ya lo compraron');
@@ -180,21 +145,21 @@ export default function Tienda() {
     }
   };
 
-  const handleViewAvatar = (avatarId) => {
-    navigate(`/admin/tienda/${avatarId}`);
+  const handleViewItem = (itemId) => {
+    navigate(`/admin/tienda/${itemId}`);
   };
 
   // Calcular estadísticas
-  const totalComprados = avatares.reduce((sum, a) => sum + (a.comprados || 0), 0);
-  const masVendido = avatares.length > 0 
-    ? avatares.reduce((max, a) => (a.comprados || 0) > (max.comprados || 0) ? a : max, avatares[0])
+  const totalComprados = items.reduce((sum, i) => sum + (i.comprados || 0), 0);
+  const masVendido = items.length > 0 
+    ? items.reduce((max, i) => (i.comprados || 0) > (max.comprados || 0) ? i : max, items[0])
     : null;
-  const promedioPrecio = avatares.length > 0
-    ? Math.round(avatares.reduce((sum, a) => sum + a.precio, 0) / avatares.length)
+  const promedioPrecio = items.length > 0
+    ? Math.round(items.reduce((sum, i) => sum + i.precio, 0) / items.length)
     : 0;
 
   const estadisticas = {
-    total: avatares.length,
+    total: items.length,
     totalComprados: totalComprados,
     masVendido: masVendido ? masVendido.nombre : '-',
     promedioPrecio: promedioPrecio
@@ -206,11 +171,11 @@ export default function Tienda() {
       
       <AdminActionsBar 
         btnTitle="Nuevo Avatar" 
-        placeholderTitle="Buscar Avatar..." 
+        placeholderTitle="Buscar avatar..." 
         btnClassName="btnAdd" 
         btnStyle={gradients.purpleGradient}
         onSearch={handleSearch}
-        onBtnClick={handleCreateAvatar}
+        onBtnClick={handleCreateItem}
       />
 
       <div className="admin-page-container admin-tienda-container">
@@ -218,7 +183,7 @@ export default function Tienda() {
           <CardStats 
             icon={<FaShoppingCart color="#9c27b0"/>} 
             number={estadisticas.total} 
-            label="Total Avatares"
+            label="Total avatares"
           />
           <CardStats 
             icon={<FaUsers color="#9c27b0"/>} 
@@ -240,65 +205,41 @@ export default function Tienda() {
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Cargando avatares...</p>
+            <p>Cargando items...</p>
           </div>
         ) : error ? (
           <div className="error-container">
             <div className="error-icon">⚠️</div>
             <p className="error-message">{error}</p>
             <div className="error-actions">
-              <button className="btn-retry" onClick={cargarAvatares}>
+              <button className="btn-retry" onClick={cargarItems}>
                 Reintentar
-              </button>
-              <button className="btn-primary" onClick={handleCreateAvatar}>
-                <FaPlus className="btn-icon" />
-                Crear Avatar de Todas Formas
               </button>
             </div>
           </div>
         ) : (
-          <>
-            <TiendaTable 
-              avatares={filteredAvatares}
-              onEdit={handleEditAvatar}
-              onDelete={handleDeleteAvatar}
-              onView={handleViewAvatar}
-            />
-
-            {filteredAvatares.length === 0 && !loading && (
-              <div className="no-results">
-                <FaShoppingCart className="no-results-icon" />
-                <h3>No se encontraron avatares</h3>
-                <p>
-                  {searchTerm 
-                    ? `No hay avatares que coincidan con "${searchTerm}"`
-                    : 'No hay avatares disponibles'
-                  }
-                </p>
-                {!searchTerm && (
-                  <button className="btn-primary" onClick={handleCreateAvatar}>
-                    <FaPlus className="btn-icon" />
-                    Crear Primer Avatar
-                  </button>
-                )}
-              </div>
-            )}
-          </>
+          <TiendaTable 
+            items={filteredItems}
+            onEdit={handleEditItem}
+            onDelete={handleDeleteItem}
+            onView={handleViewItem}
+            searchTerm={searchTerm}
+          />
         )}
       </div>
 
-      {/* TODO: Agregar modales de Crear y Editar Avatar cuando estén listos */}
-      {/* <CreateAvatarModal
+      {/* TODO: Agregar modales de Crear y Editar Item cuando estén listos */}
+      {/* <CreateItemModal
         isOpen={showCreateModal}
         onClose={handleCloseModal}
         onSuccess={handleModalSuccess}
       />
 
-      <EditarAvatarModal
+      <EditarItemModal
         estaAbierto={showEditModal}
         alCerrar={handleCloseEditModal}
         alActualizar={handleEditSuccess}
-        avatarId={selectedAvatarId}
+        itemId={selectedItemId}
       /> */}
     </>
   );
