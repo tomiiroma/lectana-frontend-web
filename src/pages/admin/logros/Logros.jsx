@@ -198,7 +198,6 @@ const handleEditSuccess = () => {
           </div>
         ) : error ? (
           <div className="error-container">
-            <div className="error-icon">⚠️</div>
             <p className="error-message">{error}</p>
             <div className="error-actions">
               <button className="btn-retry" onClick={cargarLogros}>

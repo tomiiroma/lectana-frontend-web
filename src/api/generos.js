@@ -22,3 +22,33 @@ export async function crearGenero({ nombre }) {
 }
 
 
+//  Obtener géneros/categorías públicas
+ 
+export async function obtenerGenerosPublicos() {
+  try {
+    const response = await api.get("/generos/publicos");
+    
+    return response.data.data || response.data;
+  } catch (error) {
+    console.error("Error al obtener géneros públicos:", error);
+    throw error;
+  }
+}
+
+
+//  Contar cuentos por género
+ 
+export async function contarCuentosPorGenero(generos, cuentos) {
+  const contador = {};
+  
+  generos.forEach(genero => {
+    const cantidad = cuentos.filter(
+      cuento => cuento.genero?.nombre?.toLowerCase() === genero.nombre.toLowerCase()
+    ).length;
+    contador[genero.nombre] = cantidad;
+  });
+  
+  return contador;
+}
+
+

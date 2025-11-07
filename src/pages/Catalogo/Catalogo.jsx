@@ -2,18 +2,21 @@ import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { FaSearch, FaFilter, FaBook, FaStar, FaClock, FaArrowLeft } from "react-icons/fa";
 import CardLibro from "../../components/Cards/CardLibro";
-import { obtenerCuentos, obtenerCategorias } from "../../api/cuentos";
+import { obtenerCuentosPublicos } from "../../api/cuentos";
+import { obtenerGenerosPublicos } from "../../api/generos";
 import "./Catalogo.css";
 
 // Categorías por defecto (fallback si el backend no responde)
-const categoriasDefault = [
-  { id: 1, nombre: "Fantasía", icono: "📚", color: "#8b5cf6" },
-  { id: 2, nombre: "Aventura", icono: "🗺️", color: "#10b981" },
-  { id: 3, nombre: "Misterio", icono: "🔍", color: "#a78bfa" },
-  { id: 4, nombre: "Ciencia", icono: "🔬", color: "#f59e0b" },
-  { id: 5, nombre: "Historia", icono: "🏛️", color: "#ef4444" },
-  { id: 6, nombre: "Valores", icono: "❤️", color: "#ec4899" }
-];
+const iconosPorGenero = {
+  "fantasia": "📚",
+  "aventura": "🗺️",
+  "misterio": "🔍",
+  "ciencia": "🔬",
+  "historia": "🏛️",
+  "valores": "❤️",
+  "realista": "📖",
+  "default": "📚"
+};
 
 function Catalogo() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,66 +25,87 @@ function Catalogo() {
   const [busqueda, setBusqueda] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(categoriaInicial);
   const [edadSeleccionada, setEdadSeleccionada] = useState("");
-  const [libros, setLibros] = useState([]);
-  const [categorias, setCategorias] = useState(categoriasDefault);
+  const [cuentos, setCuentos] = useState([]);
+  const [cuentosFiltrados, setCuentosFiltrados] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [totalLibros, setTotalLibros] = useState(0);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const cuentosPorPagina = 12;
 
-  // Cargar categorías del backend
+
+
+  // Cargar datos iniciales
   useEffect(() => {
-    cargarCategorias();
+    cargarDatos();
   }, []);
 
-  // Cargar libros cuando cambien los filtros
+  // Filtrar cuentos cuando cambien los filtros
   useEffect(() => {
-    cargarLibros();
+    filtrarCuentos();
+  }, [busqueda, categoriaSeleccionada, edadSeleccionada, cuentos]);
+
+  // Resetear página cuando cambien los filtros
+  useEffect(() => {
+    setPaginaActual(1);
   }, [busqueda, categoriaSeleccionada, edadSeleccionada]);
 
-  const cargarCategorias = async () => {
-    try {
-      const response = await obtenerCategorias();
-      if (response.data && response.data.length > 0) {
-        // Mapear categorías del backend con iconos
-        const categoriasConIconos = response.data.map((cat, index) => ({
-          ...cat,
-          icono: categoriasDefault[index]?.icono || "📚",
-          color: categoriasDefault[index]?.color || "#8b5cf6"
-        }));
-        setCategorias(categoriasConIconos);
-      }
-    } catch (error) {
-      console.error("Error al cargar categorías:", error);
-      // Mantener categorías por defecto si falla
-    }
-  };
-
-  const cargarLibros = async () => {
+  const cargarDatos = async () => {
     try {
       setLoading(true);
-      const params = {
-        page: 1,
-        limit: 100, // Cargar todos los libros disponibles
-      };
+      
+      
+      const generosData = await obtenerGenerosPublicos();
+      const categoriasConIconos = generosData.map(genero => ({
+        ...genero,
+        icono: iconosPorGenero[genero.nombre.toLowerCase()] || iconosPorGenero.default
+      }));
+      setCategorias(categoriasConIconos);
 
-      if (busqueda) params.busqueda = busqueda;
-      if (categoriaSeleccionada) params.categoria = categoriaSeleccionada;
-      if (edadSeleccionada) params.edad = edadSeleccionada;
-
-      const response = await obtenerCuentos(params);
-      setLibros(response.data || []);
-      setTotalLibros(response.total || response.data?.length || 0);
+      
+      const cuentosData = await obtenerCuentosPublicos({ limite: 100 });
+      setCuentos(cuentosData.cuentos || []);
+      
     } catch (error) {
-      console.error("Error al cargar libros:", error);
-      setLibros([]);
-      setTotalLibros(0);
+      console.error("Error al cargar datos:", error);
+      setCuentos([]);
+      setCategorias([]);
     } finally {
       setLoading(false);
     }
   };
 
+  const filtrarCuentos = () => {
+    let resultado = [...cuentos];
+
+  
+    if (busqueda.trim()) {
+      resultado = resultado.filter(cuento =>
+        cuento.titulo.toLowerCase().includes(busqueda.toLowerCase())
+      );
+    }
+
+   
+    if (categoriaSeleccionada) {
+      resultado = resultado.filter(cuento =>
+        cuento.genero?.nombre?.toLowerCase() === categoriaSeleccionada.toLowerCase()
+      );
+    }
+
+    if (edadSeleccionada) {
+      const [edadMin, edadMax] = edadSeleccionada.split('-').map(Number);
+      resultado = resultado.filter(cuento => {
+        const edad = cuento.edad_publico;
+        return edad >= edadMin && edad <= edadMax;
+      });
+    }
+
+    setCuentosFiltrados(resultado);
+  };
+
   const seleccionarCategoria = (categoria) => {
-    setCategoriaSeleccionada(categoria === categoriaSeleccionada ? "" : categoria);
-    setSearchParams(categoria ? { categoria } : {});
+    const nuevaCategoria = categoria === categoriaSeleccionada ? "" : categoria;
+    setCategoriaSeleccionada(nuevaCategoria);
+    setSearchParams(nuevaCategoria ? { categoria: nuevaCategoria } : {});
   };
 
   const limpiarFiltros = () => {
@@ -91,10 +115,22 @@ function Catalogo() {
     setSearchParams({});
   };
 
-  const edadesDisponibles = ["5-7", "6-8", "7-9", "8-10", "9-11", "10-12"];
+  
+  const edadesDisponibles = ["3-5", "5-7", "6-8", "7-9", "8-10", "9-11", "10-12", "12-15", "15+"];
+
+  
+  const indexUltimoCuento = paginaActual * cuentosPorPagina;
+  const indexPrimerCuento = indexUltimoCuento - cuentosPorPagina;
+  const cuentosActuales = cuentosFiltrados.slice(indexPrimerCuento, indexUltimoCuento);
+  const totalPaginas = Math.ceil(cuentosFiltrados.length / cuentosPorPagina);
+
+  const cambiarPagina = (numeroPagina) => {
+    setPaginaActual(numeroPagina);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <div className="catalogo-container">
+   <div className="catalogo-container">
       {/* Header */}
       <div className="catalogo-header">
         <div className="catalogo-header-content">
@@ -104,7 +140,7 @@ function Catalogo() {
           </Link>
           <h1 className="catalogo-title">Catálogo de Cuentos</h1>
           <p className="catalogo-subtitle">
-            Explora nuestra colección de {loading ? '...' : totalLibros} cuentos educativos
+            Explora nuestra colección de {loading ? '...' : cuentosFiltrados.length} cuentos educativos
           </p>
         </div>
       </div>
@@ -148,21 +184,30 @@ function Catalogo() {
           <div className="filter-group">
             <h4 className="filter-title">Categorías</h4>
             <div className="categorias-list">
-              {categorias.map((cat) => (
-                <button
-                  key={cat.id || cat._id}
-                  className={`categoria-item ${
-                    categoriaSeleccionada === cat.nombre ? "active" : ""
-                  }`}
-                  onClick={() => seleccionarCategoria(cat.nombre)}
-                >
-                  <span className="categoria-icono">{cat.icono}</span>
-                  <span className="categoria-nombre">{cat.nombre}</span>
-                  {categoriaSeleccionada === cat.nombre && (
-                    <span className="check-icon">✓</span>
-                  )}
-                </button>
-              ))}
+              {categorias.map((cat) => {
+                // Contar cuentos de esta categoría
+                const cantidadCuentos = cuentos.filter(
+                  c => c.genero?.nombre?.toLowerCase() === cat.nombre.toLowerCase()
+                ).length;
+
+                return (
+                  <button
+                    key={cat.id_genero}
+                    className={`categoria-item ${
+                      categoriaSeleccionada.toLowerCase() === cat.nombre.toLowerCase() ? "active" : ""
+                    }`}
+                    onClick={() => seleccionarCategoria(cat.nombre)}
+                  >
+                    <span className="categoria-icono">{cat.icono}</span>
+                    <span className="categoria-nombre">
+                      {cat.nombre} ({cantidadCuentos})
+                    </span>
+                    {categoriaSeleccionada.toLowerCase() === cat.nombre.toLowerCase() && (
+                      <span className="check-icon">✓</span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -222,38 +267,81 @@ function Catalogo() {
           {/* Resultados */}
           <div className="resultados-header">
             <h2 className="resultados-count">
-              {loading ? "Cargando..." : `${totalLibros} ${totalLibros === 1 ? "cuento encontrado" : "cuentos encontrados"}`}
+              {loading ? "Cargando..." : `${cuentosFiltrados.length} ${cuentosFiltrados.length === 1 ? "cuento encontrado" : "cuentos encontrados"}`}
             </h2>
+            {totalPaginas > 1 && (
+              <span className="pagina-info">
+                Página {paginaActual} de {totalPaginas}
+              </span>
+            )}
           </div>
 
           {loading ? (
             <div className="loading-state">
-              <p>Cargando libros...</p>
+              <p>Cargando cuentos...</p>
             </div>
-          ) : libros.length > 0 ? (
-            <div className="libros-grid">
-              {libros.map((libro) => (
-                <div key={libro.id || libro._id} className="libro-card-wrapper">
-                  <CardLibro cuento={libro} />
-                  <div className="libro-info">
-                    <h3 className="libro-titulo">{libro.titulo}</h3>
-                    <div className="libro-meta">
-                      <span className="libro-categoria">
-                        <FaBook /> {libro.categoria}
-                      </span>
-                      <span className="libro-duracion">
-                        <FaClock /> {libro.duracion || "10 min"}
-                      </span>
-                      <span className="libro-edad">👶 {libro.edad || "6-8"} años</span>
-                    </div>
-                    <div className="libro-rating">
-                      <FaStar className="star-icon" />
-                      <span>{libro.rating || "4.5"}</span>
-                    </div>
+          ) : cuentosActuales.length > 0 ? (
+            <>
+              <div className="libros-grid">
+                {cuentosActuales.map((cuento) => (
+                  <CardLibro 
+                    key={cuento.id_cuento} 
+                    cuento={cuento}
+                  />
+                ))}
+              </div>
+
+              {/* Paginación */}
+              {totalPaginas > 1 && (
+                <div className="paginacion">
+                  <button
+                    onClick={() => cambiarPagina(paginaActual - 1)}
+                    disabled={paginaActual === 1}
+                    className="paginacion-btn"
+                  >
+                    ← Anterior
+                  </button>
+
+                  <div className="paginacion-numeros">
+                    {[...Array(totalPaginas)].map((_, index) => {
+                      const numeroPagina = index + 1;
+                      
+                      if (
+                        numeroPagina === 1 ||
+                        numeroPagina === totalPaginas ||
+                        (numeroPagina >= paginaActual - 1 && numeroPagina <= paginaActual + 1)
+                      ) {
+                        return (
+                          <button
+                            key={numeroPagina}
+                            onClick={() => cambiarPagina(numeroPagina)}
+                            className={`paginacion-numero ${
+                              paginaActual === numeroPagina ? "active" : ""
+                            }`}
+                          >
+                            {numeroPagina}
+                          </button>
+                        );
+                      } else if (
+                        numeroPagina === paginaActual - 2 ||
+                        numeroPagina === paginaActual + 2
+                      ) {
+                        return <span key={numeroPagina}>...</span>;
+                      }
+                      return null;
+                    })}
                   </div>
+
+                  <button
+                    onClick={() => cambiarPagina(paginaActual + 1)}
+                    disabled={paginaActual === totalPaginas}
+                    className="paginacion-btn"
+                  >
+                    Siguiente →
+                  </button>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           ) : (
             <div className="no-results">
               <div className="no-results-icon">📚</div>

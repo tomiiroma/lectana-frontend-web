@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import "./NuestraBibliotecaSection.css"
 import CardLibro from "../../../../components/Cards/CardLibro"
 import { Link } from "react-router-dom"
-import { obtenerCuentos } from "../../../../api/cuentos"
+import { obtenerCuentosPublicos } from "../../../../api/cuentos"
 
 function NuestraBibliotecaSection(){
     const [cuentos, setCuentos] = useState([]);
@@ -15,11 +15,26 @@ function NuestraBibliotecaSection(){
     const cargarCuentos = async () => {
         try {
             setLoading(true);
-            const response = await obtenerCuentos({ limit: 6, page: 1 });
-            setCuentos(response.data || []);
+           
+            const response = await obtenerCuentosPublicos({ 
+                limite: 10,  
+                pagina: 1 
+            });
+            
+            
+            console.log("Respuesta completa:", response);
+            console.log("Cuentos recibidos:", response.cuentos);
+            console.log("Cantidad de cuentos:", response.cuentos?.length);
+            
+            
+            const cuentosUnicos = response.cuentos || [];
+            const primeros6 = cuentosUnicos.slice(1, 7);
+            
+            console.log("Mostrando estos 6 cuentos:", primeros6);
+            
+            setCuentos(primeros6);
         } catch (error) {
             console.error("Error al cargar cuentos:", error);
-            // Si hay error, mantener array vacío
             setCuentos([]);
         } finally {
             setLoading(false);
@@ -29,28 +44,35 @@ function NuestraBibliotecaSection(){
     return(
         <>
         <section id="biblioteca" className="container-NuestraBibliotecaSection">
-        <h1 className="NuestraBibliotecaSection-title">Nuestra Biblioteca</h1>
-        <span className="NuestraBibliotecaSection-text">Explora una muestra de los cientos de cuentos disponibles en la app. Cada libro está cuidadosamente seleccionado y adaptado por edad.</span>
+            <h1 className="NuestraBibliotecaSection-title">Nuestra Biblioteca</h1>
+            <span className="NuestraBibliotecaSection-text">
+                Explora una muestra de los cientos de cuentos disponibles en la app. 
+                Cada libro está cuidadosamente seleccionado y adaptado por edad.
+            </span>
 
-     <div className="cardsLibro-grid">
+            <div className="cardsLibro-grid">
                 {loading ? (
-                    // Mostrar skeleton loaders mientras carga
+                    
                     [...Array(6)].map((_, index) => (
                         <CardLibro key={`skeleton-${index}`} />
                     ))
                 ) : cuentos.length > 0 ? (
-                    // Mostrar cuentos reales del backend
+                   
                     cuentos.map((cuento) => (
                         <CardLibro 
-                            key={cuento.id} 
+                            key={cuento.id_cuento}
                             cuento={cuento}
                         />
                     ))
                 ) : (
-                    // Mostrar placeholders si no hay cuentos
-                    [...Array(6)].map((_, index) => (
-                        <CardLibro key={`placeholder-${index}`} />
-                    ))
+                    
+                    <div style={{ 
+                        gridColumn: '1 / -1', 
+                        textAlign: 'center', 
+                        padding: '2rem' 
+                    }}>
+                        <p>No hay cuentos disponibles en este momento.</p>
+                    </div>
                 )}
             </div>
 

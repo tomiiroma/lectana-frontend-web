@@ -221,4 +221,33 @@ export async function obtenerTodosLosCuentos() {
   }
 }
 
+// Obtener cuentos públicos con filtros opcionales
+
+export async function obtenerCuentosPublicos(params = {}) {
+  try {
+    const response = await api.get("/cuentos/publicos", { params });
+    return response.data.data || response.data;
+  } catch (error) {
+    console.error("Error al obtener cuentos públicos:", error);
+    throw error;
+  }
+}
+
+
+//  Obtener un cuento público aleatorio para destacar
+ 
+export async function obtenerCuentoDestacado() {
+  try {
+    const response = await api.get("/cuentos/publicos", { 
+      params: { limite: 1 } 
+    });
+    
+    const data = response.data.data || response.data;
+    
+    return data?.cuentos?.[0] || null;
+  } catch (error) {
+    console.error("Error al obtener cuento destacado:", error);
+    return null;
+  }
+}
 
