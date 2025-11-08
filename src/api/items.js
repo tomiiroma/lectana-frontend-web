@@ -51,3 +51,37 @@ export const obtenerItemPorId = async (id) => {
     };
   }
 };
+
+// Deshabilitar item
+export const eliminarItem = async (id) => {
+  try {
+    const response = await api.delete(`/items/${id}`);
+    return {
+      ok: true,
+      data: response.data.data
+    };
+  } catch (error) {
+    console.error('Error al eliminar item:', error);
+    return {
+      ok: false,
+      error: error.response?.data?.error || error.message
+    };
+  }
+};
+
+// Reactivar item
+export const reactivarItem = async (id) => {
+  try {
+    const response = await api.patch(`/items/${id}/reactivar`);
+    return {
+      ok: true,
+      data: response.data.data
+    };
+  } catch (error) {
+    console.error('Error al reactivar item:', error);
+    return {
+      ok: false,
+      error: error.response?.data?.error || error.message
+    };
+  }
+};

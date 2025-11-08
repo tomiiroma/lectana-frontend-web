@@ -12,7 +12,7 @@ function TiendaTable({ items = [], onEdit, onDelete, onView, searchTerm }) {
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Precio</th>
-              <th>Comprados</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -34,9 +34,9 @@ function TiendaTable({ items = [], onEdit, onDelete, onView, searchTerm }) {
                       {item.precio} pts
                     </span>
                   </td>
-                  <td>
-                    <span className="badge-comprados">
-                      {item.comprados || 0} alumnos
+                   <td>
+                    <span className={`badge-estado ${item.disponible ? 'disponible' : 'no-disponible'}`}>
+                      {item.disponible ? 'Disponible' : 'No disponible'}
                     </span>
                   </td>
                   <td>
@@ -58,7 +58,7 @@ function TiendaTable({ items = [], onEdit, onDelete, onView, searchTerm }) {
                       <button 
                         className="btn-action btn-delete"
                         onClick={() => onDelete(item.id_item)}
-                        title="Eliminar"
+                        title={item.disponible ? 'Deshabilitar' : 'Habilitar'}
                       >
                         <FaTrash />
                       </button>
