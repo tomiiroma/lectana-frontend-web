@@ -164,7 +164,7 @@
 .tienda-table th,
 .tienda-table td {
   padding: 1rem;
-  text-align: left;
+  text-align: center;
   vertical-align: middle;
   font-size: 0.875rem;
 }

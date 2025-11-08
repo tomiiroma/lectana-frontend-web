@@ -9,7 +9,7 @@ import "../AdminPages.css";
 import "./Tienda.css";
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUsers, FaStar, FaCoins, FaPlus } from "react-icons/fa";
-import { obtenerItems, eliminarItem } from '../../../api/items';
+import { obtenerItems, eliminarItem, reactivarItem  } from '../../../api/items';
 
 export default function Tienda() {
   
@@ -105,38 +105,43 @@ export default function Tienda() {
     cargarItems(); 
   };
 
-  const handleDeleteItem = async (itemId) => {
-    const item = items.find(i => i.id_item === itemId);
-    
-    if (!item) {
-      console.error('Item no encontrado');
-      return;
-    }
+ const handleDeleteItem = async (itemId) => {
+  const item = items.find(i => i.id_item === itemId);
+  
+  if (!item) {
+    console.error('Item no encontrado');
+    return;
+  }
 
-    const confirmar = window.confirm(
-      `¿Estás seguro de ${item.disponible ? 'deshabilitar' : 'habilitar'} el avatar "${item.nombre}"?`
-    );
+  
+  const accion = item.disponible ? 'deshabilitar' : 'reactivar';
+  const confirmar = window.confirm(
+    `¿Estás seguro de ${accion} el item "${item.nombre}"?`
+  );
+  
+  if (!confirmar) return;
+  
+  try {
+    setEliminando(itemId);
     
-    if (!confirmar) return;
     
-    try {
-      setEliminando(itemId); 
-      
-      const resultado = await eliminarItem(itemId);
-      
-      if (resultado.ok) {
-        alert(`Avatar ${item.disponible ? 'deshabilitado' : 'habilitado'} exitosamente`);
-        cargarItems(); // Recargar lista para reflejar cambios
-      } else {
-        alert(resultado.error || 'Error al cambiar el estado del avatar');
-      }
-    } catch (error) {
-      alert('Error inesperado al cambiar el estado del avatar');
-      console.error(error);
-    } finally {
-      setEliminando(null);
+    const resultado = item.disponible 
+      ? await eliminarItem(itemId)
+      : await reactivarItem(itemId);
+    
+    if (resultado.ok) {
+      alert(`Item ${item.disponible ? 'deshabilitado' : 'reactivado'} exitosamente`);
+      cargarItems(); 
+    } else {
+      alert(resultado.error);
     }
-  };
+  } catch (error) {
+    alert('Error inesperado al actualizar el item');
+    console.error(error);
+  } finally {
+    setEliminando(null);
+  }
+};
 
   const handleViewItem = (itemId) => {
     navigate(`/admin/tienda/${itemId}`);
