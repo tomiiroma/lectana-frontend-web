@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import AdminActionsBar from "../../../components/AdminActionsBar/AdminActionsBar";
 import CardStats from "../../../components/Cards/CardData/CardStats";
 import TiendaTable from "../../../components/TableTienda/TableTienda";
+import CreateItemModal from "../../../components/Modals/CreateItemModal/CreateItemModal";
+import EditarItemModal from "../../../components/Modals/EditItemModal/EditItemModal";
 import { gradients } from "../../../styles/Gradients";
 import "../AdminPages.css";
 import "./Tienda.css";
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUsers, FaStar, FaCoins, FaPlus } from "react-icons/fa";
-import { obtenerItems } from '../../../api/items';
+import { obtenerItems, eliminarItem } from '../../../api/items';
 
 export default function Tienda() {
   
@@ -83,12 +85,12 @@ export default function Tienda() {
   };
 
   const handleModalSuccess = () => {
-    console.log('Avatar creado exitosamente');
+    console.log('Item creado exitosamente');
     cargarItems(); 
   };
 
   const handleEditItem = (itemId) => {
-    console.log('Editar avatar:', itemId);
+    console.log('Editar item:', itemId);
     setSelectedItemId(itemId);
     setShowEditModal(true);
   };
@@ -99,7 +101,7 @@ export default function Tienda() {
   };
 
   const handleEditSuccess = () => {
-    console.log('Avatar editado exitosamente');
+    console.log('Item editado exitosamente');
     cargarItems(); 
   };
 
@@ -107,13 +109,12 @@ export default function Tienda() {
     const item = items.find(i => i.id_item === itemId);
     
     if (!item) {
-      console.error('Avatar no encontrado');
+      console.error('Item no encontrado');
       return;
     }
 
     const confirmar = window.confirm(
-      `¿Estás seguro de eliminar el avatar "${item.nombre}"?\n\n` +
-      `Esta acción no se puede deshacer.`
+      `¿Estás seguro de ${item.disponible ? 'deshabilitar' : 'habilitar'} el avatar "${item.nombre}"?`
     );
     
     if (!confirmar) return;
@@ -121,24 +122,16 @@ export default function Tienda() {
     try {
       setEliminando(itemId); 
       
-      // TODO: Reemplazar con tu API cuando esté lista
-      // const resultado = await eliminarItem(itemId);
-      
-      // MOCK - Simula eliminación exitosa
-      const resultado = { ok: true };
+      const resultado = await eliminarItem(itemId);
       
       if (resultado.ok) {
-        alert('Avatar eliminado exitosamente');
-        setItems(items.filter(i => i.id_item !== itemId));
+        alert(`Avatar ${item.disponible ? 'deshabilitado' : 'habilitado'} exitosamente`);
+        cargarItems(); // Recargar lista para reflejar cambios
       } else {
-        if (resultado.error.includes('alumnos que ya lo compraron')) {
-          alert('No se puede eliminar este avatar porque hay estudiantes que ya lo compraron');
-        } else {
-          alert(resultado.error);
-        }
+        alert(resultado.error || 'Error al cambiar el estado del avatar');
       }
     } catch (error) {
-      alert('Error inesperado al eliminar el avatar');
+      alert('Error inesperado al cambiar el estado del avatar');
       console.error(error);
     } finally {
       setEliminando(null);
@@ -228,8 +221,7 @@ export default function Tienda() {
         )}
       </div>
 
-      {/* TODO: Agregar modales de Crear y Editar Item cuando estén listos */}
-      {/* <CreateItemModal
+      <CreateItemModal
         isOpen={showCreateModal}
         onClose={handleCloseModal}
         onSuccess={handleModalSuccess}
@@ -240,7 +232,7 @@ export default function Tienda() {
         alCerrar={handleCloseEditModal}
         alActualizar={handleEditSuccess}
         itemId={selectedItemId}
-      /> */}
+      />
     </>
   );
 }
