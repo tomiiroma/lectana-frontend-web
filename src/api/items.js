@@ -7,12 +7,29 @@ export const crearItem = async (formData) => {
         'Content-Type': 'multipart/form-data'
       }
     });
-    
+
     console.log("Respuesta del backend:", response.data);
     return response.data;
   } catch (error) {
     console.error('Error al crear item:', error.response?.data || error.message);
     throw error;
+  }
+};
+
+// Obtener alumnos que compraron un item
+export const obtenerAlumnosItem = async (itemId) => {
+  try {
+    const response = await api.get(`/items/${itemId}/alumnos`);
+    return {
+      ok: true,
+      data: response.data.data
+    };
+  } catch (error) {
+    console.error('Error al obtener alumnos del item:', error);
+    return {
+      ok: false,
+      error: error.response?.data?.error || error.message
+    };
   }
 };
 

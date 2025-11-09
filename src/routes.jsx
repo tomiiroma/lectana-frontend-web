@@ -13,6 +13,7 @@ import Aulas from "./pages/admin/aulas/Aulas.jsx";
 import LogroDetalle from "./pages/admin/logros/LogroDetalle.jsx";
 import Actividades from "./pages/admin/actividades/Actividades.jsx";
 import Logros from "./pages/admin/logros/Logros.jsx";
+import ItemDetalle from "./pages/admin/tienda/ItemDetalle.jsx";
 import Perfil from "./pages/admin/perfil/PerfilSimplificado.jsx";
 import DescargaApp from "./pages/DescargaApp/DescargaApp.jsx";
 import Catalogo from "./pages/Catalogo/Catalogo.jsx";
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
       {
         path: "tienda",
         element: <Tienda />,
+      },
+      {
+        path: "tienda/:id",
+        element: <ItemDetalle />,
       },
       {
         path: "perfil",

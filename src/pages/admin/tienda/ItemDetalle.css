@@ -1,0 +1,354 @@
+/* === ESTILOS BASE EXISTENTES + MODO OSCURO AUTOMÁTICO === */
+
+.item-detalle-container {
+  padding: 2rem;
+}
+
+/* Header con botón volver */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+}
+
+/* Card de información del item */
+.item-info-card {
+  display: flex;
+  gap: 2rem;
+  background: var(--card-bg, white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  color: var(--text-primary, #333);
+}
+
+.item-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #9c27b0;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-titulo {
+  font-size: 2rem;
+  color: var(--text-primary, #333);
+  margin: 0 0 0.5rem 0;
+}
+
+.item-descripcion {
+  font-size: 1.1rem;
+  color: var(--text-secondary, #666);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.item-details {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: var(--badge-bg, #f5f5f5);
+  border-radius: 8px;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary, #333);
+}
+
+.precio-badge .detail-value {
+  color: #4caf50;
+}
+
+.estado-badge .detail-value.disponible {
+  color: #4caf50;
+}
+
+.estado-badge .detail-value.no-disponible {
+  color: #f44336;
+}
+
+.item-stats-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.cart-icon {
+  font-size: 1.25rem;
+}
+
+/* Sección de búsqueda */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: var(--text-primary, #333);
+  margin: 0 0 1rem 0;
+}
+
+.search-box {
+  position: relative;
+  max-width: 500px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted, #999);
+  font-size: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--input-bg, white);
+  color: var(--text-primary, #333);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #9c27b0;
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+}
+
+/* Tabla */
+.table-container {
+  background: var(--card-bg, white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.usuarios-table thead {
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+}
+
+.usuarios-table th {
+  padding: 1rem;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}
+
+.usuarios-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s ease;
+}
+
+.usuarios-table tbody tr:hover {
+  background: var(--hover-bg, #f9f9f9);
+}
+
+.usuarios-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.usuarios-table td {
+  padding: 1rem;
+  color: var(--text-primary, #333);
+}
+
+.email-cell {
+  font-weight: 500;
+  color: #9c27b0;
+}
+
+.fecha-cell {
+  color: var(--text-secondary, #666);
+  font-size: 0.95rem;
+}
+
+.no-results-cell {
+  text-align: center;
+  padding: 3rem !important;
+  color: var(--text-muted, #999);
+}
+
+.no-results-icon {
+  font-size: 3rem;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+.no-results-cell p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Footer de tabla */
+.table-footer {
+  background: var(--card-bg, white);
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-secondary, #666);
+  font-weight: 500;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Loading y Error */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(156, 39, 176, 0.1);
+  border-top-color: #9c27b0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-icon {
+  font-size: 4rem;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: var(--text-secondary, #666);
+  max-width: 500px;
+  text-align: center;
+}
+
+.btn-retry {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-retry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+}
+
+/* === MODO OSCURO AUTOMÁTICO === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1e1e2e;
+    --input-bg: #2a2a3c;
+    --text-primary: #e5e7eb;
+    --text-secondary: #a1a1aa;
+    --text-muted: #7c7c8a;
+    --badge-bg: #2a2a3c;
+    --hover-bg: #2f2f40;
+  }
+
+  .usuarios-table tbody tr {
+    border-bottom: 1px solid #3a3a4a;
+  }
+
+  .usuarios-table th {
+    color: #f3e8ff;
+  }
+
+  .table-footer {
+    border-top: 1px solid #3a3a4a;
+  }
+
+  .item-info-card,
+  .table-container {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .item-info-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .item-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .item-details {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .usuarios-table {
+    font-size: 0.875rem;
+  }
+
+  .usuarios-table th,
+  .usuarios-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
