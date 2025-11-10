@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./EditItemModal.css";
-import { obtenerItemPorId } from "../../../api/items";
+import { obtenerItemPorId, actualizarItem } from "../../../api/items";
 
 function EditarItemModal({ estaAbierto, alCerrar, alActualizar, itemId }) {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -134,7 +134,6 @@ function EditarItemModal({ estaAbierto, alCerrar, alActualizar, itemId }) {
 
     setCargando(true);
     try {
-      /* TODO: Cuando de actualizar en el backend, descomento esto:
       const formData = new FormData();
       formData.append('nombre', datosFormulario.nombre);
       formData.append('descripcion', datosFormulario.descripcion);
@@ -144,16 +143,17 @@ function EditarItemModal({ estaAbierto, alCerrar, alActualizar, itemId }) {
         formData.append('imagen', imagenArchivo);
       }
       
-      await actualizarItem(itemId, formData);
-      */
+      const resultado = await actualizarItem(itemId, formData);
       
-      /* MOCK TEMPORAL - Simula actualización */
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log("✅ Item actualizado (MOCK):", datosFormulario);
-      alert("⚠️ MOCK: La actualización aún no está implementada en el backend");
-      
-      alActualizar?.();
-      manejarCierre();
+      if (resultado.ok) {
+        console.log(" Item actualizado exitosamente");
+        alActualizar?.();
+        manejarCierre();
+      } else {
+        setErrores({ 
+          general: resultado.error || "Error al actualizar el item" 
+        });
+      }
     } catch (error) {
       console.error("Error actualizando item:", error);
       setErrores({ 
