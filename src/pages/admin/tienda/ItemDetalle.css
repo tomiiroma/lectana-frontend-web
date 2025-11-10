@@ -297,15 +297,7 @@
 
 /* === MODO OSCURO AUTOMÁTICO === */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --card-bg: #1e1e2e;
-    --input-bg: #2a2a3c;
-    --text-primary: #e5e7eb;
-    --text-secondary: #a1a1aa;
-    --text-muted: #7c7c8a;
-    --badge-bg: #2a2a3c;
-    --hover-bg: #2f2f40;
-  }
+
 
   .usuarios-table tbody tr {
     border-bottom: 1px solid #3a3a4a;

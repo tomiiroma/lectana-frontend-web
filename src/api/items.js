@@ -102,3 +102,27 @@ export const reactivarItem = async (id) => {
     };
   }
 };
+
+// Actualizar item
+
+export const actualizarItem = async (itemId, formData) => {
+  try {
+    const response = await api.put(`/items/${itemId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    
+    return {
+      ok: true,
+      data: response.data.data,
+      message: response.data.message
+    };
+  } catch (error) {
+    console.error('Error al actualizar item:', error.response?.data || error.message);
+    return {
+      ok: false,
+      error: error.response?.data?.error || error.message
+    };
+  }
+};
