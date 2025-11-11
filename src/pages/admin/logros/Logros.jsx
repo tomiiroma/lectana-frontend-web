@@ -48,7 +48,7 @@ const cargarLogros = async () => {
       setLogros(logrosData);
       
       if (logrosData.length === 0) {
-        setError('No hay logros creados aún. ¡Crea tu primer logro!');
+        setError('No hay logros creados aún.');
       }
     } else {
       setError(`Error al cargar los logros: ${response.error || 'Error desconocido'}`);

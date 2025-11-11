@@ -14,7 +14,7 @@ const formatearEvento = (evento) => {
   };
 
   const formatearValor = (evento, valor) => {
-    if (evento === 'registro') return 'Solo puede ser desbloqueado una vez';
+    if (evento === 'registro') return 'Alumno registrado';
     if (evento === 'puntos') return `${valor} pts`;
     if (evento === 'compras') return `${valor} compra${valor > 1 ? 's' : ''}`;
     return valor;
