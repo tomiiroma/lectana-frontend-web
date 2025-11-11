@@ -260,7 +260,6 @@
     color: var(--text-primary) !important;
     background: var(--bg-secondary) !important;
     border: 1px solid var(--border-primary) !important;
-    padding: 10px 16px !important;
     font-size: 14px !important;
     min-width: 40px !important;
 }
