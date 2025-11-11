@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { obtenerCuentoDestacado } from "../../api/cuentos";
 import "./CardLibro.css";
+import { Link } from "react-router-dom";
 
 function CardLibro({ cuento: cuentoProp }) {
   const [cuentoDestacado, setCuentoDestacado] = useState(null);
@@ -92,7 +93,7 @@ function CardLibro({ cuento: cuentoProp }) {
         <p className="card-description">
           Género: {cuento.genero?.nombre || "Sin género"}
         </p>
-        <button className="card-button">Disponible para leer en la app móvil</button>
+        <Link to="/descarga-app" className="card-button">Disponible para leer en la app móvil</Link>
       </div>
     </div>
   );
