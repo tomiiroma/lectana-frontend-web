@@ -238,7 +238,7 @@ export default function Cuentos() {
                   <td><span className="category-tag">{c.genero?.nombre || "-"}</span></td>
                   <td>{c.edad_publico ?? "-"}</td>
                   <td>
-                    <div style={{ width: '200px' }}>
+                    <div style={{ width: '100%', maxWidth: '280px' }}>
                       <AudioPlayer 
                         cuentoId={c.id_cuento ?? c.id ?? ""} 
                         pdfUrl={c.pdf_url}

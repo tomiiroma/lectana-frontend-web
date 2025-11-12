@@ -183,7 +183,7 @@
   border-radius: 3px;
   outline: none;
   cursor: pointer;
-  -webkit-appearance: none;
+  
   transition: all 0.2s ease;
 }
 
@@ -423,4 +423,77 @@
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
+}
+/* Audio Player en tabla */
+.admin-table .audio-player-container {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.admin-table .audio-player-title {
+  display: none !important;
+}
+
+.admin-table .audio-controls {
+  padding: 0.4rem !important;
+  gap: 0.4rem !important;
+  min-height: auto !important;
+}
+
+.admin-table .audio-play-btn {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  flex-shrink: 0 !important;
+}
+
+.admin-table .audio-progress-container {
+  gap: 0.3rem !important;
+  flex: 1 !important;
+}
+
+.admin-table .audio-time {
+  font-size: 0.65rem !important;
+  min-width: 32px !important;
+}
+
+.admin-table .audio-volume-container {
+  display: none !important;
+}
+
+/* Botones en línea y compactos */
+.admin-table .audio-admin-actions {
+  gap: 0.3rem !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+
+.admin-table .audio-btn {
+  padding: 0.4rem 0.6rem !important;
+  font-size: 0.7rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.admin-table .audio-btn-icon {
+  padding: 0.3rem !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.admin-table .audio-icon {
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+}
+
+.admin-table .audio-icon-small {
+  width: 0.7rem !important;
+  height: 0.7rem !important;
 }
