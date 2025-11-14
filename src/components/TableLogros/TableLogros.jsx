@@ -14,9 +14,9 @@ const formatearEvento = (evento) => {
   };
 
   const formatearValor = (evento, valor) => {
-    if (evento === 'registro') return 'Alumno registrado';
-    if (evento === 'puntos') return `${valor} pts`;
-    if (evento === 'compras') return `${valor} compra${valor > 1 ? 's' : ''}`;
+    if (evento === 'registro') return 'Registrarse como alumno';
+    if (evento === 'puntos') return `Obtener ${valor} puntos`;
+    if (evento === 'compras') return `Comprar ${valor} avatar${valor > 1 ? 'es' : ''}`;
     return valor;
   };
 
@@ -30,7 +30,7 @@ const formatearEvento = (evento) => {
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Evento</th>
-              <th>Valor</th>
+              <th>Forma de desbloquear</th>
               <th>Disponible para</th>
               <th>Acciones</th>
             </tr>
