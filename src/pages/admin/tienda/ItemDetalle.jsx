@@ -36,10 +36,11 @@ export default function ItemDetalle() {
 
       setItem(resultado.item);
       
-      // Obtener alumnos que compraron este item
       const alumnosResult = await obtenerAlumnosItem(id);
+      console.log('📦 Resultado completo:', alumnosResult);
+      
       if (alumnosResult.ok) {
-        setAlumnos(alumnosResult.data?.alumnos || []);
+        setAlumnos(alumnosResult.alumnos || []);
       }
       
       setCargando(false);
@@ -58,9 +59,10 @@ export default function ItemDetalle() {
     }
 
     const busquedaMinuscula = busqueda.toLowerCase();
-    const filtrados = alumnos.filter(alumno => 
-      alumno.email.toLowerCase().includes(busquedaMinuscula)
-    );
+    const filtrados = alumnos.filter(alumno => {
+      const email = alumno.alumno?.usuario?.email || '';
+      return email.toLowerCase().includes(busquedaMinuscula);
+    });
 
     setAlumnosFiltrados(filtrados);
   };
@@ -162,24 +164,30 @@ export default function ItemDetalle() {
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Nombre</th>
                     <th>Email</th>
                     <th>Fecha de Compra</th>
                   </tr>
                 </thead>
                 <tbody>
                   {alumnosFiltrados.length > 0 ? (
-                    alumnosFiltrados.map((alumno, index) => (
-                      <tr key={alumno.id_alumno}>
+                    alumnosFiltrados.map((compra, index) => (
+                      <tr key={`${compra.alumno_id_alumno}-${index}`}>
                         <td>{index + 1}</td>
-                        <td className="email-cell">{alumno.email}</td>
+                        <td className="email-cell">
+                          {compra.alumno?.usuario?.nombre} {compra.alumno?.usuario?.apellido}
+                        </td>
+                        <td className="email-cell">
+                          {compra.alumno?.usuario?.email || 'Sin email'}
+                        </td>
                         <td className="fecha-cell">
-                          {formatearFecha(alumno.fecha_compra)}
+                          {formatearFecha(compra.fecha_canje)}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3" className="no-results-cell">
+                      <td colSpan="4" className="no-results-cell">
                         <FaSearch className="no-results-icon" />
                         <p>
                           {busqueda.trim() 

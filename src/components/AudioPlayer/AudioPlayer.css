@@ -497,3 +497,31 @@
   width: 0.7rem !important;
   height: 0.7rem !important;
 }
+/* Fix para evitar que el contenedor blanco tape la tabla */
+.admin-table .audio-player-no-audio {
+  position: relative !important;
+  z-index: 1 !important;
+  padding: 0.5rem !important;
+  min-height: auto !important;
+  font-size: 0.7rem !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.admin-table .audio-player-no-audio .audio-icon {
+  display: none !important;
+}
+
+.admin-table .audio-player-no-audio span {
+  display: none !important;
+}
+
+/* Mostrar solo los botones en tabla */
+.admin-table .audio-player-no-audio {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.3rem !important;
+  padding: 0.3rem !important;
+}
