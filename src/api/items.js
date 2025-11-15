@@ -22,7 +22,9 @@ export const obtenerAlumnosItem = async (itemId) => {
     const response = await api.get(`/items/${itemId}/alumnos`);
     return {
       ok: true,
-      data: response.data.data
+      item: response.data.item,
+      alumnos: response.data.alumnos,
+      total: response.data.total
     };
   } catch (error) {
     console.error('Error al obtener alumnos del item:', error);
@@ -126,3 +128,4 @@ export const actualizarItem = async (itemId, formData) => {
     };
   }
 };
+
