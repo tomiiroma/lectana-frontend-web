@@ -109,6 +109,7 @@
   background-color: var(--bg-card);
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .card-button:hover {

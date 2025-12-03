@@ -10,7 +10,7 @@ function ComenzaTuAventuraSection(){
                 <span className="comenzaTuAventura-text">Descargá Lectana y accedé a cientos de cuentos desde tu móvil. ¡Completamente gratis, sin anuncios y con actualizaciones constantes!</span>
 
                 <div className="comenzaTuAventura-buttons">
-                    <Link to="/descarga-app" className="SecondaryButton">Descargar de Play Store</Link>
+                    <Link to="/descarga-app" className="SecondaryButton">Descargar APK</Link>
                     <SecondaryButton content={"Ver Screenshots"}/>
                 </div>
 
