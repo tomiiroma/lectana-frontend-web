@@ -213,7 +213,7 @@ export async function listarCuentos(params = {}) {
  */
 export async function obtenerTodosLosCuentos() {
   try {
-    const response = await api.get("/cuentos/todos");
+    const response = await api.get("/cuentos");
     return response.data;
   } catch (error) {
     console.error("Error al obtener todos los cuentos:", error);
