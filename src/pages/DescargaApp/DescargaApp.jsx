@@ -4,10 +4,10 @@ import "./DescargaApp.css";
 
 function DescargaApp() {
   // URL de descarga de la APK (puedes cambiar esta URL por la real)
-  const downloadUrl = "https://qr.link/cR7U9E";
+  const downloadUrl = "https://bit.ly/48YkIsr?r=qr";
   
   // URL del QR code - usando imagen local
-  const qrCodeUrl = "/xM3MOTx.webp";
+  const qrCodeUrl = "/yEeXRAg.png";
 
   const handleDirectDownload = () => {
     window.open(downloadUrl, '_blank');
